@@ -1,4 +1,27 @@
 <?php
+
+function generate_view_file($aTable, $conn)
+{
+    $path = 'output/views/';
+    foreach ($aTable as $table) {
+
+        $folder_name = $table;
+        $file_path = $path . $folder_name;
+        mkdir($file_path);
+
+        $text = file_get_contents("template/views/index.php");
+        $file = fopen($file_path . '/index.php', "w");
+        fwrite($file, $text);
+        fclose($file);
+
+        $text = file_get_contents("template/views/form.php");
+        $file = fopen($file_path . '/form.php', "w");
+        fwrite($file, $text);
+        fclose($file);
+    }
+}
+
+
 function generate_controller_file($aTable, $conn)
 {
     $path = 'output/controllers/';

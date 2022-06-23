@@ -46,6 +46,8 @@ $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
                 generate_base_model_file($aTable, $conn);
             } else if ($action == "migrate") {
                 migrate($aTable, $conn);
+            } else if ($action == "views") {
+                generate_view_file($aTable, $conn);
             } else if ($action == "controller") {
                 generate_controller_file($aTable, $conn);
             }
