@@ -1,13 +1,13 @@
 <?php
 
-function generate_route_file($aTable, $prefix = 'admin_')
+function generate_route_file($aTable)
 {
     $file_path = 'output/routes.php';
     include_once 'template/routes.php';
     $route_string = '';
     $count = 1;
     foreach ($aTable as $table) {
-        $route_string .= "'" . $prefix . $table . "',";
+        $route_string .= "'" . strtolower(ROUTE_PREFIX) . $table . "',";
         if ($count % 3 == 0) {
             $route_string .= PHP_EOL;
         }
@@ -47,22 +47,21 @@ function generate_view_file($aTable, $conn)
 }
 
 
-function generate_controller_file($aTable, $conn)
+function generate_controller_file($aTable)
 {
     $path = 'output/controllers/';
     if (!file_exists($path)) {
         mkdir($path);
     }
+
     foreach ($aTable as $table) {
 
-        $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+        $class_name = ROUTE_PREFIX . $table;
         $file_name = $class_name . '.php';
         $file_path = $path . $file_name;
 
         include_once 'template/controller.php';
-
-        $columns = table_columns($conn, $table);
-        $txt = generate($class_name, $columns, $table);
+        $txt = generate($class_name);
 
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
@@ -73,7 +72,11 @@ function generate_controller_file($aTable, $conn)
 
 function generate_base_model_file($aTable, $conn)
 {
-    $path = 'output/models/_base/';
+    $path = 'output/models/';
+    if (!file_exists($path)) {
+        mkdir($path);
+    }
+    $path .= '_base/';
     if (!file_exists($path)) {
         mkdir($path);
     }

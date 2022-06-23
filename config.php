@@ -6,6 +6,8 @@ define('USER', 'root');
 define('PASSWORD', '');
 define('DATABASE', 'product_billing_ci');
 
+define('ROUTE_PREFIX', 'Admin_');
+
 /* * ***********************************************************
   | CUSTOM GLOBAL FUNCTIONS
  * *********************************************************** */
