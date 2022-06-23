@@ -1,0 +1,3 @@
+output/controllers/*.php
+output/models/*.php
+output/models/_base/*.php
