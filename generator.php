@@ -1,13 +1,38 @@
 <?php
 
+function generate_route_file($aTable, $prefix = 'admin_')
+{
+    $file_path = 'output/routes.php';
+    include_once 'template/routes.php';
+    $route_string = '';
+    $count = 1;
+    foreach ($aTable as $table) {
+        $route_string .= "'" . $prefix . $table . "',";
+        if ($count % 3 == 0) {
+            $route_string .= PHP_EOL;
+        }
+        $count++;
+    }
+    $txt = generate($route_string);
+    $file = fopen($file_path, "w");
+    fwrite($file, $txt);
+    fclose($file);
+    echo "Route File created at : " . $file_path . '<br/>';
+}
+
 function generate_view_file($aTable, $conn)
 {
     $path = 'output/views/';
+    if (!file_exists($path)) {
+        mkdir($path);
+    }
     foreach ($aTable as $table) {
 
         $folder_name = $table;
         $file_path = $path . $folder_name;
-        mkdir($file_path);
+        if (!file_exists($file_path)) {
+            mkdir($file_path);
+        }
 
         $text = file_get_contents("template/views/index.php");
         $file = fopen($file_path . '/index.php', "w");
@@ -25,6 +50,9 @@ function generate_view_file($aTable, $conn)
 function generate_controller_file($aTable, $conn)
 {
     $path = 'output/controllers/';
+    if (!file_exists($path)) {
+        mkdir($path);
+    }
     foreach ($aTable as $table) {
 
         $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
@@ -46,6 +74,9 @@ function generate_controller_file($aTable, $conn)
 function generate_base_model_file($aTable, $conn)
 {
     $path = 'output/models/_base/';
+    if (!file_exists($path)) {
+        mkdir($path);
+    }
     foreach ($aTable as $table) {
 
         $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
@@ -67,6 +98,9 @@ function generate_base_model_file($aTable, $conn)
 function generate_model_file($aTable, $conn)
 {
     $path = 'output/models/';
+    if (!file_exists($path)) {
+        mkdir($path);
+    }
     foreach ($aTable as $table) {
 
         $parent_class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));

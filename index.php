@@ -26,6 +26,8 @@ $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
         <form>
             <button type="submit" name="action" class="btn btn-warning" value="base_model">General Base Models</button>
             <button type="submit" name="action" class="btn btn-primary" value="model">General Models</button>
+            <button type="submit" name="action" class="btn btn-primary" value="routes">General Routes</button>
+            <button type="submit" name="action" class="btn btn-primary" value="views">General Views</button>
         </form>
         <h2>Parameterized</h2>
         <form>
@@ -50,6 +52,8 @@ $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
                 generate_view_file($aTable, $conn);
             } else if ($action == "controller") {
                 generate_controller_file($aTable, $conn);
+            } else if ($action == "routes") {
+                generate_route_file($aTable);
             }
         }
         ?>
