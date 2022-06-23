@@ -20,7 +20,7 @@ function generate($className, $columns, $table)
 ";
 
     $methods = '
-function save()
+public function save()
 {
 parent::getCreatedUpdatedDetails($this, $this->id);
 $params = [' . PHP_EOL;
@@ -40,22 +40,22 @@ return $this->db->insert(tbl_prefix() . $this->tbl_name, $params);
 }
 }
 
-function delete()
+public function delete($delete_id)
 {
-return $this->db->delete(tbl_prefix() . $this->tbl_name, array("id" => $this->id));
+return $this->db->delete(tbl_prefix() . $this->tbl_name, array("id" => $delete_id));
 }
 
-function all($aWhere = [], $select = \' * \')
+public function all($aWhere = [], $select = \' * \')
 {
 return get_rows($this->tbl_name, $aWhere, $select);
 }
 
-function one($aWhere = [], $select = \' * \')
+public function one($aWhere = [], $select = \' * \')
 {
 return get_row($this->tbl_name, $aWhere, $select);
 }
 
-function error()
+public function error()
 {
 return "Demo Error";
 }
