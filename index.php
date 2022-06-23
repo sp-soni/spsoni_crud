@@ -1,5 +1,5 @@
 <?php
-require_once '../config.php';
+require_once 'config.php';
 require_once 'generator.php';
 
 $conn = mysqli_connect(HOST, USER, PASSWORD, DATABASE);
