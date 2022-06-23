@@ -60,8 +60,11 @@ function generate_controller_file($aTable)
         $file_name = $class_name . '.php';
         $file_path = $path . $file_name;
 
+        $model_class = str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . '_model';
+        $title = ucwords(str_replace('_', ' ', $table));
+
         include_once 'template/controller.php';
-        $txt = generate($class_name);
+        $txt = generate($class_name, $model_class, $table, $title);
 
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
