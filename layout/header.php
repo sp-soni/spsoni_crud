@@ -22,7 +22,7 @@ $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h2>SpiTech CRUD Generator</h2>
+                <h2>Codeigniter 3.X CRUD Generator</h2>
             </div>
         </div>
         <?php
