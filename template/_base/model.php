@@ -1,7 +1,8 @@
 <?php
 
-function generate($className, $columns, $table)
+function generate($className, $columns, $table, $table_attributes)
 {
+    //debug($table_attributes);
 
     //custructor
     $properties = "";
@@ -19,7 +20,22 @@ function generate($className, $columns, $table)
     $constructor .= "\t}
 ";
 
-    $methods = PHP_EOL . '/**
+    $methods = PHP_EOL . '
+public function rules()
+	{
+		$rules = [' . PHP_EOL;
+
+    $rules = '';
+    foreach ($table_attributes as $column) {
+        $rules .= '[\'' . $column->column_name . '\', \'' . $column->label  . '\', \'' . $column->rules . '\'],' . PHP_EOL;
+    }
+
+    $methods .= $rules . PHP_EOL . '];
+		return array_map(\'set_validation_rules\', $rules);
+	}
+    ';
+
+    $methods .= '/**
 * search function
 *
 * @param [type] $select
