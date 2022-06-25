@@ -30,34 +30,10 @@ public function rules()
         $rules .= '[\'' . $column->column_name . '\', \'' . $column->label  . '\', \'' . $column->rules . '\'],' . PHP_EOL;
     }
 
-    $methods .= $rules . PHP_EOL . '];
+    $methods .= $rules . '];
 		return array_map(\'set_validation_rules\', $rules);
 	}
     ';
-
-    $methods .= '/**
-* search function
-*
-* @param [type] $select
-* @param [type] $aWhere
-*/
-public function search($select, $aWhere)
-{
-   if (!empty($select)) {
-       $select = \'t1.*\';
-   }
-   $this->db->select($select);
-   $this->db->from(tbl_prefix() . $this->tbl_name . \' as t1\');		
-   if (isset($_GET[\'search_key\']) && $_GET[\'search_key\'] != "") {
-       $this->db->like(\'t1.depositor\', $_GET[\'search_key\']);
-       $this->db->or_like(\'t1.name\', $_GET[\'search_key\']);
-   }
-   if (!empty($aWhere) && is_array($aWhere)) {
-       $this->db->where($aWhere);
-   }
-   $this->db->order_by("t1.id", \'desc\');
-   return $this->db;
-}' . PHP_EOL;
 
     $methods .= '
 public function save()
