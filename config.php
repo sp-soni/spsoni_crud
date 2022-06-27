@@ -15,6 +15,22 @@ define('ROUTE_PREFIX', 'Admin_');
 define('BASE_URL', 'http://localhost:8383/spsoni/spitech_crud/');
 define('ROOT_PATH', dirname(__FILE__, 1));
 
+
+function platform_list()
+{
+    return [
+        "codeigniter-3.x",
+        "laravel-8.x"
+    ];
+}
+
+function selected_select($left, $right)
+{
+    if ($left == $right) {
+        echo "selected";
+    }
+}
+
 function is_localhost()
 {
     return $_SERVER['REMOTE_ADDR'] == '::1' || $_SERVER['REMOTE_ADDR'] == '127.0.0.1';
