@@ -1,5 +1,15 @@
 <?php
 
+function response($data)
+{
+    if (is_array($data)) {
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+    } else {
+        echo "<b>File created at : </b>" . $data . '<br/>';
+    }
+}
 
 function table_columns($conn, $table)
 {

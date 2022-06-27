@@ -4,8 +4,8 @@ require_once 'helpers.php';
 
 function action_generate_routes($aTable, $conn, $platform)
 {
-    $file_path = $platform . 'output/routes.php';
-    include_once $platform . 'template/routes.php';
+    $file_path = $platform . '/output/routes.php';
+    include_once $platform . '/template/routes.php';
     $route_string = '';
     $count = 1;
     foreach ($aTable as $table) {
@@ -19,12 +19,12 @@ function action_generate_routes($aTable, $conn, $platform)
     $file = fopen($file_path, "w");
     fwrite($file, $txt);
     fclose($file);
-    echo "Route File created at : " . $file_path . '<br/>';
+    response($file_path);
 }
 
 function action_generate_views($aTable, $conn, $platform)
 {
-    $path = $platform . 'output/views/';
+    $path = $platform . '/output/views/';
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -45,13 +45,14 @@ function action_generate_views($aTable, $conn, $platform)
         $file = fopen($file_path . '/form.php', "w");
         fwrite($file, $text);
         fclose($file);
+        response($file_path);
     }
 }
 
 
 function action_generate_controllers($aTable, $conn, $platform)
 {
-    $path = $platform . 'output/controllers/';
+    $path = $platform . '/output/controllers/';
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -65,20 +66,20 @@ function action_generate_controllers($aTable, $conn, $platform)
         $model_class = str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . '_model';
         $title = ucwords(str_replace('_', ' ', $table));
 
-        include_once $platform . 'template/controller.php';
+        include_once $platform . '/template/controller.php';
         $txt = generate($class_name, $model_class, $table, $title);
 
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);
-        echo "File created at :" . $file_path . '<br/>';
+        response($file_path);
     }
 }
 
 function action_generate_base_models($aTable, $conn, $platform)
 {
 
-    $path = $platform . 'output/models/';
+    $path = $platform . '/output/models/';
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -92,7 +93,7 @@ function action_generate_base_models($aTable, $conn, $platform)
         $file_name = $class_name . '.php';
         $file_path = $path . $file_name;
 
-        include_once $platform . 'template/_base/model.php';
+        include_once $platform . '/template/_base/model.php';
 
         $columns = table_columns($conn, $table);
         $table_attributes = table_attributes($conn, $table);
@@ -101,13 +102,13 @@ function action_generate_base_models($aTable, $conn, $platform)
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);
-        echo "File created at :" . $file_path . '<br/>';
+        response($file_path);
     }
 }
 
 function action_generate_models($aTable, $conn, $platform)
 {
-    $path = $platform . 'output/models/';
+    $path = $platform . '/output/models/';
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -118,14 +119,14 @@ function action_generate_models($aTable, $conn, $platform)
         $file_name = $class_name . '.php';
         $file_path = $path . $file_name;
 
-        include_once $platform . 'template/model.php';
+        include_once $platform . '/template/model.php';
 
         $txt = generate($class_name, $parent_class_name);
 
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);
-        echo "File created at :" . $file_path . '<br/>';
+        response($file_path);
     }
 }
 
