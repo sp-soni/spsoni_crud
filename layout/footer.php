@@ -9,10 +9,16 @@ if (!empty($_GET['action'])) {
             </div>
             <div style="border:1px solid gray;padding:5px;">
                 <?php
-                if (!empty($_GET['platform']) && !in_array($_GET['platform'], platform_list())) {
-                    echo '<h1 class="required">select platform first</h1>';
+
+                if (empty($_GET['platform']) || !in_array($_GET['platform'], platform_list())) {
+                    echo '<h1 class="required">Platform is required</h1>';
                     return false;
                 }
+                if (empty($_GET['db_name']) || !in_array($_GET['db_name'], $aDatabase)) {
+                    echo '<h1 class="required">Database is required</h1>';
+                    return false;
+                }
+                require_once ROOT_PATH . '/vendor/generator.php';
                 $action = $_GET['action'];
                 if ($action == "models") {
                     action_generate_models($aTable, $conn, $platform);

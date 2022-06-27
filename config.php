@@ -58,3 +58,14 @@ function debug($arg, $is_die = 1)
         echo exit;
     }
 }
+
+function prepare_url($base_url, $custom_key)
+{
+    $params = [];
+    foreach ($_GET as $key => $value) {
+        $params[$key] = $value;
+    }
+    $params[$custom_key] = '';
+    $url = $base_url . '?' . http_build_query($params);
+    return $url;
+}

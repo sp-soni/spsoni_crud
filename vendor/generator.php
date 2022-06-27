@@ -2,6 +2,10 @@
 
 require_once 'helpers.php';
 
+mysqli_select_db($conn, $db_name);
+
+$aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+
 function action_generate_routes($aTable, $conn, $platform)
 {
     $file_path = $platform . '/output/routes.php';
