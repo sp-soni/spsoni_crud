@@ -5,6 +5,9 @@ if (!empty($_GET['platform'])) {
 }
 ?>
 <div class="row" style="margin-bottom: 10px;">
+    <div class="col-md-1">
+        <a href="<?php echo BASE_URL; ?>" class="btn btn-primary">Home</a>
+    </div>
     <div class="col-md-2">
         <span class="required">Select Platform (*)</span>
     </div>
@@ -28,7 +31,6 @@ if (!empty($_GET['platform'])) {
 </div>
 <div class="row">
     <div class="col-md-12">
-        <a href="<?php echo BASE_URL; ?>" class="btn btn-primary">Home</a>
         <?php
         if (!empty($_GET['platform']) && in_array($_GET['platform'], platform_list())) {
             $url = BASE_URL . '?platform=' . $platform . '&action=';

@@ -9,19 +9,23 @@ if (!empty($_GET['action'])) {
             </div>
             <div style="border:1px solid gray;padding:5px;">
                 <?php
+                if (!empty($_GET['platform']) && !in_array($_GET['platform'], platform_list())) {
+                    echo '<h1 class="required">select platform first</h1>';
+                    return false;
+                }
                 $action = $_GET['action'];
                 if ($action == "models") {
-                    generate_model_file($aTable, $conn);
+                    action_generate_models($aTable, $conn, $platform);
                 } else if ($action == "base_models") {
-                    generate_base_model_file($aTable, $conn);
+                    action_generate_base_models($aTable, $conn, $platform);
                 } else if ($action == "migrate") {
-                    migrate($aTable, $conn);
+                    action_migrate($aTable, $conn, $platform);
                 } else if ($action == "views") {
-                    generate_view_file($aTable, $conn);
+                    action_generate_views($aTable, $conn, $platform);
                 } else if ($action == "controllers") {
-                    generate_controller_file($aTable);
+                    action_generate_controllers($aTable, $conn, $platform);
                 } else if ($action == "routes") {
-                    generate_route_file($aTable);
+                    action_generate_routes($aTable, $conn, $platform);
                 }
                 ?>
             </div>
