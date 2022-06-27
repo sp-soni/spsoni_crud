@@ -1,6 +1,6 @@
 <?php
 
-require_once 'helpers.php';
+
 
 mysqli_select_db($conn, $db_name);
 

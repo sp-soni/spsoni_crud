@@ -1,10 +1,9 @@
 <?php
 require_once dirname(__FILE__, 2) . '/config.php';
+require_once ROOT_PATH . '/vendor/helpers.php';
 
 $conn = mysqli_connect(HOST, USER, PASSWORD,);
 $aDatabase = array_column($conn->query('SHOW DATABASES')->fetch_all(), 0);
-
-
 ?>
 
 <!DOCTYPE html>
