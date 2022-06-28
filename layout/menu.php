@@ -70,6 +70,7 @@ if (!empty($_GET['db_name'])) {
             <a href="<?php echo $url; ?>models" class="btn btn-success">Models</a>
             <a href="<?php echo $url; ?>views" class="btn btn-warning">Views</a>
             <a href="<?php echo $url; ?>controllers" class="btn btn-success">Controller</a>
+            <a href="<?php echo $url; ?>migrate" class="btn btn-success">MIGRATE</a>
             <a href="<?php echo $url; ?>crud.php" class="btn btn-success">CRUD</a>
         <?php } ?>
 

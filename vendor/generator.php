@@ -135,33 +135,45 @@ function action_generate_models($aTable, $conn, $platform)
 
 function action_migrate($aTable, $conn)
 {
+
+    $migration_queries = [];
     foreach ($aTable as $table) {
 
         $sql = "CALL drop_column_if_exists('" . $table . "', 'edited_by')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $migration_queries[] = $sql;
 
         $sql = "CALL drop_column_if_exists('" . $table . "', 'created_date')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $migration_queries[] = $sql;
 
         $sql = "CALL drop_column_if_exists('" . $table . "', 'edited_date')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $migration_queries[] = $sql;
 
         $sql = "CALL drop_column_if_exists('" . $table . "', 'created_details')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $migration_queries[] = $sql;
 
         $sql = "CALL drop_column_if_exists('" . $table . "', 'edited_details')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $migration_queries[] = $sql;
 
         $sql = "CALL add_column_if_not_exists('" . $table . "', 'created_by', 'TINYINT(1) NOT NULL DEFAULT 0')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $migration_queries[] = $sql;
 
         $sql = "CALL add_column_if_not_exists('" . $table . "', 'updated_by', 'TINYINT(1) NOT NULL DEFAULT 0')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $migration_queries[] = $sql;
 
         $sql = "CALL add_column_if_not_exists('" . $table . "', 'created_at', 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $migration_queries[] = $sql;
 
         $sql = "CALL add_column_if_not_exists('" . $table . "', 'updated_at', 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
+        $migration_queries[] = $sql;
     }
+    response($migration_queries);
 }

@@ -5,14 +5,21 @@ function generate($className, $columns, $table, $table_attributes)
 
     //Template Prepearation
     $template = '<?php
-namespace App\Models\_base;
+namespace App\Models\_base;' . PHP_EOL;
 
+    $template .= 'use App\CustomComponents\BaseAbstractModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
 
-abstract class ' . $className . ' extends BaseAbstractModel
-{
+    if ($table == 'users') {
+        $template .= 'use Illuminate\Foundation\Auth\User as Authenticatable;' . PHP_EOL;
+        $template .= PHP_EOL . 'abstract class ' . $className . ' extends Authenticatable' . PHP_EOL;
+    } else {
+        $template .= PHP_EOL . 'abstract class ' . $className . ' extends BaseAbstractModel' . PHP_EOL;
+    }
+
+    $template .= '{
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = \'' . $table . '\';' . PHP_EOL;
 

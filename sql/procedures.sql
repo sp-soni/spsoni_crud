@@ -1,6 +1,6 @@
 
 -- FUNCTION column_exists
-
+DROP FUNCTION IF EXISTS `column_exists`
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` FUNCTION `column_exists`(table_name_IN VARCHAR(100), field_name_IN VARCHAR(100)) RETURNS int
 RETURN (
@@ -14,7 +14,7 @@ DELIMITER ;
 
 
 -- PROCEDURE add_column_if_not_exists
-
+DROP PROCEDURE IF EXISTS `add_column_if_not_exists`
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `add_column_if_not_exists`(IN `table_name_IN` VARCHAR(100), IN `field_name_IN` VARCHAR(100), IN `field_definition_IN` VARCHAR(100))
 BEGIN
@@ -38,7 +38,7 @@ DELIMITER ;
 
 
 -- PROCEDURE drop_column_if_exists
-
+DROP PROCEDURE IF EXISTS `add_column_if_not_exists`
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `drop_column_if_exists`(
   tname VARCHAR(64),
