@@ -1,7 +1,5 @@
 <?php
 
-
-
 mysqli_select_db($conn, $db_name);
 
 $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
@@ -91,10 +89,11 @@ function action_generate_base_models($aTable, $conn, $platform)
     if (!file_exists($path)) {
         mkdir($path);
     }
+    empty_directory($path);
     foreach ($aTable as $table) {
 
-        $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-        $file_name = $class_name . '.php';
+        $class_name = BASE_MODEL_PREFIX . str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+        $file_name =  $class_name . '.php';
         $file_path = $path . $file_name;
 
         include_once $platform . '/template/_base/model.php';

@@ -1,5 +1,11 @@
 <?php
 
+function empty_directory($dir)
+{
+    foreach (glob($dir . '*.*') as $v) {
+        unlink($v);
+    }
+}
 
 function platform_list()
 {

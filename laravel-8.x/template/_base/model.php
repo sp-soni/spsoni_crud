@@ -82,7 +82,12 @@ return "Demo Error";
     //Template Prepearation
     $template = "
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+namespace App\Models\_base;
+
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;;
 
 class $className extends MY_Model
 {" . PHP_EOL;
