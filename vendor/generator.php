@@ -99,7 +99,7 @@ function action_generate_base_models($aTable, $conn, $platform)
         include_once $platform . '/template/_base/model.php';
 
         $columns = table_columns($conn, $table);
-        $table_attributes = table_attributes($conn, $table);
+        $table_attributes = table_attributes($conn, $table, $platform);
         $txt = generate($class_name, $columns, $table, $table_attributes);
 
         $file = fopen($file_path, "w");
