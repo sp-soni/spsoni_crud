@@ -16,7 +16,7 @@ function generate($className, $columns, $table, $table_attributes)
     $constructor .= "\t{" . PHP_EOL;
     $constructor .= "\t\tparent::__construct();" . PHP_EOL;
     $constructor .= "\t\t$" . "this->tbl_name = '$table';" . PHP_EOL;
-    $constructor .= "\t\t" . '$this->company_id =!empty($_SESSION["aUser"]->company_id) ? $_SESSION["aUser"]->company_id : "0";' . PHP_EOL;
+    $constructor .= "\t\t" . '$this->company_id = $_SESSION[\'aUser\']->company_id;' . PHP_EOL;
     $constructor .= "\t}
 ";
 
@@ -38,6 +38,7 @@ public function rules()
     $methods .= '
 public function save()
 {
+$res = 0;
 parent::getCreatedUpdatedDetails($this, $this->id);
 $params = [' . PHP_EOL;
     $count = 1;
@@ -50,31 +51,45 @@ $params = [' . PHP_EOL;
 
     $methods .= '];
 if (!empty($this->id) && $this->id > 0) {
-return $this->db->update(tbl_prefix() . $this->tbl_name, $params, array("id" => $this->id));
+$res = $this->db->update(tbl_prefix() . $this->tbl_name, $params, array("id" => $this->id));
 } else {
-return $this->db->insert(tbl_prefix() . $this->tbl_name, $params);
+$res = $this->db->insert(tbl_prefix() . $this->tbl_name, $params);
+if ($res) {
+    $this->id = $this->db->insert_id();
 }
+}
+return $res;
 }
 
 public function delete($delete_id)
 {
-return $this->db->delete(tbl_prefix() . $this->tbl_name, array("id" => $delete_id));
+    $aWhere = [
+        \'company_id\' => $this->company_id,
+        \'id\' => $this->id
+    ];
+    return $this->db->delete(tbl_prefix() . $this->tbl_name, array("id" => $delete_id));
 }';
 
-
-    $methods .= 'public function all($aWhere = [], $select = \' * \')
+    $methods .= '
+public function findByPK()
 {
-return get_rows($this->tbl_name, $aWhere, $select);
+	return get_row($this->tbl_name, ["id" => $this->id]);
+}
+
+public function all($aWhere = [], $select = \' * \')
+{
+    return get_rows($this->tbl_name, $aWhere, $select);
 }
 
 public function one($aWhere = [], $select = \' * \')
 {
-return get_row($this->tbl_name, $aWhere, $select);
+    $aWhere[\'company_id\'] = $this->company_id;
+    return get_row($this->tbl_name, $aWhere, $select);
 }
 
 public function error()
 {
-return "Demo Error";
+    return "Demo Error";
 }
 ';
 
