@@ -21,7 +21,7 @@ function generate($className, $columns, $table, $table_attributes)
 ";
 
     $methods = PHP_EOL . '
-public function rules()
+    public function rules()
 	{
 		$rules = [' . PHP_EOL;
 
@@ -33,14 +33,12 @@ public function rules()
     $methods .= $rules . '];
 		return array_map(\'set_validation_rules\', $rules);
 	}
-    ';
-
-    $methods .= '
-public function save()
-{
-$res = 0;
-parent::getCreatedUpdatedDetails($this, $this->id);
-$params = [' . PHP_EOL;
+    
+    public function save()
+    {
+        $res = 0;
+        parent::getCreatedUpdatedDetails($this, $this->id);
+        $params = [' . PHP_EOL;
     $count = 1;
     foreach ($columns as $column) {
         if ($count > 1) {
@@ -50,27 +48,26 @@ $params = [' . PHP_EOL;
     }
 
     $methods .= '];
-if (!empty($this->id) && $this->id > 0) {
-$res = $this->db->update(tbl_prefix() . $this->tbl_name, $params, array("id" => $this->id));
-} else {
-$res = $this->db->insert(tbl_prefix() . $this->tbl_name, $params);
-if ($res) {
-    $this->id = $this->db->insert_id();
-}
-}
-return $res;
-}
+    if (!empty($this->id) && $this->id > 0) {
+        $res = $this->db->update(tbl_prefix() . $this->tbl_name, $params, array("id" => $this->id));
+    } else {
+        $res = $this->db->insert(tbl_prefix() . $this->tbl_name, $params);
+        if ($res) {
+            $this->id = $this->db->insert_id();
+        }
+    }
+    return $res;
+    }
 
-public function delete($delete_id)
+public function delete()
 {
     $aWhere = [
         \'company_id\' => $this->company_id,
         \'id\' => $this->id
     ];
-    return $this->db->delete(tbl_prefix() . $this->tbl_name, array("id" => $delete_id));
-}';
+    return $this->db->delete(tbl_prefix() . $this->tbl_name, $aWhere);
+}
 
-    $methods .= '
 public function findByPK()
 {
 	return get_row($this->tbl_name, ["id" => $this->id]);
