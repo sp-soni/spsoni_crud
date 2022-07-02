@@ -52,7 +52,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
 
     $template .= '$aWhere = [' . PHP_EOL;
     foreach ($table_attributes as $column) {
-        $template .= '[\'' . $column->column_name . '\', \'LIKE\', \'%$this->' . $column->column_name . '%\'],' . PHP_EOL;
+        $template .= '[\'' . $column->column_name . '\', \'LIKE\', \'%\'.$this->' . $column->column_name . '.\'%\'],' . PHP_EOL;
     }
     $template .= '];' . PHP_EOL;
 

@@ -8,4 +8,4 @@ define('HOST', 'localhost');
 define('USER', 'root');
 define('PASSWORD', '');
 define('ROUTE_PREFIX', 'Admin_');
-define('BASE_MODEL_PREFIX', '');
+define('BASE_MODEL_PREFIX', 'Base');
