@@ -1,6 +1,62 @@
 <?php
 
-function action_generate_routes($aTable, $platform, $action)
+function action_generate_crud($conn, $tables, $platform, $action = "preview")
+{
+
+    $files = [
+        'Controllers' => [],
+        'BaseModels' => [],
+        'Models' => [],
+        'Views' => [],
+        'Routes' => [],
+    ];
+
+    $files['Controllers'] = action_generate_controllers($tables, $platform, "preview");
+    $files['BaseModels'] = action_generate_base_models($conn, $tables, $platform, "preview");
+    $files['Models'] = action_generate_models($tables, $platform, "preview");
+    $files['Views'] = action_generate_base_models($conn, $tables, $platform, "preview");
+    $files['Routes'] = action_generate_routes($tables, $platform, "preview");
+
+    return $files;
+}
+
+function action_generate_models($tables, $platform, $action = "preview")
+{
+    $path = ROOT_PATH . '/' . $platform;
+
+    $files = [];
+
+    if (!empty($tables) && is_array($tables)) {
+        foreach ($tables as $table) {
+            $files[] = create_model_file($path, $table, $action);
+        }
+    } else {
+        $files[] = create_model_file($path, $tables, $action);
+    }
+
+    return $files;
+}
+
+function action_generate_controllers($tables, $platform, $action = "preview")
+{
+    $files = [];
+    $path = ROOT_PATH . '/' . $platform;
+    if (!file_exists($path)) {
+        mkdir($path);
+    }
+
+    if (!empty($tables) && is_array($tables)) {
+        foreach ($tables as $table) {
+            $files[] = create_controller_file($path, $table, $platform, $action);
+        }
+    } else {
+        $files[] = create_controller_file($path, $tables, $platform, $action);
+    }
+    return $files;
+}
+
+
+function action_generate_routes($aTable, $platform, $action = "preview")
 {
     $path = ROOT_PATH . '/' . $platform . '/output/routes.php';
     include_once  ROOT_PATH . '/' . $platform . '/template/routes.php';
@@ -22,6 +78,7 @@ function action_generate_routes($aTable, $platform, $action)
     $files[] = $path;
     return $files;
 }
+
 
 
 
@@ -52,22 +109,7 @@ function action_generate_base_models($conn, $tables, $platform, $action = "previ
 
 
 
-function action_generate_models($tables, $platform, $action = "preview")
-{
-    $path = ROOT_PATH . '/' . $platform;
 
-    $files = [];
-
-    if (!empty($tables) && is_array($tables)) {
-        foreach ($tables as $table) {
-            $files[] = create_model_file($path, $table, $action);
-        }
-    } else {
-        $files[] = create_model_file($path, $tables, $action);
-    }
-
-    return $files;
-}
 
 function action_migrate($conn, $aTable)
 {
@@ -143,33 +185,6 @@ function action_generate_views($aTable, $conn, $platform)
         $text = file_get_contents("template/views/form.php");
         $file = fopen($file_path . '/form.php', "w");
         fwrite($file, $text);
-        fclose($file);
-        response($file_path);
-    }
-}
-
-
-function action_generate_controllers($aTable, $conn, $platform)
-{
-    $path = ROOT_PATH . '/' . $platform . '/output/controllers/';
-    if (!file_exists($path)) {
-        mkdir($path);
-    }
-
-    foreach ($aTable as $table) {
-
-        $class_name = ROUTE_PREFIX . $table;
-        $file_name = $class_name . '.php';
-        $file_path = $path . $file_name;
-
-        $model_class = str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . '_model';
-        $title = ucwords(str_replace('_', ' ', $table));
-
-        include_once  ROOT_PATH . '/' . $platform . '/template/controller.php';
-        $txt = generate($class_name, $model_class, $table, $title);
-
-        $file = fopen($file_path, "w");
-        fwrite($file, $txt);
         fclose($file);
         response($file_path);
     }

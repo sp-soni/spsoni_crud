@@ -79,6 +79,39 @@ function prepare_url($base_url, $custom_key)
     return $url;
 }
 
+function create_controller_file($path, $table, $platform, $action)
+{
+
+    $controller_path = $path . '/output/controllers/';
+    //debug($controller_path);
+    if (!file_exists($controller_path)) {
+        mkdir($controller_path);
+    }
+    $file_path = $controller_path;
+
+    include_once  $path . '/template/controller.php';
+
+    if ($platform == "laravel-8.x") {
+        $class_name = CONTROLLER_PREFIX . $table . "Controller";
+    } else {
+        $class_name = CONTROLLER_PREFIX . $table;
+    }
+
+    $file_name = $class_name . '.php';
+    $file_path .= $file_name;
+
+    $model_class = str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . '_model';
+    $title = ucwords(str_replace('_', ' ', $table));
+
+    if ($action == "generate") {
+        $txt = generate($class_name, $model_class, $table, $title);
+        $file = fopen($file_path, "w");
+        fwrite($file, $txt);
+        fclose($file);
+    }
+    return $file_path;
+}
+
 function create_model_file($path, $table, $action)
 {
 
@@ -88,9 +121,7 @@ function create_model_file($path, $table, $action)
     }
     $file_path = $model_path;
 
-    $template_path = $path . '/template/model.php';
-
-    include_once  $template_path;
+    include_once  $path . '/template/model.php';
 
     $parent_class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
     $class_name = $parent_class_name . '_model';
