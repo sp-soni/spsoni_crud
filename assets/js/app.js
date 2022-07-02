@@ -17,3 +17,14 @@ function get_tables(db_name, response_container) {
         }
     });
 }
+
+
+function copyDivToClipboard(div_id) {
+    var range = document.createRange();
+    range.selectNode(document.getElementById(div_id));
+    window.getSelection().removeAllRanges(); // clear current selection
+    window.getSelection().addRange(range); // to select text
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();// to deselect
+    alert('Content copied to clipboard');
+}
