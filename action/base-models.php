@@ -24,9 +24,11 @@ if (!empty($_POST)) {
     $_SESSION['error'] = $error;
 
     //---needed variables
-    define('BASE_MODEL_PREFIX', $base_model_prefix);
-    mysqli_select_db($conn, $db_name);
-    $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+    if (empty($error)) {
+        define('BASE_MODEL_PREFIX', $base_model_prefix);
+        mysqli_select_db($conn, $db_name);
+        $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+    }
 }
 ?>
 <div class="row">

@@ -18,9 +18,11 @@ if (!empty($_POST)) {
     }
     $_SESSION['error'] = $error;
 
-    //---needed variables
-    mysqli_select_db($conn, $db_name);
-    $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+    if (empty($error)) {
+        //---needed variables
+        mysqli_select_db($conn, $db_name);
+        $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+    }
 }
 ?>
 <div class="row">

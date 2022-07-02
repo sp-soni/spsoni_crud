@@ -79,6 +79,53 @@ function prepare_url($base_url, $custom_key)
     return $url;
 }
 
+function create_model_file($path, $table, $action)
+{
+
+    $model_path = $path . '/output/models/';
+    if (!file_exists($model_path)) {
+        mkdir($model_path);
+    }
+    $file_path = $model_path;
+
+    $template_path = $path . '/template/model.php';
+
+    include_once  $template_path;
+
+    $parent_class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+    $class_name = $parent_class_name . '_model';
+    $file_name = $class_name . '.php';
+    $file_path .= $file_name;
+
+    $txt = generate($class_name, $parent_class_name);
+
+    if ($action == "generate") {
+        $file = fopen($file_path, "w");
+        fwrite($file, $txt);
+        fclose($file);
+    }
+    return $file_path;
+}
+
+function create_base_model_file($conn, $path, $platform, $table, $action)
+{
+    $class_name = BASE_MODEL_PREFIX . str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+    $file_name =  $class_name . '.php';
+    $file_path = $path . $file_name;
+
+    include_once  ROOT_PATH . '/' . $platform . '/template/_base/model.php';
+
+    $columns = table_columns($conn, $table);
+    $table_attributes = table_attributes($conn, $table, $platform);
+    $txt = generate($class_name, $columns, $table, $table_attributes);
+
+    if ($action == "generate") {
+        $file = fopen($file_path, "w");
+        fwrite($file, $txt);
+        fclose($file);
+    }
+    return $file_path;
+}
 
 function response($data)
 {

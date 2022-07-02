@@ -10,7 +10,6 @@ define('ROOT_PATH', dirname(__FILE__, 1));
 define('HOST', 'localhost');
 define('USER', 'root');
 define('PASSWORD', '');
-define('ROUTE_PREFIX', 'Admin_');
 
 $conn = mysqli_connect(HOST, USER, PASSWORD,);
 $aDatabase = array_column($conn->query('SHOW DATABASES')->fetch_all(), 0);
