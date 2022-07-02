@@ -1,13 +1,9 @@
 <?php
 
-mysqli_select_db($conn, $db_name);
-
-$aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
-
 function action_generate_routes($aTable, $conn, $platform)
 {
     $file_path = $platform . '/output/routes.php';
-    include_once $platform . '/template/routes.php';
+    include_once  ROOT_PATH . '/' . $platform . '/template/routes.php';
     $route_string = '';
     $count = 1;
     foreach ($aTable as $table) {
@@ -26,7 +22,7 @@ function action_generate_routes($aTable, $conn, $platform)
 
 function action_generate_views($aTable, $conn, $platform)
 {
-    $path = $platform . '/output/views/';
+    $path = ROOT_PATH . '/' . $platform . '/output/views/';
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -54,7 +50,7 @@ function action_generate_views($aTable, $conn, $platform)
 
 function action_generate_controllers($aTable, $conn, $platform)
 {
-    $path = $platform . '/output/controllers/';
+    $path = ROOT_PATH . '/' . $platform . '/output/controllers/';
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -68,7 +64,7 @@ function action_generate_controllers($aTable, $conn, $platform)
         $model_class = str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . '_model';
         $title = ucwords(str_replace('_', ' ', $table));
 
-        include_once $platform . '/template/controller.php';
+        include_once  ROOT_PATH . '/' . $platform . '/template/controller.php';
         $txt = generate($class_name, $model_class, $table, $title);
 
         $file = fopen($file_path, "w");
@@ -78,10 +74,10 @@ function action_generate_controllers($aTable, $conn, $platform)
     }
 }
 
-function action_generate_base_models($aTable, $conn, $platform)
+function action_generate_base_models($aTable, $conn, $platform, $action = "preview")
 {
 
-    $path = $platform . '/output/models/';
+    $path = ROOT_PATH . '/' . $platform . '/output/models/';
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -90,28 +86,33 @@ function action_generate_base_models($aTable, $conn, $platform)
         mkdir($path);
     }
     empty_directory($path);
+    $files = [];
     foreach ($aTable as $table) {
 
         $class_name = BASE_MODEL_PREFIX . str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
         $file_name =  $class_name . '.php';
         $file_path = $path . $file_name;
 
-        include_once $platform . '/template/_base/model.php';
+        include_once  ROOT_PATH . '/' . $platform . '/template/_base/model.php';
 
         $columns = table_columns($conn, $table);
         $table_attributes = table_attributes($conn, $table, $platform);
         $txt = generate($class_name, $columns, $table, $table_attributes);
 
-        $file = fopen($file_path, "w");
-        fwrite($file, $txt);
-        fclose($file);
-        response($file_path);
+        if ($action == "generate") {
+            $file = fopen($file_path, "w");
+            fwrite($file, $txt);
+            fclose($file);
+        }
+
+        $files[] = $file_path;
     }
+    return $files;
 }
 
 function action_generate_models($aTable, $conn, $platform)
 {
-    $path = $platform . '/output/models/';
+    $path = ROOT_PATH . '/' . $platform . '/output/models/';
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -122,7 +123,7 @@ function action_generate_models($aTable, $conn, $platform)
         $file_name = $class_name . '.php';
         $file_path = $path . $file_name;
 
-        include_once $platform . '/template/model.php';
+        include_once  ROOT_PATH . '/' . $platform . '/template/model.php';
 
         $txt = generate($class_name, $parent_class_name);
 

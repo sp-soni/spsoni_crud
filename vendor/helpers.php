@@ -1,5 +1,23 @@
 <?php
 
+function show_message()
+{
+    $html = '';
+    if (!empty($_SESSION['success'])) {
+        foreach ($_SESSION['success'] as $msg) {
+            $html .= '<p class="alert alert-success">' . $msg . '</p>';
+        }
+    }
+    if (!empty($_SESSION['error'])) {
+        foreach ($_SESSION['error'] as $msg) {
+            $html .= '<p class="alert alert-danger">' . $msg . '</p>';
+        }
+    }
+    unset($_SESSION['error']);
+    unset($_SESSION['success']);
+    echo $html;
+}
+
 function empty_directory($dir)
 {
     foreach (glob($dir . '*.*') as $v) {
