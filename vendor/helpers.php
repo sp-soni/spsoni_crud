@@ -82,6 +82,8 @@ function prepare_url($base_url, $custom_key)
 function create_controller_file($path, $table, $platform, $action)
 {
 
+    include_once  $path . '/template/controller.php';
+
     $controller_path = $path . '/output/controllers/';
     //debug($controller_path);
     if (!file_exists($controller_path)) {
@@ -89,26 +91,26 @@ function create_controller_file($path, $table, $platform, $action)
     }
     $file_path = $controller_path;
 
-    include_once  $path . '/template/controller.php';
-
+    $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
     if ($platform == "laravel-8.x") {
-        $class_name = CONTROLLER_PREFIX . $table . "Controller";
+        $controller_class_name = CONTROLLER_PREFIX . $class_name . "Controller";
+        $model_class_name = $class_name;
     } else {
-        $class_name = CONTROLLER_PREFIX . $table;
+        $controller_class_name = CONTROLLER_PREFIX . $class_name;
+        $model_class_name = $class_name . '_model';
     }
 
-    $file_name = $class_name . '.php';
+    $file_name = $controller_class_name . '.php';
     $file_path .= $file_name;
 
-    $model_class = str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . '_model';
-    $title = ucwords(str_replace('_', ' ', $table));
-
     if ($action == "generate") {
-        $txt = generate($class_name, $model_class, $table, $title);
+        $title = ucwords(str_replace('_', ' ', $table));
+        $txt = generate_controller($class_name, $model_class_name, $table, $title);
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);
     }
+
     return $file_path;
 }
 
@@ -128,7 +130,7 @@ function create_model_file($path, $table, $action)
     $file_name = $class_name . '.php';
     $file_path .= $file_name;
 
-    $txt = generate($class_name, $parent_class_name);
+    $txt = generate_model($class_name, $parent_class_name);
 
     if ($action == "generate") {
         $file = fopen($file_path, "w");
@@ -140,15 +142,16 @@ function create_model_file($path, $table, $action)
 
 function create_base_model_file($conn, $path, $platform, $table, $action)
 {
+    include_once  $path . '/template/_base/model.php';
+
+    $model_path = $path . '/output/models/';
     $class_name = BASE_MODEL_PREFIX . str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
     $file_name =  $class_name . '.php';
-    $file_path = $path . $file_name;
-
-    include_once  ROOT_PATH . '/' . $platform . '/template/_base/model.php';
+    $file_path = $model_path . $file_name;
 
     $columns = table_columns($conn, $table);
     $table_attributes = table_attributes($conn, $table, $platform);
-    $txt = generate($class_name, $columns, $table, $table_attributes);
+    $txt = generate_base_model($class_name, $columns, $table, $table_attributes);
 
     if ($action == "generate") {
         $file = fopen($file_path, "w");

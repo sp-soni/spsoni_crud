@@ -1,6 +1,6 @@
 <?php
 
-function generate($className, $columns, $table, $table_attributes)
+function generate_base_model($className, $columns, $table, $table_attributes)
 {
     //debug($table_attributes);
 

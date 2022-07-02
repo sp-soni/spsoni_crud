@@ -14,9 +14,10 @@ function action_generate_crud($conn, $tables, $platform, $action = "preview")
     $files['Controllers'] = action_generate_controllers($tables, $platform, "preview");
     $files['BaseModels'] = action_generate_base_models($conn, $tables, $platform, "preview");
     $files['Models'] = action_generate_models($tables, $platform, "preview");
-    $files['Views'] = action_generate_base_models($conn, $tables, $platform, "preview");
-    $files['Routes'] = action_generate_routes($tables, $platform, "preview");
-
+    // $files['Views'] = action_generate_base_models($conn, $tables, $platform, "preview");
+    if (is_array($tables)) {
+        $files['Routes'] = action_generate_routes($tables, $platform, "preview");
+    }
     return $files;
 }
 
@@ -70,7 +71,7 @@ function action_generate_routes($aTable, $platform, $action = "preview")
         $count++;
     }
     if ($action == "generate") {
-        $txt = generate($route_string);
+        $txt = generate_routes($route_string);
         $file = fopen($path, "w");
         fwrite($file, $txt);
         fclose($file);
@@ -85,7 +86,7 @@ function action_generate_routes($aTable, $platform, $action = "preview")
 function action_generate_base_models($conn, $tables, $platform, $action = "preview")
 {
 
-    $path = ROOT_PATH . '/' . $platform . '/output/models/';
+    $path = ROOT_PATH . '/' . $platform;
     if (!file_exists($path)) {
         mkdir($path);
     }

@@ -1,6 +1,6 @@
 <?php
 
-function generate($className, $model, $table, $title)
+function generate_controller($className, $model, $table, $title)
 {
     //custructor 
     $constructor = "\tfunction __construct()" . PHP_EOL;

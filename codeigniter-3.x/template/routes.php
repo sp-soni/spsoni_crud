@@ -1,6 +1,6 @@
 <?php
 
-function generate($route_string)
+function generate_routes($route_string)
 {
     $template = "<?php" . PHP_EOL;
     $template .= "defined('BASEPATH') or exit('No direct script access allowed');" . PHP_EOL . PHP_EOL;

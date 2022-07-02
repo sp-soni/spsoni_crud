@@ -119,10 +119,10 @@ if (!empty($_POST)) {
                     }
                     if (!empty($_POST['submit'])) {
                         // generate code
-                        $files = action_generate_base_models($conn, $aTable, $platform, $action = 'generate');
+                        $files = action_generate_crud($conn, $aTable, $platform, $action = 'generate');
                     } else {
                         // preview code
-                        $files = action_generate_base_models($conn, $aTable, $platform, $action = 'preview');
+                        $files = action_generate_crud($conn, $aTable, $platform, $action = 'preview');
                     }
             ?>
                     <h3>Output</h3>
@@ -140,7 +140,7 @@ if (!empty($_POST)) {
                             ?>
                                 <tr>
                                     <td><?php echo $i++; ?></td>
-                                    <td><?php echo $file; ?></td>
+                                    <td><?php echo debug($file, 0); ?></td>
                                 </tr>
                             <?php }  ?>
                         </tbody>

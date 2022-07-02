@@ -1,6 +1,6 @@
 <?php
 
-function generate($className, $parentClass)
+function generate_model($className, $parentClass)
 {
 
     $constructor = '';
