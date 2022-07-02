@@ -174,6 +174,17 @@ function action_migrate($aTable, $conn)
         $sql = "CALL add_column_if_not_exists('" . $table . "', 'updated_at', 'DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP')";
         mysqli_query($conn, $sql) or die(mysqli_error($conn));
         $migration_queries[] = $sql;
+
+        //---adding company id for multiple company
+        $except = [
+            'module', 'module_group', 'site_settings', 'user', 'message_templates',
+            'user_designation', 'user_compny', 'user_permission', 'setting_company'
+        ];
+        if (!in_array($table, $except)) {
+            $sql = "CALL add_column_if_not_exists('" . $table . "', 'company_id', 'INT DEFAULT 1')";
+            mysqli_query($conn, $sql) or die(mysqli_error($conn));
+            $migration_queries[] = $sql;
+        }
     }
     response($migration_queries);
 }
