@@ -83,9 +83,8 @@ function create_controller_file($path, $table, $platform, $action)
 {
 
     include_once  $path . '/template/controller.php';
-
     $controller_path = $path . '/output/controllers/';
-    //debug($controller_path);
+
     if (!file_exists($controller_path)) {
         mkdir($controller_path);
     }
@@ -143,8 +142,8 @@ function create_model_file($path, $table, $action)
 function create_base_model_file($conn, $path, $platform, $table, $action)
 {
     include_once  $path . '/template/_base/model.php';
+    $model_path = $path . '/models/_base/model.php';
 
-    $model_path = $path . '/output/models/';
     $class_name = BASE_MODEL_PREFIX . str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
     $file_name =  $class_name . '.php';
     $file_path = $model_path . $file_name;

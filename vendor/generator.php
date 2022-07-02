@@ -7,17 +7,11 @@ function action_generate_crud($conn, $tables, $platform, $action = "preview")
         'Controllers' => [],
         'BaseModels' => [],
         'Models' => [],
-        'Views' => [],
-        'Routes' => [],
     ];
 
     $files['Controllers'] = action_generate_controllers($tables, $platform, "preview");
     $files['BaseModels'] = action_generate_base_models($conn, $tables, $platform, "preview");
     $files['Models'] = action_generate_models($tables, $platform, "preview");
-    // $files['Views'] = action_generate_base_models($conn, $tables, $platform, "preview");
-    if (is_array($tables)) {
-        $files['Routes'] = action_generate_routes($tables, $platform, "preview");
-    }
     return $files;
 }
 
@@ -90,9 +84,8 @@ function action_generate_base_models($conn, $tables, $platform, $action = "previ
     if (!file_exists($path)) {
         mkdir($path);
     }
-    $path .= '_base/';
-    if (!file_exists($path)) {
-        mkdir($path);
+    if (!file_exists($path . '/_base/')) {
+        mkdir($path . '/_base/');
     }
     empty_directory($path);
     $files = [];
