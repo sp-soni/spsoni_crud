@@ -1,10 +1,5 @@
 <?php
 require_once dirname(__FILE__, 2) . '/config.php';
-
-
-$conn = mysqli_connect(HOST, USER, PASSWORD,);
-$aDatabase = array_column($conn->query('SHOW DATABASES')->fetch_all(), 0);
-
 require_once ROOT_PATH . '/vendor/generator.php';
 require_once ROOT_PATH . '/vendor/helpers.php';
 
@@ -18,9 +13,14 @@ require_once ROOT_PATH . '/vendor/helpers.php';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+        var BASE_URL = '<?php echo BASE_URL; ?>';
+        var API_BASE_URL = '<?php echo API_BASE_URL; ?>';
+    </script>
+    <script src="<?php echo BASE_URL; ?>assets/js/app.js"></script>
 </head>
 
 <body>

@@ -36,8 +36,8 @@ if (!empty($_POST)) {
         <div class="col-md-6">
             <table class="table table-bordered">
                 <tr>
-                    <td><span class="required">Platform (*)</span></td>
-                    <td>
+                    <td width="30%"><span class="required">Platform (*)</span></td>
+                    <td width="70%">
                         <select class="form-control" name="platform">
                             <option value="">--Select--</option>
                             <?php
@@ -54,7 +54,7 @@ if (!empty($_POST)) {
                 <tr>
                     <td><span class="required">Database (*)</span></td>
                     <td>
-                        <select class="form-control" name="db_name">
+                        <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
                             <option value="">--Select--</option>
                             <?php
                             foreach ($aDatabase as $row) { ?>
