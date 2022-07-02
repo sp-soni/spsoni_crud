@@ -74,7 +74,7 @@ function action_generate_controllers($aTable, $conn, $platform)
     }
 }
 
-function action_generate_base_models($aTable, $conn, $platform, $action = "preview")
+function action_generate_base_models($conn, $tables, $platform, $action = "preview")
 {
 
     $path = ROOT_PATH . '/' . $platform . '/output/models/';
@@ -87,27 +87,36 @@ function action_generate_base_models($aTable, $conn, $platform, $action = "previ
     }
     empty_directory($path);
     $files = [];
-    foreach ($aTable as $table) {
 
-        $class_name = BASE_MODEL_PREFIX . str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-        $file_name =  $class_name . '.php';
-        $file_path = $path . $file_name;
-
-        include_once  ROOT_PATH . '/' . $platform . '/template/_base/model.php';
-
-        $columns = table_columns($conn, $table);
-        $table_attributes = table_attributes($conn, $table, $platform);
-        $txt = generate($class_name, $columns, $table, $table_attributes);
-
-        if ($action == "generate") {
-            $file = fopen($file_path, "w");
-            fwrite($file, $txt);
-            fclose($file);
+    if (!empty($tables) && is_array($tables)) {
+        foreach ($tables as $table) {
+            $files[] = create_file($conn, $path, $platform, $table, $action);
         }
-
-        $files[] = $file_path;
+    } else {
+        $files[] = create_file($conn, $path, $platform, $tables, $action);
     }
+
     return $files;
+}
+
+function create_file($conn, $path, $platform, $table, $action)
+{
+    $class_name = BASE_MODEL_PREFIX . str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+    $file_name =  $class_name . '.php';
+    $file_path = $path . $file_name;
+
+    include_once  ROOT_PATH . '/' . $platform . '/template/_base/model.php';
+
+    $columns = table_columns($conn, $table);
+    $table_attributes = table_attributes($conn, $table, $platform);
+    $txt = generate($class_name, $columns, $table, $table_attributes);
+
+    if ($action == "generate") {
+        $file = fopen($file_path, "w");
+        fwrite($file, $txt);
+        fclose($file);
+    }
+    return $file_path;
 }
 
 function action_generate_models($aTable, $conn, $platform)

@@ -5,11 +5,14 @@ require_once dirname(__FILE__, 2) . '/layout/header.php';
 $platform = '';
 $db_name = '';
 $base_model_prefix = '';
+$table_name = '';
+$aTable = ['user'];
 if (!empty($_POST)) {
 
     $platform = $_POST['platform'];
     $db_name = $_POST['db_name'];
     $base_model_prefix = $_POST['base_model_prefix'];
+    $table_name = $_POST['table_name'];
 
     $error = [];
     if (empty($_POST['platform'])) {
@@ -19,6 +22,11 @@ if (!empty($_POST)) {
         $error[] = 'Database is required';
     }
     $_SESSION['error'] = $error;
+
+    //---needed variables
+    define('BASE_MODEL_PREFIX', $base_model_prefix);
+    mysqli_select_db($conn, $db_name);
+    $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
 }
 ?>
 <div class="row">
@@ -59,6 +67,21 @@ if (!empty($_POST)) {
                     </td>
                 </tr>
                 <tr>
+                    <td><span class="required">Table</span></td>
+                    <td>
+                        <select class="form-control" name="table_name" id="table_name">
+                            <option value="">--Select--</option>
+                            <?php
+                            foreach ($aTable as $row) { ?>
+                                <option value="<?php echo $row; ?>" <?php selected_select($row, $table_name) ?>><?php echo $row; ?></option>
+
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td>Base Model Class Prefix</td>
                     <td>
                         <input type="text" class="form-control" name="base_model_prefix" id="base_model_prefix" value="<?php echo $base_model_prefix; ?>">
@@ -80,15 +103,15 @@ if (!empty($_POST)) {
             <?php
             if (!empty($_POST)) {
                 if (empty($error)) {
-                    define('BASE_MODEL_PREFIX', $base_model_prefix);
-                    mysqli_select_db($conn, $db_name);
-                    $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+                    if (!empty($table_name)) {
+                        $aTable = $table_name;
+                    }
                     if (!empty($_POST['submit'])) {
                         // generate code
-                        $files = action_generate_base_models($aTable, $conn, $platform, $action = 'generate');
+                        $files = action_generate_base_models($conn, $aTable, $platform, $action = 'generate');
                     } else {
                         // preview code
-                        $files = action_generate_base_models($aTable, $conn, $platform, $action = 'preview');
+                        $files = action_generate_base_models($conn, $aTable, $platform, $action = 'preview');
                     }
             ?>
                     <h3>Output</h3>
