@@ -139,14 +139,17 @@ function create_model_file($path, $table, $action)
     return $file_path;
 }
 
-function create_base_model_file($conn, $path, $platform, $table, $action)
+function create_base_model_file($conn, $platform, $table, $action)
 {
-    include_once  $path . '/template/_base/model.php';
-    $model_path = $path . '/models/_base/model.php';
+    $root = ROOT_PATH . '/' . $platform;
+    $template_path = $root . '/template/_base/model.php';
+    $file_path = $root . '/output/models/_base/';
+
+    include_once  $template_path;
 
     $class_name = BASE_MODEL_PREFIX . str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
     $file_name =  $class_name . '.php';
-    $file_path = $model_path . $file_name;
+    $file_path .= $file_name;
 
     $columns = table_columns($conn, $table);
     $table_attributes = table_attributes($conn, $table, $platform);

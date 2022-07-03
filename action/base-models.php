@@ -3,14 +3,14 @@ require_once dirname(__FILE__, 2) . '/layout/header.php';
 ?>
 <?php
 $platform = '';
-$db_name = '';
+$db_name = 'product_ecom_laravel';
 $base_model_prefix = '';
 $table_name = '';
 $aTable = ['user'];
 if (!empty($_POST)) {
 
     $platform = $_POST['platform'];
-    $db_name = $_POST['db_name'];
+    // $db_name = $_POST['db_name'];
     $base_model_prefix = $_POST['base_model_prefix'];
     $table_name = $_POST['table_name'];
 

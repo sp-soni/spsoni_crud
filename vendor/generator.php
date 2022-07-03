@@ -80,22 +80,23 @@ function action_generate_routes($aTable, $platform, $action = "preview")
 function action_generate_base_models($conn, $tables, $platform, $action = "preview")
 {
 
-    $path = ROOT_PATH . '/' . $platform;
+    $path = ROOT_PATH . '/' . $platform . '/output/models/';
     if (!file_exists($path)) {
         mkdir($path);
     }
-    if (!file_exists($path . '/_base/')) {
-        mkdir($path . '/_base/');
+    $path .= '/_base/';
+    if (!file_exists($path)) {
+        mkdir($path);
     }
     empty_directory($path);
     $files = [];
 
     if (!empty($tables) && is_array($tables)) {
         foreach ($tables as $table) {
-            $files[] = create_base_model_file($conn, $path, $platform, $table, $action);
+            $files[] = create_base_model_file($conn, $platform, $table, $action);
         }
     } else {
-        $files[] = create_base_model_file($conn, $path, $platform, $tables, $action);
+        $files[] = create_base_model_file($conn, $platform, $tables, $action);
     }
 
     return $files;
