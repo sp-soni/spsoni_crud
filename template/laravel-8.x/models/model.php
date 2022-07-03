@@ -3,20 +3,17 @@
 function generate_model($className, $parentClass)
 {
 
-    $constructor = '';
+    $template = '<?php
 
-    //Template Prepearation
-    $template = "
-<?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');" . PHP_EOL . PHP_EOL;
-    $template .= "require APPPATH . '/models/_base/$parentClass.php';" . PHP_EOL . PHP_EOL;
-    $template .= "class $className extends $parentClass
-{" . PHP_EOL;
+    namespace App\Models;
+    
+    use App\Models\_base\\' . $parentClass . ';
+    
+    
+    class ' . $className . ' extends ' . $parentClass . '
+    {
+    }
+    ';
 
-    $template .= $constructor;
-
-    $template .= "
-}
-";
     return $template;
 }

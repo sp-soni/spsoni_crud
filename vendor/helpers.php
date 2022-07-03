@@ -165,7 +165,7 @@ function create_model_file($file_path, $template_path, $table, $action)
     $file_name = $class_name . '.php';
     $file_path .= $file_name;
 
-    $txt = generate_model($class_name, $parent_class_name);
+    $txt = generate_model($class_name, BASE_MODEL_PREFIX . $parent_class_name);
 
     if ($action == "generate") {
         $file = fopen($file_path, "w");

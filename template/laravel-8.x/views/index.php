@@ -27,12 +27,12 @@ function generate_index($form_attributes)
         <input type="text" name="' . $name . '" class="form-control" value="{{ $' . $name . ' }}">
     </td>' . PHP_EOL;
     }
-    $tbody .= '<td>
+    $tbody .= '<td class="search-action">   
     <input type="submit" name="search" value="Search" class="btn btn-sm btn-primary">
     @if (!empty($_GET[\'search\']))
         <a href="{{ $module_url }}" class="btn btn-sm btn-warning">Reset</a>
     @endif
-    <a href="{{ $module_url . \'/add/0\' }}" class="btn btn-sm btn-success">Add</a>
+    <a href="{{ $module_url . \'/add/0\' }}" class="btn btn-sm btn-success">+Add</a>
 </td>
 </tr>';
 
