@@ -35,6 +35,8 @@ function generate_form($form_attributes)
             $form_fields .= '</select>' . PHP_EOL;
         } else if ($attribute->type == 'date') {  // date
             $form_fields .= '<input type="date" class="form-control" id="' . $id . '" name="' . $name . '" value="{{ $' . $name . ' }}">' . PHP_EOL;
+        } else if ($attribute->type == 'datetime') {  // datetime-local
+            $form_fields .= '<input type="datetime-local" class="form-control" id="' . $id . '" name="' . $name . '" value="{{ $' . $name . ' }}">' . PHP_EOL;
         } else if (in_array($attribute->column_name, ['pass', 'password', 'pass_word', 'pass_hash'])) {  // password
             $form_fields .= '<input type="password" class="form-control" id="' . $id . '" name="' . $name . '" value="{{ $' . $name . ' }}">' . PHP_EOL;
         } else if (in_array($attribute->column_name, ['email', 'email_address', 'email_id'])) {  // email
