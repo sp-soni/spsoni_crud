@@ -23,7 +23,8 @@ function generate_form($form_attributes)
                 $' . $name . ' = $model->' . $name . ';
                 }
                 @endphp' . PHP_EOL;
-        if ($attribute->type == 'text') { // textarea
+
+        if (in_array($attribute->type, ['text', 'mediumtext'])) { // textarea
             $form_fields .= '<textarea rows="3" class="form-control" id="' . $id . '" name="' . $name . '">{{ $' . $name . ' }}</textarea>' . PHP_EOL;
         } else if ($attribute->type == 'enum') { // select
             $enum_list = explode(",", str_replace(array("enum(", ")", "'"), "", $attribute->column_type));

@@ -189,6 +189,10 @@ function action_migrate($conn, $aTable)
     foreach ($aTable as $table) {
 
         // Drop Column
+
+        $sql = "CALL drop_column_if_exists('" . $table . "', 'sequence_no')";
+        $migration_queries[] = $sql;
+
         $sql = "CALL drop_column_if_exists('" . $table . "', 'edited_by')";
         $migration_queries[] = $sql;
 
