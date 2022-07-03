@@ -15,6 +15,7 @@ function action_generate_crud($conn, $tables, $action = "preview")
     $files['BaseModels'] = action_generate_base_models($conn, $tables, $action);
     $files['Models'] = action_generate_models($conn, $tables, $action);
     $files['Routes'] = action_generate_routes($conn, $tables, $action);
+    $files['Views'] = action_generate_views($conn, $tables, $action);
     return $files;
 }
 
