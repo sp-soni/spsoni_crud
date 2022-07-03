@@ -45,14 +45,14 @@ function action_generate_views($conn, $tables, $action = "preview")
             if (!file_exists($file_path)) {
                 mkdir($file_path);
             }
-            $files[] = create_view_file($file_path, $template_path, $table, $action);
+            $files[] = create_view_file($conn, $file_path, $template_path, $table, $action);
         }
     } else {
         $file_path = $path . $tables . '/';
         if (!file_exists($file_path)) {
             mkdir($file_path);
         }
-        $files[] = create_view_file($file_path, $template_path, $tables, $action);
+        $files[] = create_view_file($conn, $file_path, $template_path, $tables, $action);
     }
 
     return $files;

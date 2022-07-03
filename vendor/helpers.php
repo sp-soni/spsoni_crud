@@ -107,25 +107,20 @@ function create_controller_file($file_path, $template_path, $table, $action)
     return $file_path;
 }
 
-function create_view_file($file_path, $template_path, $table, $action)
+function create_view_file($conn, $file_path, $template_path, $table, $action)
 {
 
     include_once  $template_path . 'index.php';
     include_once  $template_path . 'form.php';
     $files = [];
 
-    $parent_class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-    if (PLATFORM == "laravel-8.x") {
-        $class_name = $parent_class_name;
-    } else if (PLATFORM == "codeigniter-3.x") {
-        $class_name = $parent_class_name . '_model';
-    }
+    $form_attributes = table_attributes($conn, $table, PLATFORM);
 
     //--index.php
     $file_name = 'index.php';
     $index_path = $file_path . $file_name;
     $files[$table][] = $index_path;
-    $txt = generate_index($class_name, $table);
+    $txt = generate_index($table, $form_attributes);
 
     if ($action == "generate") {
         $file = fopen($index_path, "w");
@@ -137,7 +132,7 @@ function create_view_file($file_path, $template_path, $table, $action)
     $file_name = 'form.php';
     $form_path = $file_path . $file_name;
     $files[$table][] = $form_path;
-    $txt = generate_form($class_name, $table);
+    $txt = generate_form($table, $form_attributes);
 
     if ($action == "generate") {
         $file = fopen($form_path, "w");
