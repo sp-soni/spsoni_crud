@@ -79,7 +79,7 @@ function prepare_url($base_url, $custom_key)
     return $url;
 }
 
-function create_controller_file($file_path, $template_path, $table, $action)
+function create_controller_file($conn, $file_path, $template_path, $table, $action)
 {
 
     include_once  $template_path;
@@ -96,9 +96,11 @@ function create_controller_file($file_path, $template_path, $table, $action)
     $file_name = $controller_class_name . '.php';
     $file_path .= $file_name;
 
+    $form_attributes = table_attributes($conn, $table, PLATFORM);
+
     if ($action == "generate") {
         $title = ucwords(str_replace('_', ' ', $table));
-        $txt = generate_controller($class_name, $model_class_name, $table, $title);
+        $txt = generate_controller($class_name, $model_class_name, $table, $title, $form_attributes);
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);
@@ -118,9 +120,12 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
 
     //--index.php
     $file_name = 'index.php';
+    if (PLATFORM == "laravel-8.x") {
+        $file_name = 'index.blade.php';
+    }
     $index_path = $file_path . $file_name;
     $files[$table][] = $index_path;
-    $txt = generate_index($table, $form_attributes);
+    $txt = generate_index($form_attributes);
 
     if ($action == "generate") {
         $file = fopen($index_path, "w");
@@ -130,9 +135,12 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
 
     //--form.php
     $file_name = 'form.php';
+    if (PLATFORM == "laravel-8.x") {
+        $file_name = 'add.blade.php';
+    }
     $form_path = $file_path . $file_name;
     $files[$table][] = $form_path;
-    $txt = generate_form($table, $form_attributes);
+    $txt = generate_form($form_attributes);
 
     if ($action == "generate") {
         $file = fopen($form_path, "w");
@@ -221,12 +229,13 @@ function table_attributes($conn, $table, $platform)
     FROM INFORMATION_SCHEMA.COLUMNS 
     WHERE 
         TABLE_SCHEMA = Database()
-    AND TABLE_NAME = '" . $table . "' ";
+    AND TABLE_NAME = '" . $table . "' ORDER BY COLUMN_NAME ASC";
     $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
         if (!in_array($row['COLUMN_NAME'], $exclude_fields)) {
             $temp = new stdClass();
             $temp->column_name = $row['COLUMN_NAME'];
+            $temp->column_type = $row['COLUMN_TYPE'];
             $temp->label = ucwords(str_replace('_', ' ', $row['COLUMN_NAME']));
             $temp->type = $row['DATA_TYPE'];
             $temp->rules = get_validation_rules($row, $platform);

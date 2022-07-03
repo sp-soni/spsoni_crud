@@ -105,10 +105,10 @@ function action_generate_controllers($conn, $tables, $action = "preview")
 
     if (!empty($tables) && is_array($tables)) {
         foreach ($tables as $table) {
-            $files[] = create_controller_file($file_path, $template_path, $table, $action);
+            $files[] = create_controller_file($conn, $file_path, $template_path, $table, $action);
         }
     } else {
-        $files[] = create_controller_file($file_path, $template_path, $tables, $action);
+        $files[] = create_controller_file($conn, $file_path, $template_path, $tables, $action);
     }
     return $files;
 }
