@@ -138,17 +138,9 @@ function action_generate_routes($conn, $aTable, $action = "preview")
     $template_path = TEMPLATE_PATH . PLATFORM . '/' . $file_name;
     include $template_path;
 
-    $route_string = '';
-    $count = 1;
-    foreach ($aTable as $table) {
-        $route_string .= "'" . strtolower(ROUTE_PREFIX) . $table . "',";
-        if ($count % 3 == 0) {
-            $route_string .= PHP_EOL;
-        }
-        $count++;
-    }
+
     if ($action == "generate") {
-        $txt = generate_routes($route_string);
+        $txt = generate_routes($aTable);
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);

@@ -1,27 +1,32 @@
 <?php
 
-function generate_routes($route_string)
+function generate_routes($tables)
 {
-    $template = "<?php" . PHP_EOL;
-    $template .= "defined('BASEPATH') or exit('No direct script access allowed');" . PHP_EOL . PHP_EOL;
+    $template = '<?php
 
-    $template .= '$route[\'default_controller\'] = \'admin\';' . PHP_EOL;
-    $template .= '$route[\'404_override\'] = \'\';' . PHP_EOL;
-    $template .= '$route[\'translate_uri_dashes\'] = FALSE;' . PHP_EOL . PHP_EOL;
-    $template .= '$aAdmin = array(' . PHP_EOL;
-    $template .= $route_string;
-    $template .= ');' . PHP_EOL;
+    use Illuminate\Support\Facades\Route;
+    
+    Route::prefix(\'admin\')->group(function () {
+        Route::get(\'/\', \'AdminController@index\');
+    
+        Route::get(\'/change_password\', \'AdminController@changePassword\');
+        Route::post(\'/change_password\', \'AdminController@changePasswordPost\');
+    
+    
+        $aRoutes = [';
+    foreach ($tables as $tbl_name) {
+        $controller = str_replace(' ', '', ucwords(str_replace('_', ' ', $tbl_name)));
+        $template .= PHP_EOL . '"' . $tbl_name . '" => "' . $controller . 'Controller",';
+    }
+    $template .= '];' . PHP_EOL;
 
-    $template .= '
-foreach ($aAdmin as $controller) {
-$route["$controller/(:any)"] = "admin/$controller/$1";
-$route["$controller"] = "admin/$controller/index/";
-$route["$controller/(:any)/(:any)"] = "admin/$controller/$1/$2";
-$route["$controller/(:any)/(:any)/(:any)"] = "admin/$controller/$1/$2/$3";
-}' . PHP_EOL . PHP_EOL;
-
-    $template .= '$str_admin = implode("|", $aAdmin);' . PHP_EOL;
-    $template .= '$route' . "['^(?!'" . '.$str_admin . \').*\'' . "]= 'admin/$0';" . PHP_EOL;
+    $template .= 'foreach ($aRoutes as $key => $value) {
+            Route::get(\'/\' . $key,  $value . \'@index\');
+            Route::get(\'/\' . $key . \'/add/{id}\', $value . \'@add\');
+            Route::post(\'/\' . $key . \'/add/{id}\', $value . \'@add\');
+        }
+    });
+    ';
 
     return $template;
 }
