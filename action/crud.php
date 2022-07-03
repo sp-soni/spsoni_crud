@@ -7,7 +7,8 @@ $db_name = '';
 $base_model_prefix = '';
 $controller_prefix = '';
 $table_name = '';
-$aTable = ['user'];
+$aTable = [];
+$route_prefix = '';
 if (!empty($_POST)) {
 
     $platform = $_POST['platform'];
@@ -15,6 +16,7 @@ if (!empty($_POST)) {
     $base_model_prefix = $_POST['base_model_prefix'];
     $controller_prefix = $_POST['controller_prefix'];
     $table_name = $_POST['table_name'];
+    $route_prefix = $_POST['route_prefix'];
 
     $error = [];
     if (empty($_POST['platform'])) {
@@ -25,11 +27,14 @@ if (!empty($_POST)) {
     }
     $_SESSION['error'] = $error;
 
+    define('BASE_MODEL_PREFIX', $base_model_prefix);
+    define('CONTROLLER_PREFIX', $controller_prefix);
+    define('ROUTE_PREFIX', $route_prefix);
     //---needed variables
     if (empty($error)) {
-        define('BASE_MODEL_PREFIX', $base_model_prefix);
-        define('CONTROLLER_PREFIX', $controller_prefix);
-        mysqli_select_db($conn, $db_name);
+        define('PLATFORM', $platform);
+        define('DATABASE', $db_name);
+        mysqli_select_db($conn, DATABASE);
         $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
     }
 }
@@ -99,6 +104,12 @@ if (!empty($_POST)) {
                     </td>
                 </tr>
                 <tr>
+                    <td>Route Prefix</td>
+                    <td>
+                        <input type="text" class="form-control" name="route_prefix" id="route_prefix" value="<?php echo $route_prefix; ?>">
+                    </td>
+                </tr>
+                <tr>
                     <td>
 
                     </td>
@@ -119,10 +130,10 @@ if (!empty($_POST)) {
                     }
                     if (!empty($_POST['submit'])) {
                         // generate code
-                        $files = action_generate_crud($conn, $aTable, $platform, $action = 'generate');
+                        $files = action_generate_crud($conn, $aTable, $action = 'generate');
                     } else {
                         // preview code
-                        $files = action_generate_crud($conn, $aTable, $platform, $action = 'preview');
+                        $files = action_generate_crud($conn, $aTable, $action = 'preview');
                     }
             ?>
                     <h3>Output</h3>

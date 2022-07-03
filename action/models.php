@@ -22,8 +22,9 @@ if (!empty($_POST)) {
     $_SESSION['error'] = $error;
 
     if (empty($error)) {
-        //---needed variables   
-        mysqli_select_db($conn, $db_name);
+        define('PLATFORM', $platform);
+        define('DATABASE', $db_name);
+        mysqli_select_db($conn, DATABASE);
         $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
     }
 }
@@ -101,10 +102,10 @@ if (!empty($_POST)) {
                     }
                     if (!empty($_POST['submit'])) {
                         // generate code
-                        $files = action_generate_models($aTable, $platform, $action = 'generate');
+                        $files = action_generate_models($conn, $aTable, $action = 'generate');
                     } else {
                         // preview code
-                        $files = action_generate_models($aTable, $platform, $action = 'preview');
+                        $files = action_generate_models($conn, $aTable, $action = 'preview');
                     }
             ?>
                     <h3>Output</h3>

@@ -20,7 +20,9 @@ if (!empty($_POST)) {
 
     if (empty($error)) {
         //---needed variables
-        mysqli_select_db($conn, $db_name);
+        define('PLATFORM', $platform);
+        define('DATABASE', $db_name);
+        mysqli_select_db($conn, DATABASE);
         $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
     }
 }
@@ -78,7 +80,7 @@ if (!empty($_POST)) {
             <?php
             if (!empty($_POST)) {
                 if (empty($error)) {
-                    $query = action_migrate($conn, $aTable, $platform, $action = 'preview');
+                    $query = action_migrate($conn, $aTable);
                     // debug($query);
                     $sql = '';
                     foreach ($query as $row) {

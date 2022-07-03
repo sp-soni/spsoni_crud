@@ -79,22 +79,16 @@ function prepare_url($base_url, $custom_key)
     return $url;
 }
 
-function create_controller_file($path, $table, $platform, $action)
+function create_controller_file($file_path, $template_path, $table, $action)
 {
 
-    include_once  $path . '/template/controller.php';
-    $controller_path = $path . '/output/controllers/';
-
-    if (!file_exists($controller_path)) {
-        mkdir($controller_path);
-    }
-    $file_path = $controller_path;
+    include_once  $template_path;
 
     $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-    if ($platform == "laravel-8.x") {
+    if (PLATFORM == "laravel-8.x") {
         $controller_class_name = CONTROLLER_PREFIX . $class_name . "Controller";
         $model_class_name = $class_name;
-    } else {
+    } else if (PLATFORM == "codeigniter-3.x") {
         $controller_class_name = CONTROLLER_PREFIX . $class_name;
         $model_class_name = $class_name . '_model';
     }
@@ -113,19 +107,58 @@ function create_controller_file($path, $table, $platform, $action)
     return $file_path;
 }
 
-function create_model_file($path, $table, $action)
+function create_view_file($file_path, $template_path, $table, $action)
 {
 
-    $model_path = $path . '/output/models/';
-    if (!file_exists($model_path)) {
-        mkdir($model_path);
-    }
-    $file_path = $model_path;
-
-    include_once  $path . '/template/model.php';
+    include_once  $template_path . 'index.php';
+    include_once  $template_path . 'form.php';
+    $files = [];
 
     $parent_class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-    $class_name = $parent_class_name . '_model';
+    if (PLATFORM == "laravel-8.x") {
+        $class_name = $parent_class_name;
+    } else if (PLATFORM == "codeigniter-3.x") {
+        $class_name = $parent_class_name . '_model';
+    }
+
+    //--index.php
+    $file_name = 'index.php';
+    $index_path = $file_path . $file_name;
+    $files[$table][] = $index_path;
+    $txt = generate_index($class_name, $table);
+
+    if ($action == "generate") {
+        $file = fopen($index_path, "w");
+        fwrite($file, $txt);
+        fclose($file);
+    }
+
+    //--form.php
+    $file_name = 'form.php';
+    $form_path = $file_path . $file_name;
+    $files[$table][] = $form_path;
+    $txt = generate_form($class_name, $table);
+
+    if ($action == "generate") {
+        $file = fopen($form_path, "w");
+        fwrite($file, $txt);
+        fclose($file);
+    }
+
+    return $files;
+}
+
+function create_model_file($file_path, $template_path, $table, $action)
+{
+
+    include_once  $template_path;
+
+    $parent_class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+    if (PLATFORM == "laravel-8.x") {
+        $class_name = $parent_class_name;
+    } else if (PLATFORM == "codeigniter-3.x") {
+        $class_name = $parent_class_name . '_model';
+    }
     $file_name = $class_name . '.php';
     $file_path .= $file_name;
 
@@ -139,11 +172,8 @@ function create_model_file($path, $table, $action)
     return $file_path;
 }
 
-function create_base_model_file($conn, $platform, $table, $action)
+function create_base_model_file($file_path, $template_path, $table, $action, $conn)
 {
-    $root = ROOT_PATH . '/' . $platform;
-    $template_path = $root . '/template/_base/model.php';
-    $file_path = $root . '/output/models/_base/';
 
     include_once  $template_path;
 
@@ -152,7 +182,7 @@ function create_base_model_file($conn, $platform, $table, $action)
     $file_path .= $file_name;
 
     $columns = table_columns($conn, $table);
-    $table_attributes = table_attributes($conn, $table, $platform);
+    $table_attributes = table_attributes($conn, $table, PLATFORM);
     $txt = generate_base_model($class_name, $columns, $table, $table_attributes);
 
     if ($action == "generate") {
@@ -160,6 +190,7 @@ function create_base_model_file($conn, $platform, $table, $action)
         fwrite($file, $txt);
         fclose($file);
     }
+
     return $file_path;
 }
 
