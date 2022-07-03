@@ -35,7 +35,7 @@ if (!empty($_POST)) {
 
     <?php show_message(); ?>
     <form method="post">
-        <div class="col-md-6">
+        <div class="col-md-8">
             <table class="table table-bordered">
                 <thead>
                     <tr class="bg-parimary">
@@ -96,14 +96,14 @@ if (!empty($_POST)) {
 
                         </td>
                         <td>
-                            <input type="submit" name="preview" value="Preview" class="btn btn-primary">
+                            <input type="submit" name="preview" value="Preview" class="btn btn-success">
                         </td>
                     </tr>
                 </tfoot>
             </table>
 
         </div>
-        <div class="col-md-12">
+        <div class="col-md-8">
 
             <?php
             if (!empty($_POST)) {

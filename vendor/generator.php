@@ -7,15 +7,18 @@ function action_generate_crud($conn, $tables, $action = "preview")
         'Controllers' => [],
         'BaseModels' => [],
         'Models' => [],
-        'Routes' => [],
         'Views' => [],
     ];
 
     $files['Controllers'] = action_generate_controllers($conn, $tables, $action);
     $files['BaseModels'] = action_generate_base_models($conn, $tables, $action);
     $files['Models'] = action_generate_models($conn, $tables, $action);
-    $files['Routes'] = action_generate_routes($conn, $tables, $action);
     $files['Views'] = action_generate_views($conn, $tables, $action);
+    if (is_array($tables)) {
+        $files['Routes'] = action_generate_routes($conn, $tables, $action);
+    } else {
+        $files['Routes'] = '<div class="required">For single table routes can\'t be generated</div>';
+    }
     return $files;
 }
 
