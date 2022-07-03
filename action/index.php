@@ -4,11 +4,18 @@ require_once dirname(__FILE__, 2) . '/layout/header.php';
 <?php
 $platform = '';
 $db_name = '';
+$base_model_prefix = '';
+$controller_prefix = '';
+$table_name = '';
+$aTable = [];
 $route_prefix = '';
 if (!empty($_POST)) {
 
     $platform = $_POST['platform'];
     $db_name = $_POST['db_name'];
+    $base_model_prefix = $_POST['base_model_prefix'];
+    $controller_prefix = $_POST['controller_prefix'];
+    $table_name = $_POST['table_name'];
     $route_prefix = $_POST['route_prefix'];
 
     $error = [];
@@ -20,9 +27,11 @@ if (!empty($_POST)) {
     }
     $_SESSION['error'] = $error;
 
+    define('BASE_MODEL_PREFIX', $base_model_prefix);
+    define('CONTROLLER_PREFIX', $controller_prefix);
     define('ROUTE_PREFIX', $route_prefix);
+    //---needed variables
     if (empty($error)) {
-        //---needed variables
         define('PLATFORM', $platform);
         define('DATABASE', $db_name);
         mysqli_select_db($conn, DATABASE);
@@ -38,7 +47,7 @@ if (!empty($_POST)) {
             <table class="table table-bordered">
                 <thead>
                     <tr class="bg-parimary">
-                        <th colspan="2">Route Generator</th>
+                        <th colspan="2">CRUD Generator</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -74,6 +83,33 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
+                        <td><span class="required">Table</span></td>
+                        <td>
+                            <select class="form-control" name="table_name" id="table_name">
+                                <option value="">--Select--</option>
+                                <?php
+                                foreach ($aTable as $row) { ?>
+                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $table_name) ?>><?php echo $row; ?></option>
+
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Base Model Class Prefix</td>
+                        <td>
+                            <input type="text" class="form-control" name="base_model_prefix" id="base_model_prefix" value="<?php echo $base_model_prefix; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Controller Class Prefix</td>
+                        <td>
+                            <input type="text" class="form-control" name="controller_prefix" id="controller_prefix" value="<?php echo $controller_prefix; ?>">
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Route Prefix</td>
                         <td>
                             <input type="text" class="form-control" name="route_prefix" id="route_prefix" value="<?php echo $route_prefix; ?>">
@@ -98,13 +134,15 @@ if (!empty($_POST)) {
             <?php
             if (!empty($_POST)) {
                 if (empty($error)) {
-
+                    if (!empty($table_name)) {
+                        $aTable = $table_name;
+                    }
                     if (!empty($_POST['submit'])) {
                         // generate code
-                        $files = action_generate_routes($conn, $aTable, $action = 'generate');
+                        $files = action_generate_crud($conn, $aTable, $action = 'generate');
                     } else {
                         // preview code
-                        $files = action_generate_routes($conn, $aTable, $action = 'preview');
+                        $files = action_generate_crud($conn, $aTable, $action = 'preview');
                     }
             ?>
                     <h3>Output</h3>
@@ -122,7 +160,7 @@ if (!empty($_POST)) {
                             ?>
                                 <tr>
                                     <td><?php echo $i++; ?></td>
-                                    <td><?php echo $file; ?></td>
+                                    <td><?php echo debug($file, 0); ?></td>
                                 </tr>
                             <?php }  ?>
                         </tbody>

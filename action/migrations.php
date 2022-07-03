@@ -33,45 +33,54 @@ if (!empty($_POST)) {
     <form method="post">
         <div class="col-md-6">
             <table class="table table-bordered">
-                <tr>
-                    <td width="30%"><span class="required">Platform (*)</span></td>
-                    <td width="70%">
-                        <select class="form-control" name="platform">
-                            <option value="">--Select--</option>
-                            <?php
-                            $aPlatform = platform_list();
-                            foreach ($aPlatform as $row) { ?>
-                                <option value="<?php echo $row; ?>" <?php selected_select($row, $platform) ?>><?php echo $row; ?></option>
+                <thead>
+                    <tr class="bg-parimary">
+                        <th colspan="2">Controller Generator</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="30%"><span class="required">Platform (*)</span></td>
+                        <td width="70%">
+                            <select class="form-control" name="platform">
+                                <option value="">--Select--</option>
+                                <?php
+                                $aPlatform = platform_list();
+                                foreach ($aPlatform as $row) { ?>
+                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $platform) ?>><?php echo $row; ?></option>
 
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="required">Database (*)</span></td>
-                    <td>
-                        <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
-                            <option value="">--Select--</option>
-                            <?php
-                            foreach ($aDatabase as $row) { ?>
-                                <option value="<?php echo $row; ?>" <?php selected_select($row, $db_name) ?>><?php echo $row; ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="required">Database (*)</span></td>
+                        <td>
+                            <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
+                                <option value="">--Select--</option>
+                                <?php
+                                foreach ($aDatabase as $row) { ?>
+                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $db_name) ?>><?php echo $row; ?></option>
 
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
 
-                    </td>
-                    <td>
-                        <input type="submit" name="preview" value="Generate Query" class="btn btn-primary">
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            <input type="submit" name="preview" value="Generate Query" class="btn btn-primary">
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
 
         </div>
@@ -87,19 +96,28 @@ if (!empty($_POST)) {
                         $sql .= $row . ';' . "<br/>";
                     }
             ?>
-                    <div class="col-md-12">
-                        <div class="col-md-1">
-                            <h3>Output</h3>
-                        </div>
-                        <div class="col-md-2">
-                            <a href="#" class="btn btn-success" onclick="copyDivToClipboard('query_div')">Copy Query</a>
-                        </div>
-                    </div>
-                    <div id="query_div" class="col-md-12">
-                        <?php echo  $sql; ?>
-                    </div>
 
-
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr class="bg-parimary">
+                                <th width="10%">
+                                    <h3>Output</h3>
+                                </th>
+                                <th width="*">
+                                    <a href="#" class="btn btn-success" onclick="copyDivToClipboard('query_div')">Copy Query</a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="2">
+                                    <div id="query_div">
+                                        <?php echo  $sql; ?>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
             <?php
                 }
             }

@@ -35,60 +35,69 @@ if (!empty($_POST)) {
     <form method="post">
         <div class="col-md-6">
             <table class="table table-bordered">
-                <tr>
-                    <td width="30%"><span class="required">Platform (*)</span></td>
-                    <td width="70%">
-                        <select class="form-control" name="platform">
-                            <option value="">--Select--</option>
-                            <?php
-                            $aPlatform = platform_list();
-                            foreach ($aPlatform as $row) { ?>
-                                <option value="<?php echo $row; ?>" <?php selected_select($row, $platform) ?>><?php echo $row; ?></option>
+                <thead>
+                    <tr class="bg-parimary">
+                        <th colspan="2">Model Generator</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td width="30%"><span class="required">Platform (*)</span></td>
+                        <td width="70%">
+                            <select class="form-control" name="platform">
+                                <option value="">--Select--</option>
+                                <?php
+                                $aPlatform = platform_list();
+                                foreach ($aPlatform as $row) { ?>
+                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $platform) ?>><?php echo $row; ?></option>
 
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="required">Database (*)</span></td>
-                    <td>
-                        <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
-                            <option value="">--Select--</option>
-                            <?php
-                            foreach ($aDatabase as $row) { ?>
-                                <option value="<?php echo $row; ?>" <?php selected_select($row, $db_name) ?>><?php echo $row; ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="required">Database (*)</span></td>
+                        <td>
+                            <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
+                                <option value="">--Select--</option>
+                                <?php
+                                foreach ($aDatabase as $row) { ?>
+                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $db_name) ?>><?php echo $row; ?></option>
 
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td><span class="required">Table</span></td>
-                    <td>
-                        <select class="form-control" name="table_name" id="table_name">
-                            <option value="">--Select--</option>
-                            <?php
-                            foreach ($aTable as $row) { ?>
-                                <option value="<?php echo $row; ?>" <?php selected_select($row, $table_name) ?>><?php echo $row; ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="required">Table</span></td>
+                        <td>
+                            <select class="form-control" name="table_name" id="table_name">
+                                <option value="">--Select--</option>
+                                <?php
+                                foreach ($aTable as $row) { ?>
+                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $table_name) ?>><?php echo $row; ?></option>
 
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
 
-                    </td>
-                    <td>
-                        <input type="submit" name="preview" value="Preview" class="btn btn-primary">
-                    </td>
-                </tr>
+                        </td>
+                        <td>
+                            <input type="submit" name="preview" value="Preview" class="btn btn-primary">
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
 
         </div>

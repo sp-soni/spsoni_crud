@@ -1,3 +1,11 @@
 .required {
     color: red;
 }
+
+.btn {
+    min-width: 200px;
+}
+
+.no-padding {
+    padding: 0px;
+}
