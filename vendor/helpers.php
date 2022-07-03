@@ -238,7 +238,9 @@ function table_attributes($conn, $table, $platform)
             $temp->column_type = $row['COLUMN_TYPE'];
             $temp->label = ucwords(str_replace('_', ' ', $row['COLUMN_NAME']));
             $temp->type = $row['DATA_TYPE'];
-            $temp->rules = get_validation_rules($row, $platform);
+            $temp->key = $row['COLUMN_KEY'];
+            $temp->rules = get_validation_rules($row, $platform, $table);
+            //$columns[] = $row;
             $columns[] = $temp;
         }
     }
@@ -246,7 +248,7 @@ function table_attributes($conn, $table, $platform)
     return $columns;
 }
 
-function get_validation_rules($row, $platform)
+function get_validation_rules($row, $platform, $table_name)
 {
     $rules = [];
     if ($row['IS_NULLABLE'] == 'NO') {
@@ -255,6 +257,9 @@ function get_validation_rules($row, $platform)
     if ($row['CHARACTER_MAXIMUM_LENGTH'] > 0) {
         if ($platform == 'laravel-8.x') {
             $rules[] = 'max:' . $row['CHARACTER_MAXIMUM_LENGTH'];
+            if ($row['COLUMN_KEY'] == "UNI") {
+                $rules[] = 'unique:' . $table_name;
+            }
         } else if ($platform == 'codeigniter-3.x') {
             $rules[] = 'max_length[' . $row['CHARACTER_MAXIMUM_LENGTH'] . ']';
         }

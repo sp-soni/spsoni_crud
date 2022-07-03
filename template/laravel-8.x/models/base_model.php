@@ -34,7 +34,9 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
 		return [' . PHP_EOL;
 
     foreach ($table_attributes as $column) {
-        $template .= '\'' . $column->column_name . '\' => \'' . $column->rules . '\',' . PHP_EOL;
+        if (!empty($column->rules)) {
+            $template .= '\'' . $column->column_name . '\' => \'' . $column->rules . '\',' . PHP_EOL;
+        }
     }
 
     $template .= '];' . PHP_EOL;

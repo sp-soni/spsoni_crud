@@ -1,10 +1,7 @@
 <?php
-
-
-
 function generate_form($form_attributes)
 {
-    // debug($form_attributes, 0);
+    //debug($form_attributes, 0);
     $form_fields = '';
     foreach ($form_attributes as $attribute) {
         $name = $attribute->column_name;
