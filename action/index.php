@@ -80,6 +80,7 @@ if (!empty($_POST)) {
         $_SESSION['success'][] = 'Project saved successfully';
     }
 }
+
 ?>
 <div class="row">
     <?php show_message(); ?>
@@ -188,17 +189,26 @@ if (!empty($_POST)) {
                 </thead>
                 <tbody>
                     <?php
-                    $sn = 1;
-                    foreach ($aProject as $row) {
-                        $row = (object)$row;
+                    $sql = 'select 
+                    t1.*,t2.module,t2.base_model_prefix,t2.controller_prefix,t2.route_prefix,t2.controller_path,t2.model_path,
+                    t2.view_path,t2.route_path,t2.controller_parent_class 
+                    from project as t1 left join project_module as t2 on t1.id=t2.project_id';
+                    $aProject = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+                    if (!empty($aProject) && is_array($aProject)) {
+                        $sn = 1;
+                        foreach ($aProject as $row) {
+                            $row = (object)$row;
                     ?>
-                        <tr>
-                            <td><?php echo $sn++; ?></td>
-                            <td><?php echo $row->project_name; ?></td>
-                            <td><?php echo $row->db_name; ?></td>
-                            <td><?php echo $row->platform; ?></td>
-                        </tr>
-                    <?php } ?>
+                            <tr>
+                                <td><?php echo $sn++; ?></td>
+                                <td><?php echo $row->project_name; ?></td>
+                                <td><?php echo $row->db_name; ?></td>
+                                <td><?php echo $row->platform; ?></td>
+                            </tr>
+                    <?php
+                        }
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
