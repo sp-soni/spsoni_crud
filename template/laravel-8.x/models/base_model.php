@@ -58,7 +58,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     }
     $template .= '];' . PHP_EOL;
 
-    $template .= '$data = self::where($aWhere)->get();
+    $template .= '$data = self::where($aWhere)->orderBy(\'id\', \'desc\')->get();
         return $data;
     }' . PHP_EOL;
 
