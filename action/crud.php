@@ -10,6 +10,7 @@ $controller_prefix = '';
 $table_name = '';
 $aTable = [];
 $route_prefix = '';
+$route_path = '';
 
 $controller_path = '';
 $model_path = '';
@@ -32,6 +33,7 @@ if (!empty($_POST)) {
         $controller_path = $aProjectDetails->controller_path;
         $model_path = $aProjectDetails->model_path;
         $view_path = $aProjectDetails->view_path;
+        $route_path = $aProjectDetails->route_path;
         //debug($controller_path);
     } else {
         $error[] = 'Project is required';
@@ -53,9 +55,10 @@ if (!empty($_POST)) {
 
     $_SESSION['error'] = $error;
 
-    define('CONTROLLERS_DIR', $controller_path);
-    define('MODELS_DIR', $model_path);
-    define('VIEWS_DIR', $view_path);
+    define('CONTROLLERS_DIR', $controller_path . '/');
+    define('MODELS_DIR', $model_path . '/');
+    define('VIEWS_DIR', $view_path . '/');
+    define('ROUTE_DIR', $route_path . '/');
 
     define('BASE_MODEL_PREFIX', $base_model_prefix);
     define('CONTROLLER_PREFIX', $controller_prefix);

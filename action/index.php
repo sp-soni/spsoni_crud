@@ -74,7 +74,8 @@ if (!empty($_POST)) {
         $sql = "INSERT INTO project (`project_name`, `db_name`, `platform`, `base_model_prefix`, `controller_prefix`, `route_prefix`,
          `controller_path`, `model_path`, `view_path`,`route_path`)
         VALUES ('" . $project_name . "','" . $db_name . "','" . $platform . "','" . $base_model_prefix . "','" . $controller_prefix . "',
-        '" . $route_prefix . "','" . $controller_path . "','" . $model_path . "','" . $view_path . "','" . $route_path . "')";
+        '" . $route_prefix . "','" . mysqli_real_escape_string($conn_app, $controller_path) . "','" . mysqli_real_escape_string($conn_app,  $model_path) . "',
+        '" . mysqli_real_escape_string($conn_app, $view_path) . "','" . mysqli_real_escape_string($conn_app, $route_path) . "')";
         mysqli_query($conn_app, $sql) or die($conn_app->error);
         $_SESSION['success'][] = 'Project saved successfully';
     }
