@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jul 04, 2022 at 06:43 AM
+-- Generation Time: Jul 04, 2022 at 07:34 AM
 -- Server version: 8.0.21
 -- PHP Version: 7.4.9
 
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `project` (
   `view_path` text COLLATE utf8mb4_general_ci NOT NULL,
   `route_path` text COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `project`
