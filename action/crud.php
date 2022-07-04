@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__, 2) . '/layout/header.php';
-
 ?>
 <?php
 $platform = '';
@@ -93,8 +92,6 @@ if (!empty($_POST)) {
         define('VIEWS_DIR', $view_path . '/');
         define('ROUTE_DIR', $route_path . '/');
         define('BASE_MODEL_SUFFIX', $base_model_suffix);
-
-
         define('MODULE', $module);
         define('CONTROLLER_PARENT_CLASS', $controller_parent_class);
     }
@@ -104,7 +101,7 @@ if (!empty($_POST)) {
 
     <?php show_message(); ?>
     <form method="post">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <table class="table table-bordered">
                 <thead>
                     <tr class="bg-parimary">
@@ -162,18 +159,15 @@ if (!empty($_POST)) {
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td>
-
-                        </td>
-                        <td>
-                            <input type="submit" name="preview" value="Preview" class="btn btn-success">
+                        <td colspan="2">
+                            <input type="submit" name="preview" value="Preview" class="btn btn-warning">
                         </td>
                     </tr>
                 </tfoot>
             </table>
 
         </div>
-        <div class="col-md-8">
+        <div class="col-md-12">
 
             <?php
             if (!empty($_POST)) {
@@ -186,22 +180,36 @@ if (!empty($_POST)) {
                         $files = action_generate_crud($conn, $table_name, $action = 'preview');
                     }
             ?>
-                    <h3>Output</h3>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
+                                <th colspan="3">Generated Files</th>
+                            </tr>
+                            <tr>
                                 <th>SN</th>
+                                <th>File Type</th>
                                 <th>Files</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             $i = 1;
-                            foreach ($files as $file) {
+                            foreach ($files as $key => $file) {
                             ?>
                                 <tr>
                                     <td><?php echo $i++; ?></td>
-                                    <td><?php echo debug($file, 0); ?></td>
+                                    <td><?php echo ucwords($key); ?></td>
+                                    <td>
+                                        <?php
+                                        if (is_array($file)) {
+                                            foreach ($file as $file_name) {
+                                                echo '<div>' . $file_name . '<div>';
+                                            }
+                                        } else {
+                                            echo $file;
+                                        }
+                                        ?>
+                                    </td>
                                 </tr>
                             <?php }  ?>
                         </tbody>
@@ -209,9 +217,11 @@ if (!empty($_POST)) {
                         if ($i > 1) { ?>
                             <tfoot>
                                 <tr>
-                                    <td></td>
-                                    <td> <input type="submit" name="submit" value="Generate" class="btn btn-success"></td>
+                                    <td colspan="3">
+                                        <input type="submit" name="submit" value="Generate" class="btn btn-success">
+                                    </td>
                                 </tr>
+
                             </tfoot>
                         <?php
                         }

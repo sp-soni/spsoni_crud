@@ -109,7 +109,7 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
         $file_name = 'index.blade.php';
     }
     $index_path = $file_path . $file_name;
-    $files[$table][] = $index_path;
+    $files[] = $index_path;
     $txt = generate_index($form_attributes);
 
     if ($action == "generate") {
@@ -124,7 +124,7 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
         $file_name = 'add.blade.php';
     }
     $form_path = $file_path . $file_name;
-    $files[$table][] = $form_path;
+    $files[] = $form_path;
     $txt = generate_form($form_attributes);
 
     if ($action == "generate") {

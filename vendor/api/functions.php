@@ -1,6 +1,7 @@
 <?php
 // include database and object files
 include_once dirname(__FILE__, 3) . '/config.php';
+include_once dirname(__FILE__, 3) . '/vendor/generator.php';
 
 function get_tables()
 {

@@ -30,9 +30,10 @@ define('PASSWORD', '');
 //--app
 define('APP_DB', 'spitech_crud');
 $conn_app = mysqli_connect(HOST, USER, PASSWORD, APP_DB) or die('app mysqli not connected');
+$_SESSION['conn_app'] = $conn_app;
 
 // project 
 $conn = mysqli_connect(HOST, USER, PASSWORD) or die('project mysqli not connected');
-
+$_SESSION['conn'] = $conn;
 
 $aProject = $conn_app->query('select * from project')->fetch_all(MYSQLI_ASSOC);

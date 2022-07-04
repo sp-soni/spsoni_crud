@@ -44,6 +44,7 @@ function get_tables(project_id, response_container) {
 }
 
 
+
 function copyDivToClipboard(div_id) {
     var range = document.createRange();
     range.selectNode(document.getElementById(div_id));

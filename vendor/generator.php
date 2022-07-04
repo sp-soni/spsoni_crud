@@ -3,79 +3,45 @@
 function action_generate_crud($conn, $tables, $action = "preview")
 {
 
-    $files = [
-        'Controllers' => [],
-        'BaseModels' => [],
-        'Models' => [],
-        'Views' => [],
-    ];
-
-    $files['Controllers'] = action_generate_controllers($conn, $tables, $action);
-    $files['BaseModels'] = action_generate_base_models($conn, $tables, $action);
-    $files['Models'] = action_generate_models($conn, $tables, $action);
-    $files['Views'] = action_generate_views($conn, $tables, $action);
+    $files = [];
+    $files['controllers'] = action_generate_controllers($conn, $tables, $action);
+    $files['models'][0] = action_generate_base_models($conn, $tables, $action);
+    $files['models'][1] = action_generate_models($conn, $tables, $action);
+    $files['views'] = action_generate_views($conn, $tables, $action);
     return $files;
 }
 
 function action_generate_views($conn, $tables, $action = "preview")
 {
-    $files = [];
-
     $path = VIEWS_DIR;
     if (!file_exists($path)) {
         mkdir($path);
     }
 
-
     $template_path = TEMPLATE_PATH . PLATFORM . '/views/';
 
-    if (!empty($tables) && is_array($tables)) {
-        foreach ($tables as $table) {
-            $file_path = $path . $table . '/';
-            if (!file_exists($file_path)) {
-                mkdir($file_path);
-            }
-            $files[] = create_view_file($conn, $file_path, $template_path, $table, $action);
-        }
-    } else {
-        $file_path = $path . $tables . '/';
-        if (!file_exists($file_path)) {
-            mkdir($file_path);
-        }
-        $files[] = create_view_file($conn, $file_path, $template_path, $tables, $action);
+    $file_path = $path . $tables . '/';
+    if (!file_exists($file_path)) {
+        mkdir($file_path);
     }
 
-    return $files;
+    return create_view_file($conn, $file_path, $template_path, $tables, $action);
 }
 
 function action_generate_models($conn, $tables, $action = "preview")
 {
-    $files = [];
-
     $path = MODELS_DIR;
     if (!file_exists($path)) {
         mkdir($path);
     }
-
-
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/models/model.php';
 
-    if (!empty($tables) && is_array($tables)) {
-        foreach ($tables as $table) {
-            $files[] = create_model_file($file_path, $template_path, $table, $action);
-        }
-    } else {
-        $files[] = create_model_file($file_path, $template_path, $tables, $action);
-    }
-
-    return $files;
+    return create_model_file($file_path, $template_path, $tables, $action);
 }
 
 function action_generate_controllers($conn, $tables, $action = "preview")
 {
-    $files = [];
-
     $path = CONTROLLERS_DIR;
     if (!file_exists($path)) {
         mkdir($path);
@@ -84,14 +50,7 @@ function action_generate_controllers($conn, $tables, $action = "preview")
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/controller.php';
 
-    if (!empty($tables) && is_array($tables)) {
-        foreach ($tables as $table) {
-            $files[] = create_controller_file($conn, $file_path, $template_path, $table, $action);
-        }
-    } else {
-        $files[] = create_controller_file($conn, $file_path, $template_path, $tables, $action);
-    }
-    return $files;
+    return create_controller_file($conn, $file_path, $template_path, $tables, $action);
 }
 
 
@@ -133,8 +92,6 @@ function action_generate_routes($conn, $aTable, $action = "preview")
 function action_generate_base_models($conn, $tables, $action = "preview")
 {
 
-    $files = [];
-
     $path = MODELS_DIR;
     if (!file_exists($path)) {
         mkdir($path);
@@ -147,15 +104,8 @@ function action_generate_base_models($conn, $tables, $action = "preview")
 
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/models/base_model.php';
-    if (!empty($tables) && is_array($tables)) {
-        foreach ($tables as $table) {
-            $files[] = create_base_model_file($file_path, $template_path, $table, $action, $conn);
-        }
-    } else {
-        $files[] = create_base_model_file($file_path, $template_path, $tables, $action, $conn);
-    }
 
-    return $files;
+    return create_base_model_file($file_path, $template_path, $tables, $action, $conn);
 }
 
 
