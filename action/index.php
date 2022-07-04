@@ -2,31 +2,33 @@
 require_once dirname(__FILE__, 2) . '/layout/header.php';
 ?>
 <?php
+$project_name = '';
 $platform = '';
 $db_name = '';
 $base_model_prefix = '';
 $controller_prefix = '';
-$table_name = '';
-$aTable = [];
 $route_prefix = '';
-
-$controller_path = OUTPUT_PATH . 'controllers/';
-$model_path =  OUTPUT_PATH . 'models/';
-$views_path =  OUTPUT_PATH . 'views/';
+$controller_path = '';
+$model_path =  '';
+$view_path = '';
+$route_path = '';
 if (!empty($_POST)) {
 
+    $project_name = $_POST['project_name'];
     $platform = $_POST['platform'];
     $db_name = $_POST['db_name'];
     $base_model_prefix = $_POST['base_model_prefix'];
     $controller_prefix = $_POST['controller_prefix'];
-    $table_name = $_POST['table_name'];
     $route_prefix = $_POST['route_prefix'];
-
     $controller_path = $_POST['controller_path'];
     $model_path = $_POST['model_path'];
-    $views_path = $_POST['views_path'];
+    $view_path = $_POST['view_path'];
+    $route_path = $_POST['route_path'];
 
     $error = [];
+    if (empty($_POST['project_name'])) {
+        $error[] = 'Project name is required';
+    }
     if (empty($_POST['platform'])) {
         $error[] = 'Platform is required';
     }
@@ -51,36 +53,34 @@ if (!empty($_POST)) {
         $error[] = 'Model path is required';
     }
 
-    if (!empty($_POST['views_path'])) {
-        if (!file_exists($_POST['views_path'])) {
-            $error[] = 'View path not found > ' . $_POST['views_path'];
+    if (!empty($_POST['view_path'])) {
+        if (!file_exists($_POST['view_path'])) {
+            $error[] = 'View path not found > ' . $_POST['view_path'];
         }
     } else {
         $error[] = 'Model path is required';
     }
 
-    define('CONTROLLERS_DIR', $controller_path);
-    define('MODELS_DIR', $model_path);
-    define('VIEWS_DIR', $views_path);
-
+    if (!empty($_POST['route_path'])) {
+        if (!file_exists($_POST['route_path'])) {
+            $error[] = 'Route path not found > ' . $_POST['route_path'];
+        }
+    } else {
+        $error[] = 'Route path is required';
+    }
 
     $_SESSION['error'] = $error;
-
-
-    define('BASE_MODEL_PREFIX', $base_model_prefix);
-    define('CONTROLLER_PREFIX', $controller_prefix);
-    define('ROUTE_PREFIX', $route_prefix);
-    //---needed variables
     if (empty($error)) {
-        define('PLATFORM', $platform);
-        define('DATABASE', $db_name);
-        mysqli_select_db($conn, DATABASE);
-        $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+        $sql = "INSERT INTO project (`project_name`, `db_name`, `platform`, `base_model_prefix`, `controller_prefix`, `route_prefix`,
+         `controller_path`, `model_path`, `view_path`,`route_path`)
+        VALUES ('" . $project_name . "','" . $db_name . "','" . $platform . "','" . $base_model_prefix . "','" . $controller_prefix . "',
+        '" . $route_prefix . "','" . $controller_path . "','" . $model_path . "','" . $view_path . "','" . $route_path . "')";
+        mysqli_query($conn_app, $sql) or die($conn_app->error);
+        $_SESSION['success'][] = 'Project saved successfully';
     }
 }
 ?>
 <div class="row">
-
     <?php show_message(); ?>
     <form method="post">
         <div class="col-md-8">
@@ -92,7 +92,7 @@ if (!empty($_POST)) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="30%">Platform <span class="required">(*)</span></td>
+                        <td width="30%"><span class="required">Platform (*)</span></td>
                         <td width="70%">
                             <select class="form-control" name="platform">
                                 <option value="">--Select--</option>
@@ -108,33 +108,15 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
-                        <td>Database <span class="required">(*)</span></td>
+                        <td>Project Name <span class="required">(*)</span></td>
                         <td>
-                            <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
-                                <option value="">--Select--</option>
-                                <?php
-                                foreach ($aProject as $row) { ?>
-                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $db_name) ?>><?php echo $row; ?></option>
-
-                                <?php
-                                }
-                                ?>
-                            </select>
+                            <input type="text" class="form-control" name="project_name" id="project_name" value="<?php echo $project_name; ?>">
                         </td>
                     </tr>
                     <tr>
-                        <td>Table</td>
+                        <td>Database Name <span class="required">(*)</span></td>
                         <td>
-                            <select class="form-control" name="table_name" id="table_name">
-                                <option value="">--Select--</option>
-                                <?php
-                                foreach ($aTable as $row) { ?>
-                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $table_name) ?>><?php echo $row; ?></option>
-
-                                <?php
-                                }
-                                ?>
-                            </select>
+                            <input type="text" class="form-control" name="db_name" id="db_name" value="<?php echo $db_name; ?>">
                         </td>
                     </tr>
                     <tr>
@@ -156,9 +138,6 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
-                        <th colspan="2">Custom Path</th>
-                    </tr>
-                    <tr>
                         <td>Controller Directory <span class="required">(*)</span></td>
                         <td>
                             <input type="text" class="form-control" name="controller_path" id="controller_path" value="<?php echo $controller_path; ?>">
@@ -173,7 +152,13 @@ if (!empty($_POST)) {
                     <tr>
                         <td>Views Directory <span class="required">(*)</span></td>
                         <td>
-                            <input type="text" class="form-control" name="views_path" id="views_path" value="<?php echo $views_path; ?>">
+                            <input type="text" class="form-control" name="view_path" id="view_path" value="<?php echo $view_path; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Route Directory <span class="required">(*)</span></td>
+                        <td>
+                            <input type="text" class="form-control" name="route_path" id="route_path" value="<?php echo $route_path; ?>">
                         </td>
                     </tr>
                 </tbody>
@@ -183,65 +168,40 @@ if (!empty($_POST)) {
 
                         </td>
                         <td>
-                            <input type="submit" name="preview" value="Preview" class="btn btn-success">
+                            <input type="submit" name="preview" value="Save" class="btn btn-success">
                         </td>
                     </tr>
                 </tfoot>
             </table>
 
         </div>
-        <div class="col-md-8">
-
-            <?php
-            if (!empty($_POST)) {
-                if (empty($error)) {
-                    if (!empty($table_name)) {
-                        $aTable = $table_name;
-                    }
-                    if (!empty($_POST['submit'])) {
-                        // generate code
-                        $files = action_generate_crud($conn, $aTable, $action = 'generate');
-                    } else {
-                        // preview code
-                        $files = action_generate_crud($conn, $aTable, $action = 'preview');
-                    }
-            ?>
-                    <h3>Output</h3>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>SN</th>
-                                <th>Files</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $i = 1;
-                            foreach ($files as $file) {
-                            ?>
-                                <tr>
-                                    <td><?php echo $i++; ?></td>
-                                    <td><?php echo debug($file, 0); ?></td>
-                                </tr>
-                            <?php }  ?>
-                        </tbody>
-                        <?php
-                        if ($i > 1) { ?>
-                            <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td> <input type="submit" name="submit" value="Generate" class="btn btn-success"></td>
-                                </tr>
-                            </tfoot>
-                        <?php
-                        }
-                        ?>
-                    </table>
-            <?php
-                }
-            }
-            ?>
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <td>SN</td>
+                        <td>Project Name</td>
+                        <td>DB Name</td>
+                        <td>Platform</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sn = 1;
+                    foreach ($aProject as $row) {
+                        $row = (object)$row;
+                    ?>
+                        <tr>
+                            <td><?php echo $sn++; ?></td>
+                            <td><?php echo $row->project_name; ?></td>
+                            <td><?php echo $row->db_name; ?></td>
+                            <td><?php echo $row->platform; ?></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
         </div>
+
     </form>
 
 </div>

@@ -34,8 +34,5 @@ $conn_app = mysqli_connect(HOST, USER, PASSWORD, APP_DB) or die('app mysqli not 
 // project 
 $conn = mysqli_connect(HOST, USER, PASSWORD) or die('project mysqli not connected');
 
-//$aDatabase = array_column($conn->query('SHOW DATABASES')->fetch_all(), 0);
-$aProject = $conn_app->query('select id,project_name from project')->fetch_all(MYSQLI_ASSOC);
-// echo "<pre>";
-// print_r($aProject);
-// exit;
+
+$aProject = $conn_app->query('select * from project')->fetch_all(MYSQLI_ASSOC);

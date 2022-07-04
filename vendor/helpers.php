@@ -1,5 +1,13 @@
 <?php
 
+function platform_list()
+{
+    return [
+        'codeigniter-3.x',
+        'laravel-8.x'
+    ];
+}
+
 function show_message()
 {
     $html = '';
