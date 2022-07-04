@@ -5,7 +5,7 @@ require_once dirname(__FILE__, 2) . '/layout/header.php';
 $project_name = '';
 $platform = '';
 $db_name = '';
-$base_model_prefix = '';
+$base_model_suffix = '';
 $controller_prefix = '';
 $route_prefix = '';
 $controller_path = '';
@@ -17,7 +17,7 @@ if (!empty($_POST)) {
     $project_name = $_POST['project_name'];
     $platform = $_POST['platform'];
     $db_name = $_POST['db_name'];
-    $base_model_prefix = $_POST['base_model_prefix'];
+    $base_model_suffix = $_POST['base_model_suffix'];
     $controller_prefix = $_POST['controller_prefix'];
     $route_prefix = $_POST['route_prefix'];
     $controller_path = $_POST['controller_path'];
@@ -71,9 +71,9 @@ if (!empty($_POST)) {
 
     $_SESSION['error'] = $error;
     if (empty($error)) {
-        $sql = "INSERT INTO project (`project_name`, `db_name`, `platform`, `base_model_prefix`, `controller_prefix`, `route_prefix`,
+        $sql = "INSERT INTO project (`project_name`, `db_name`, `platform`, `base_model_suffix`, `controller_prefix`, `route_prefix`,
          `controller_path`, `model_path`, `view_path`,`route_path`)
-        VALUES ('" . $project_name . "','" . $db_name . "','" . $platform . "','" . $base_model_prefix . "','" . $controller_prefix . "',
+        VALUES ('" . $project_name . "','" . $db_name . "','" . $platform . "','" . $base_model_suffix . "','" . $controller_prefix . "',
         '" . $route_prefix . "','" . mysqli_real_escape_string($conn_app, $controller_path) . "','" . mysqli_real_escape_string($conn_app,  $model_path) . "',
         '" . mysqli_real_escape_string($conn_app, $view_path) . "','" . mysqli_real_escape_string($conn_app, $route_path) . "')";
         mysqli_query($conn_app, $sql) or die($conn_app->error);
@@ -124,7 +124,7 @@ if (!empty($_POST)) {
                     <tr>
                         <td>Base Model Class Prefix <span class="required">(*)</span></td>
                         <td>
-                            <input type="text" class="form-control" name="base_model_prefix" id="base_model_prefix" value="<?php echo $base_model_prefix; ?>">
+                            <input type="text" class="form-control" name="base_model_suffix" id="base_model_suffix" value="<?php echo $base_model_suffix; ?>">
                         </td>
                     </tr>
                     <tr>
@@ -190,7 +190,7 @@ if (!empty($_POST)) {
                 <tbody>
                     <?php
                     $sql = 'select 
-                    t1.*,t2.module,t2.base_model_prefix,t2.controller_prefix,t2.route_prefix,t2.controller_path,t2.model_path,
+                    t1.*,t2.module,t2.base_model_suffix,t2.controller_path,t2.model_path,
                     t2.view_path,t2.route_path,t2.controller_parent_class 
                     from project as t1 left join project_module as t2 on t1.id=t2.project_id';
                     $aProject = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);

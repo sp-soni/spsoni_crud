@@ -75,13 +75,8 @@ function create_controller_file($conn, $file_path, $template_path, $table, $acti
     include_once  $template_path;
 
     $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-    if (PLATFORM == "laravel-8.x") {
-        $controller_class_name = CONTROLLER_PREFIX . $class_name . "Controller";
-        $model_class_name = $class_name;
-    } else if (PLATFORM == "codeigniter-3.x") {
-        $controller_class_name = CONTROLLER_PREFIX . $class_name;
-        $model_class_name = $class_name . '_model';
-    }
+    $controller_class_name = $class_name . "Controller";
+    $model_class_name = $class_name;
 
     $file_name = $controller_class_name . '.php';
     $file_path .= $file_name;
@@ -155,7 +150,7 @@ function create_model_file($file_path, $template_path, $table, $action)
     $file_name = $class_name . '.php';
     $file_path .= $file_name;
 
-    $txt = generate_model($class_name, BASE_MODEL_PREFIX . $parent_class_name);
+    $txt = generate_model($class_name, BASE_MODEL_SUFFIX . $parent_class_name);
 
     if ($action == "generate") {
         $file = fopen($file_path, "w");
@@ -170,7 +165,7 @@ function create_base_model_file($file_path, $template_path, $table, $action, $co
 
     include_once  $template_path;
 
-    $class_name = BASE_MODEL_PREFIX . str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+    $class_name =  str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . BASE_MODEL_SUFFIX;
     $file_name =  $class_name . '.php';
     $file_path .= $file_name;
 

@@ -14,11 +14,6 @@ function action_generate_crud($conn, $tables, $action = "preview")
     $files['BaseModels'] = action_generate_base_models($conn, $tables, $action);
     $files['Models'] = action_generate_models($conn, $tables, $action);
     $files['Views'] = action_generate_views($conn, $tables, $action);
-    if (is_array($tables)) {
-        $files['Routes'] = action_generate_routes($conn, $tables, $action);
-    } else {
-        $files['Routes'] = '<div class="required">For single table routes can\'t be generated</div>';
-    }
     return $files;
 }
 
@@ -30,11 +25,6 @@ function action_generate_views($conn, $tables, $action = "preview")
     if (!file_exists($path)) {
         mkdir($path);
     }
-    // $path .= 'views/';
-    // if (!file_exists($path)) {
-    //     mkdir($path);
-    // }
-    //empty_directory($path);
 
 
     $template_path = TEMPLATE_PATH . PLATFORM . '/views/';
@@ -66,11 +56,7 @@ function action_generate_models($conn, $tables, $action = "preview")
     if (!file_exists($path)) {
         mkdir($path);
     }
-    // $path .= 'models/';
-    // if (!file_exists($path)) {
-    //     mkdir($path);
-    // }
-    //empty_directory($path);
+
 
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/models/model.php';
@@ -94,11 +80,6 @@ function action_generate_controllers($conn, $tables, $action = "preview")
     if (!file_exists($path)) {
         mkdir($path);
     }
-    // $path .= 'controllers/';
-    // if (!file_exists($path)) {
-    //     mkdir($path);
-    // }
-    //empty_directory($path);
 
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/controller.php';
@@ -158,15 +139,11 @@ function action_generate_base_models($conn, $tables, $action = "preview")
     if (!file_exists($path)) {
         mkdir($path);
     }
-    // $path .= 'models/';
-    // if (!file_exists($path)) {
-    //     mkdir($path);
-    // }
+
     $path .= '_base/';
     if (!file_exists($path)) {
         mkdir($path);
     }
-    //empty_directory($path);
 
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/models/base_model.php';

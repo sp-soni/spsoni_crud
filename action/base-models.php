@@ -4,14 +4,14 @@ require_once dirname(__FILE__, 2) . '/layout/header.php';
 <?php
 $platform = '';
 $db_name = 'product_ecom_laravel';
-$base_model_prefix = '';
+$base_model_suffix = '';
 $table_name = '';
 $aTable = ['user'];
 if (!empty($_POST)) {
 
     $platform = $_POST['platform'];
     // $db_name = $_POST['db_name'];
-    $base_model_prefix = $_POST['base_model_prefix'];
+    $base_model_suffix = $_POST['base_model_suffix'];
     $table_name = $_POST['table_name'];
 
     $error = [];
@@ -23,7 +23,7 @@ if (!empty($_POST)) {
     }
     $_SESSION['error'] = $error;
 
-    define('BASE_MODEL_PREFIX', $base_model_prefix);
+    define('BASE_MODEL_SUFFIX', $base_model_suffix);
     //---needed variables
     if (empty($error)) {
         define('PLATFORM', $platform);
@@ -94,7 +94,7 @@ if (!empty($_POST)) {
                     <tr>
                         <td>Base Model Class Prefix</td>
                         <td>
-                            <input type="text" class="form-control" name="base_model_prefix" id="base_model_prefix" value="<?php echo $base_model_prefix; ?>">
+                            <input type="text" class="form-control" name="base_model_suffix" id="base_model_suffix" value="<?php echo $base_model_suffix; ?>">
                         </td>
                     </tr>
                 </tbody>

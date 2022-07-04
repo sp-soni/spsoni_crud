@@ -6,10 +6,8 @@ require_once dirname(__FILE__, 2) . '/layout/header.php';
 $platform = '';
 $project_id = '';
 $module_id = '';
-$base_model_prefix = '';
-$controller_prefix = '';
+$base_model_suffix = '';
 $table_name = '';
-$route_prefix = '';
 $route_path = '';
 $controller_path = '';
 $model_path = '';
@@ -36,7 +34,7 @@ if (!empty($_POST)) {
 
     if (empty($error)) {
         $sql = 'select 
-         t1.*,t2.module,t2.base_model_prefix,t2.controller_prefix,t2.route_prefix,t2.controller_path,t2.model_path,
+         t1.*,t2.module,t2.base_model_suffix,t2.controller_path,t2.model_path,
          t2.view_path,t2.route_path,t2.controller_parent_class 
          from project as t1 left join project_module as t2 on t1.id=t2.project_id
          where t1.id=' . $project_id . ' and t2.id=' . $module_id;
@@ -44,9 +42,7 @@ if (!empty($_POST)) {
 
         $db_name = $aProjectDetails->db_name;
         $platform = $aProjectDetails->platform;
-        $base_model_prefix = $aProjectDetails->base_model_prefix;
-        $controller_prefix = $aProjectDetails->controller_prefix;
-        $route_prefix = $aProjectDetails->route_prefix;
+        $base_model_suffix = $aProjectDetails->base_model_suffix;
         $controller_path = $aProjectDetails->controller_path;
         $model_path = $aProjectDetails->model_path;
         $view_path = $aProjectDetails->view_path;
@@ -96,10 +92,8 @@ if (!empty($_POST)) {
         define('MODELS_DIR', $model_path . '/');
         define('VIEWS_DIR', $view_path . '/');
         define('ROUTE_DIR', $route_path . '/');
+        define('BASE_MODEL_SUFFIX', $base_model_suffix);
 
-        define('BASE_MODEL_PREFIX', $base_model_prefix);
-        define('CONTROLLER_PREFIX', $controller_prefix);
-        define('ROUTE_PREFIX', $route_prefix);
 
         define('MODULE', $module);
         define('CONTROLLER_PARENT_CLASS', $controller_parent_class);
