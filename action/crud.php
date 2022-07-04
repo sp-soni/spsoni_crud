@@ -14,9 +14,12 @@ $route_path = '';
 $controller_path = '';
 $model_path = '';
 $views_path = '';
+$module = '';
+$controller_parent_class = '';
 
 $aTable = [];
 $aModule = [];
+$error = [];
 if (!empty($_POST)) {
 
     $project_id = $_POST['project_id'];
@@ -31,14 +34,9 @@ if (!empty($_POST)) {
         $error[] = 'Module is requried';
     }
 
-    if (empty($table_name)) {
-        $error[] = 'Database Table is requried';
-    }
-
-
     if (empty($error)) {
         $sql = 'select 
-         t1.*,t2.base_model_prefix,t2.controller_prefix,t2.route_prefix,t2.controller_path,t2.model_path,
+         t1.*,t2.module,t2.base_model_prefix,t2.controller_prefix,t2.route_prefix,t2.controller_path,t2.model_path,
          t2.view_path,t2.route_path,t2.controller_parent_class 
          from project as t1 left join project_module as t2 on t1.id=t2.project_id
          where t1.id=' . $project_id . ' and t2.id=' . $module_id;
@@ -53,13 +51,29 @@ if (!empty($_POST)) {
         $model_path = $aProjectDetails->model_path;
         $view_path = $aProjectDetails->view_path;
         $route_path = $aProjectDetails->route_path;
+        $module = $aProjectDetails->module;
+        $controller_parent_class = $aProjectDetails->controller_parent_class;
 
         define('PLATFORM', $platform);
         define('DATABASE', $db_name);
+
         mysqli_select_db($conn, DATABASE);
         $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
 
-        //debug($controller_path);
+        $sql = 'select id,module from project_module where project_id=' . $project_id;
+        $aModule = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+    }
+
+    if (empty($table_name)) {
+        $error[] = 'Database Table is requried';
+    }
+
+    if (empty($module)) {
+        $error[] = '$module name is empty for the selected project & module, Check table "project_module" in database.';
+    }
+
+    if (empty($controller_parent_class)) {
+        $error[] = '$controller_parent_class is empty for the selected project & module, Check table "project_module" in database.';
     }
 
     //--path
@@ -77,14 +91,19 @@ if (!empty($_POST)) {
 
     $_SESSION['error'] = $error;
 
-    define('CONTROLLERS_DIR', $controller_path . '/');
-    define('MODELS_DIR', $model_path . '/');
-    define('VIEWS_DIR', $view_path . '/');
-    define('ROUTE_DIR', $route_path . '/');
+    if (empty($error)) {
+        define('CONTROLLERS_DIR', $controller_path . '/');
+        define('MODELS_DIR', $model_path . '/');
+        define('VIEWS_DIR', $view_path . '/');
+        define('ROUTE_DIR', $route_path . '/');
 
-    define('BASE_MODEL_PREFIX', $base_model_prefix);
-    define('CONTROLLER_PREFIX', $controller_prefix);
-    define('ROUTE_PREFIX', $route_prefix);
+        define('BASE_MODEL_PREFIX', $base_model_prefix);
+        define('CONTROLLER_PREFIX', $controller_prefix);
+        define('ROUTE_PREFIX', $route_prefix);
+
+        define('MODULE', $module);
+        define('CONTROLLER_PARENT_CLASS', $controller_parent_class);
+    }
 }
 ?>
 <div class="row">

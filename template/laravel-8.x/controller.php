@@ -2,8 +2,8 @@
 
 function generate_controller($className, $model, $table, $title, $form_attributes)
 {
-    $module_name = 'admin';
-    $parent_class = 'App\CustomComponents\AdminAbstractController';
+    $module_name = strtolower(MODULE);
+    $parent_class = CONTROLLER_PARENT_CLASS;  //'App\CustomComponents\AdminAbstractController';
     $module_url = $table;
 
     $form_fileds = '';

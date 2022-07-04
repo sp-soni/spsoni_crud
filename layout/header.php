@@ -16,7 +16,7 @@ require_once ROOT_PATH . '/vendor/helpers.php';
     <link href="<?php echo BASE_URL; ?>assets/select2/select2.min.css" rel="stylesheet">
     <link href="<?php echo BASE_URL; ?>assets/css/style.css" rel="stylesheet">
     <script src="<?php echo BASE_URL; ?>assets/js/jquery.min.js"></script>
-    <script src="<?php echo BASE_URL; ?>assets/js/bootstrap.min.js"></script>
+    <script src="<?php echo BASE_URL; ?>assets/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo BASE_URL; ?>assets/select2/select2.min.js"></script>
     <script>
         var BASE_URL = '<?php echo BASE_URL; ?>';

@@ -12,8 +12,9 @@ function get_modules(project_id, response_container) {
         success: function (response) {
             var html = '<option value="">-Select-</option>';
             for (var item in response) {
+                row = response[item];
                 console.log(response[item]);
-                html += '<option value="' + response[item] + '">' + response[item] + '</option>';
+                html += '<option value="' + row.id + '">' + row.module + '</option>';
             }
             $('#' + response_container).html(html);
         },
