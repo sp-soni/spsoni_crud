@@ -9,7 +9,7 @@ require_once ROOT_PATH . '/vendor/helpers.php';
 <html lang="en">
 
 <head>
-    <title>SpiTech CRUD</title>
+    <title>SpiTech Code Generator</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css" rel="stylesheet">

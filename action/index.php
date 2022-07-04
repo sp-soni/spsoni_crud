@@ -9,6 +9,10 @@ $controller_prefix = '';
 $table_name = '';
 $aTable = [];
 $route_prefix = '';
+
+$controller_path = OUTPUT_PATH . 'controllers/';
+$model_path =  OUTPUT_PATH . 'models/';
+$views_path =  OUTPUT_PATH . 'views/';
 if (!empty($_POST)) {
 
     $platform = $_POST['platform'];
@@ -18,6 +22,10 @@ if (!empty($_POST)) {
     $table_name = $_POST['table_name'];
     $route_prefix = $_POST['route_prefix'];
 
+    $controller_path = $_POST['controller_path'];
+    $model_path = $_POST['model_path'];
+    $views_path = $_POST['views_path'];
+
     $error = [];
     if (empty($_POST['platform'])) {
         $error[] = 'Platform is required';
@@ -25,7 +33,39 @@ if (!empty($_POST)) {
     if (empty($_POST['db_name'])) {
         $error[] = 'Database is required';
     }
+
+    //--path
+    if (!empty($_POST['controller_path'])) {
+        if (!file_exists($_POST['controller_path'])) {
+            $error[] = 'Controller path not found > ' . $_POST['controller_path'];
+        }
+    } else {
+        $error[] = 'Controller path is required';
+    }
+
+    if (!empty($_POST['model_path'])) {
+        if (!file_exists($_POST['model_path'])) {
+            $error[] = 'Model path not found > ' . $_POST['model_path'];
+        }
+    } else {
+        $error[] = 'Model path is required';
+    }
+
+    if (!empty($_POST['views_path'])) {
+        if (!file_exists($_POST['views_path'])) {
+            $error[] = 'View path not found > ' . $_POST['views_path'];
+        }
+    } else {
+        $error[] = 'Model path is required';
+    }
+
+    define('CONTROLLERS_DIR', $controller_path);
+    define('MODELS_DIR', $model_path);
+    define('VIEWS_DIR', $views_path);
+
+
     $_SESSION['error'] = $error;
+
 
     define('BASE_MODEL_PREFIX', $base_model_prefix);
     define('CONTROLLER_PREFIX', $controller_prefix);
@@ -52,7 +92,7 @@ if (!empty($_POST)) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="30%"><span class="required">Platform (*)</span></td>
+                        <td width="30%">Platform <span class="required">(*)</span></td>
                         <td width="70%">
                             <select class="form-control" name="platform">
                                 <option value="">--Select--</option>
@@ -68,7 +108,7 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
-                        <td><span class="required">Database (*)</span></td>
+                        <td>Database <span class="required">(*)</span></td>
                         <td>
                             <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
                                 <option value="">--Select--</option>
@@ -83,7 +123,7 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
-                        <td><span class="required">Table</span></td>
+                        <td>Table</td>
                         <td>
                             <select class="form-control" name="table_name" id="table_name">
                                 <option value="">--Select--</option>
@@ -98,21 +138,42 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
-                        <td>Base Model Class Prefix</td>
+                        <td>Base Model Class Prefix <span class="required">(*)</span></td>
                         <td>
                             <input type="text" class="form-control" name="base_model_prefix" id="base_model_prefix" value="<?php echo $base_model_prefix; ?>">
                         </td>
                     </tr>
                     <tr>
-                        <td>Controller Class Prefix</td>
+                        <td>Controller Class Prefix <span class="required">(*)</span></td>
                         <td>
                             <input type="text" class="form-control" name="controller_prefix" id="controller_prefix" value="<?php echo $controller_prefix; ?>">
                         </td>
                     </tr>
                     <tr>
-                        <td>Route Prefix</td>
+                        <td>Route Prefix <span class="required">(*)</span></td>
                         <td>
                             <input type="text" class="form-control" name="route_prefix" id="route_prefix" value="<?php echo $route_prefix; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Custom Path</th>
+                    </tr>
+                    <tr>
+                        <td>Controller Directory <span class="required">(*)</span></td>
+                        <td>
+                            <input type="text" class="form-control" name="controller_path" id="controller_path" value="<?php echo $controller_path; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Model Directory <span class="required">(*)</span></td>
+                        <td>
+                            <input type="text" class="form-control" name="model_path" id="model_path" value="<?php echo $model_path; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Views Directory <span class="required">(*)</span></td>
+                        <td>
+                            <input type="text" class="form-control" name="views_path" id="views_path" value="<?php echo $views_path; ?>">
                         </td>
                     </tr>
                 </tbody>

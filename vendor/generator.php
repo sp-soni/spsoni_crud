@@ -26,7 +26,7 @@ function action_generate_views($conn, $tables, $action = "preview")
 {
     $files = [];
 
-    $path = OUTPUT_PATH;
+    $path = VIEWS_DIR;
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -62,7 +62,7 @@ function action_generate_models($conn, $tables, $action = "preview")
 {
     $files = [];
 
-    $path = OUTPUT_PATH;
+    $path = MODELS_DIR;
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -90,7 +90,7 @@ function action_generate_controllers($conn, $tables, $action = "preview")
 {
     $files = [];
 
-    $path = OUTPUT_PATH;
+    $path = CONTROLLERS_DIR;
     if (!file_exists($path)) {
         mkdir($path);
     }
@@ -154,7 +154,7 @@ function action_generate_base_models($conn, $tables, $action = "preview")
 
     $files = [];
 
-    $path = OUTPUT_PATH;
+    $path = MODELS_DIR;
     if (!file_exists($path)) {
         mkdir($path);
     }
