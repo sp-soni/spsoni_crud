@@ -30,7 +30,7 @@ function generate_form($form_attributes)
             $enum_list = explode(",", str_replace(array("enum(", ")", "'"), "", $attribute->column_type));
             $form_fields .= '<select class="form-control" id="' . $id . '" name="' . $name . '">' . PHP_EOL;
             foreach ($enum_list as $option_value) {
-                $form_fields .= '<option value="' . $option_value . '">' . ucwords($option_value) . '</option>' . PHP_EOL;
+                $form_fields .= '<option value="' . $option_value . '"  {{ selected_select(\'' . $option_value . '\', \'$' . $name . '\') }}>' . ucwords($option_value) . '</option>' . PHP_EOL;
             }
             $form_fields .= '</select>' . PHP_EOL;
         } else if ($attribute->type == 'date') {  // date
