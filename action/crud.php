@@ -174,10 +174,10 @@ if (!empty($_POST)) {
                 if (empty($error)) {
                     if (!empty($_POST['submit'])) {
                         // generate code
-                        $files = action_generate_crud($conn, $table_name, $action = 'generate');
+                        $files = action_generate_crud($conn, $table_name, 'generate');
                     } else {
                         // preview code
-                        $files = action_generate_crud($conn, $table_name, $action = 'preview');
+                        $files = action_generate_crud($conn, $table_name, 'preview');
                     }
             ?>
                     <table class="table table-bordered">
