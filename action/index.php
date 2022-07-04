@@ -87,7 +87,7 @@ if (!empty($_POST)) {
             <table class="table table-bordered">
                 <thead>
                     <tr class="bg-parimary">
-                        <th colspan="2">CRUD Generator</th>
+                        <th colspan="2">Project List</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -113,7 +113,7 @@ if (!empty($_POST)) {
                             <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
                                 <option value="">--Select--</option>
                                 <?php
-                                foreach ($aDatabase as $row) { ?>
+                                foreach ($aProject as $row) { ?>
                                     <option value="<?php echo $row; ?>" <?php selected_select($row, $db_name) ?>><?php echo $row; ?></option>
 
                                 <?php

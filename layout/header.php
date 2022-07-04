@@ -35,7 +35,8 @@ require_once ROOT_PATH . '/vendor/helpers.php';
         <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-2">
                 <div class="btn-group-vertical">
-                    <a href="<?php echo BASE_URL; ?>action/" class="btn btn-primary">CRUD</a>
+                    <a href="<?php echo BASE_URL; ?>action/" class="btn btn-primary">Project</a>
+                    <a href="<?php echo BASE_URL; ?>action/crud.php" class="btn btn-primary">CRUD</a>
                     <a href="<?php echo BASE_URL; ?>action/base-models.php" class="btn btn-warning">Base Models</a>
                     <a href="<?php echo BASE_URL; ?>action/routes.php" class="btn btn-success">Routes</a>
                     <a href="<?php echo BASE_URL; ?>action/models.php" class="btn btn-primary">Models</a>

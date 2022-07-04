@@ -30,11 +30,11 @@ function action_generate_views($conn, $tables, $action = "preview")
     if (!file_exists($path)) {
         mkdir($path);
     }
-    $path .= 'views/';
-    if (!file_exists($path)) {
-        mkdir($path);
-    }
-    empty_directory($path);
+    // $path .= 'views/';
+    // if (!file_exists($path)) {
+    //     mkdir($path);
+    // }
+    //empty_directory($path);
 
 
     $template_path = TEMPLATE_PATH . PLATFORM . '/views/';
@@ -66,11 +66,11 @@ function action_generate_models($conn, $tables, $action = "preview")
     if (!file_exists($path)) {
         mkdir($path);
     }
-    $path .= 'models/';
-    if (!file_exists($path)) {
-        mkdir($path);
-    }
-    empty_directory($path);
+    // $path .= 'models/';
+    // if (!file_exists($path)) {
+    //     mkdir($path);
+    // }
+    //empty_directory($path);
 
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/models/model.php';
@@ -94,11 +94,11 @@ function action_generate_controllers($conn, $tables, $action = "preview")
     if (!file_exists($path)) {
         mkdir($path);
     }
-    $path .= 'controllers/';
-    if (!file_exists($path)) {
-        mkdir($path);
-    }
-    empty_directory($path);
+    // $path .= 'controllers/';
+    // if (!file_exists($path)) {
+    //     mkdir($path);
+    // }
+    //empty_directory($path);
 
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/controller.php';
@@ -127,7 +127,7 @@ function action_generate_routes($conn, $aTable, $action = "preview")
     if (!file_exists($path)) {
         mkdir($path);
     }
-    empty_directory($path);
+    //empty_directory($path);
 
     if (PLATFORM == 'laravel-8.x') {
         $file_name = 'web.php';
@@ -158,15 +158,15 @@ function action_generate_base_models($conn, $tables, $action = "preview")
     if (!file_exists($path)) {
         mkdir($path);
     }
-    $path .= 'models/';
-    if (!file_exists($path)) {
-        mkdir($path);
-    }
+    // $path .= 'models/';
+    // if (!file_exists($path)) {
+    //     mkdir($path);
+    // }
     $path .= '_base/';
     if (!file_exists($path)) {
         mkdir($path);
     }
-    empty_directory($path);
+    //empty_directory($path);
 
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/models/base_model.php';
