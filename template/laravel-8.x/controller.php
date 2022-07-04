@@ -3,6 +3,7 @@
 function generate_controller($className, $model, $table, $title, $form_attributes)
 {
     $module_name = 'admin';
+    $parent_class = 'App\CustomComponents\AdminAbstractController';
     $module_url = $table;
 
     $form_fileds = '';
@@ -12,14 +13,14 @@ function generate_controller($className, $model, $table, $title, $form_attribute
     }
 
     $template = '<?php
-namespace Modules\Admin\Http\Controllers;
+namespace Modules\\' . ucwords($module_name) . '\Http\Controllers;
 
-use App\CustomComponents\AdminAbstractController;
+use ' . $parent_class . ';
 use App\Models\\' . $model . ';' . PHP_EOL;
 
     $template .= 'use Illuminate\Http\Request;
 
-class ' . $className . 'Controller extends AdminAbstractController
+class ' . $className . 'Controller extends ' . basename($parent_class) . '
 {
 
     public function index(Request $request)

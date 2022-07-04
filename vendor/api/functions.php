@@ -14,3 +14,14 @@ function get_tables()
     $data = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
     send_response($data);
 }
+
+
+function get_modules()
+{
+    global $$conn_app;
+
+    $project_id = $_POST['project_id'];
+    $sql = 'select id,module from project_module where project_id=' . $project_id;
+    $data = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+    send_response($data);
+}

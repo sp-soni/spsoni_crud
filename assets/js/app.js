@@ -1,11 +1,35 @@
 
+function load_tables_modules(project_id, table_container, modules_container) {
+    get_tables(project_id, table_container);
+    get_modules(project_id, modules_container);
+}
+
+function get_modules(project_id, response_container) {
+    $.ajax({
+        url: API_BASE_URL + '?action=get_modules',
+        type: 'POST',
+        data: { project_id: project_id },
+        success: function (response) {
+            var html = '<option value="">-Select-</option>';
+            for (var item in response) {
+                console.log(response[item]);
+                html += '<option value="' + response[item] + '">' + response[item] + '</option>';
+            }
+            $('#' + response_container).html(html);
+        },
+        error: function (error) {
+            console.log(error)
+        }
+    });
+}
+
 function get_tables(project_id, response_container) {
     $.ajax({
         url: API_BASE_URL + '?action=get_tables',
         type: 'POST',
         data: { project_id: project_id },
         success: function (response) {
-            var html = '<option value="">--Select--</option>';
+            var html = '<option value="">-Select-</option>';
             for (var item in response) {
                 console.log(response[item]);
                 html += '<option value="' + response[item] + '">' + response[item] + '</option>';

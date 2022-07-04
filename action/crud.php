@@ -5,24 +5,43 @@ require_once dirname(__FILE__, 2) . '/layout/header.php';
 <?php
 $platform = '';
 $project_id = '';
+$module_id = '';
 $base_model_prefix = '';
 $controller_prefix = '';
 $table_name = '';
-$aTable = [];
 $route_prefix = '';
 $route_path = '';
-
 $controller_path = '';
 $model_path = '';
 $views_path = '';
+
+$aTable = [];
+$aModule = [];
 if (!empty($_POST)) {
 
     $project_id = $_POST['project_id'];
+    $module_id = $_POST['module_id'];
     $table_name = $_POST['table_name'];
 
-    $error = [];
-    if (!empty($project_id)) {
-        $sql = 'select * from project where id=' . $project_id;
+    if (empty($project_id)) {
+        $error[] = 'Project is requried';
+    }
+
+    if (empty($module_id)) {
+        $error[] = 'Module is requried';
+    }
+
+    if (empty($table_name)) {
+        $error[] = 'Database Table is requried';
+    }
+
+
+    if (empty($error)) {
+        $sql = 'select 
+         t1.*,t2.base_model_prefix,t2.controller_prefix,t2.route_prefix,t2.controller_path,t2.model_path,
+         t2.view_path,t2.route_path,t2.controller_parent_class 
+         from project as t1 left join project_module as t2 on t1.id=t2.project_id
+         where t1.id=' . $project_id . ' and t2.id=' . $module_id;
         $aProjectDetails = $conn_app->query($sql)->fetch_object();
 
         $db_name = $aProjectDetails->db_name;
@@ -34,11 +53,14 @@ if (!empty($_POST)) {
         $model_path = $aProjectDetails->model_path;
         $view_path = $aProjectDetails->view_path;
         $route_path = $aProjectDetails->route_path;
-        //debug($controller_path);
-    } else {
-        $error[] = 'Project is required';
-    }
 
+        define('PLATFORM', $platform);
+        define('DATABASE', $db_name);
+        mysqli_select_db($conn, DATABASE);
+        $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+
+        //debug($controller_path);
+    }
 
     //--path
     if (!file_exists($controller_path)) {
@@ -63,13 +85,6 @@ if (!empty($_POST)) {
     define('BASE_MODEL_PREFIX', $base_model_prefix);
     define('CONTROLLER_PREFIX', $controller_prefix);
     define('ROUTE_PREFIX', $route_prefix);
-    //---needed variables
-    if (empty($error)) {
-        define('PLATFORM', $platform);
-        define('DATABASE', $db_name);
-        mysqli_select_db($conn, DATABASE);
-        $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
-    }
 }
 ?>
 <div class="row">
@@ -87,7 +102,7 @@ if (!empty($_POST)) {
                     <tr>
                         <td>Project <span class="required">(*)</span></td>
                         <td>
-                            <select class="form-control" name="project_id" id="project_id" onchange="get_tables(this.value,'table_name')">
+                            <select class="form-control" name="project_id" id="project_id" onchange="load_tables_modules(this.value,'table_name','module_id')">
                                 <option value="">--Select--</option>
                                 <?php
                                 foreach ($aProject as $row) {
@@ -101,10 +116,25 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
+                        <td>Project Module</td>
+                        <td>
+                            <select class="form-control" name="module_id" id="module_id">
+                                <option value="">-Select-</option>
+                                <?php
+                                foreach ($aModule as $row) { ?>
+                                    <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $module_id) ?>><?php echo $row['module']; ?></option>
+
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Table</td>
                         <td>
                             <select class="form-control" name="table_name" id="table_name">
-                                <option value="">--Select--</option>
+                                <option value="">-Select-</option>
                                 <?php
                                 foreach ($aTable as $row) { ?>
                                     <option value="<?php echo $row; ?>" <?php selected_select($row, $table_name) ?>><?php echo $row; ?></option>
@@ -135,15 +165,12 @@ if (!empty($_POST)) {
             <?php
             if (!empty($_POST)) {
                 if (empty($error)) {
-                    if (!empty($table_name)) {
-                        $aTable = $table_name;
-                    }
                     if (!empty($_POST['submit'])) {
                         // generate code
-                        $files = action_generate_crud($conn, $aTable, $action = 'generate');
+                        $files = action_generate_crud($conn, $table_name, $action = 'generate');
                     } else {
                         // preview code
-                        $files = action_generate_crud($conn, $aTable, $action = 'preview');
+                        $files = action_generate_crud($conn, $table_name, $action = 'preview');
                     }
             ?>
                     <h3>Output</h3>
