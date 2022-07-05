@@ -69,7 +69,7 @@ function prepare_url($base_url, $custom_key)
     return $url;
 }
 
-function create_controller_file($conn, $file_path, $template_path, $table, $action)
+function create_controller_file($conn, $dir_path, $template_path, $table, $action)
 {
 
     include_once  $template_path;
@@ -79,18 +79,14 @@ function create_controller_file($conn, $file_path, $template_path, $table, $acti
     $model_class_name = $class_name;
 
     $file_name = $controller_class_name . '.php';
-    $file_name_bkp = $controller_class_name . '_bkp.php';
-    $file_path .= $file_name;
-    $file_path_bkp .= $file_name_bkp;
+    $file_path = $dir_path . $file_name;
 
     $form_attributes = table_attributes($conn, $table, PLATFORM);
 
     if ($action == "generate") {
         $title = ucwords(str_replace('_', ' ', $table));
         $txt = generate_controller($class_name, $model_class_name, $table, $title, $form_attributes);
-        if (file_exists($file_path)) { // keep backup
-            rename($file_path, $file_path_bkp);
-        }
+        create_backup($dir_path, $file_name);
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);
@@ -99,7 +95,20 @@ function create_controller_file($conn, $file_path, $template_path, $table, $acti
     return $file_path;
 }
 
-function create_view_file($conn, $file_path, $template_path, $table, $action)
+function create_backup($dir_path, $file_name)
+{
+    $source = $dir_path . $file_name;
+    if (file_exists($source)) { // keep backup
+        $backup_dir = $dir_path . '_bkp';
+        if (!file_exists($backup_dir)) {
+            mkdir($backup_dir);
+        }
+        $destination = $backup_dir . DIRECTORY_SEPARATOR . $file_name;
+        copy($source, $destination);
+    }
+}
+
+function create_view_file($conn, $dir_path, $template_path, $table, $action)
 {
 
     include_once  $template_path . 'index.php';
@@ -112,11 +121,12 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
     if (PLATFORM == "laravel-8.x") {
         $file_name = 'index.blade.php';
     }
-    $index_path = $file_path . $file_name;
+    $index_path = $dir_path . $file_name;
     $files[0] = $index_path;
     $txt = generate_index($form_attributes);
 
     if ($action == "generate") {
+        create_backup($dir_path, $file_name);
         $file = fopen($index_path, "w");
         fwrite($file, $txt);
         fclose($file);
@@ -127,11 +137,12 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
     if (PLATFORM == "laravel-8.x") {
         $file_name = 'add.blade.php';
     }
-    $form_path = $file_path . $file_name;
+    $form_path = $dir_path . $file_name;
     $files[1] = $form_path;
     $txt = generate_form($form_attributes);
 
     if ($action == "generate") {
+        create_backup($dir_path, $file_name);
         $file = fopen($form_path, "w");
         fwrite($file, $txt);
         fclose($file);
@@ -140,7 +151,7 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
     return $files;
 }
 
-function create_model_file($file_path, $template_path, $table, $action)
+function create_model_file($dir_path, $template_path, $table, $action)
 {
 
     include_once  $template_path;
@@ -149,12 +160,13 @@ function create_model_file($file_path, $template_path, $table, $action)
     $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
 
     $file_name = $class_name . '.php';
-    $file_path .= $file_name;
+    $file_path = $dir_path . $file_name;
 
     $table_attributes = table_attributes($_SESSION['conn'], $table, PLATFORM);
     $txt = generate_model($class_name, $table, $class_name . BASE_MODEL_SUFFIX, $table_attributes);
 
     if ($action == "generate") {
+        create_backup($dir_path, $file_name);
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);
@@ -162,20 +174,21 @@ function create_model_file($file_path, $template_path, $table, $action)
     return $file_path;
 }
 
-function create_base_model_file($file_path, $template_path, $table, $action, $conn)
+function create_base_model_file($dir_path, $template_path, $table, $action, $conn)
 {
 
     include_once  $template_path;
 
     $class_name =  str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . BASE_MODEL_SUFFIX;
     $file_name =  $class_name . '.php';
-    $file_path .= $file_name;
+    $file_path = $dir_path . $file_name;
 
     $columns = table_columns($conn, $table);
     $table_attributes = table_attributes($conn, $table, PLATFORM);
     $txt = generate_base_model($class_name, $columns, $table, $table_attributes);
 
     if ($action == "generate") {
+        create_backup($dir_path, $file_name);
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);
