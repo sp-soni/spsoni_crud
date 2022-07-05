@@ -21,7 +21,7 @@ function generate_model($className, $table, $parentClass, $table_attributes = []
         public function add()
         {
             $edit_id = $this->input->post(\'id\');
-            $this->form_validation->set_rules(parent::rules());
+            $this->form_validation->set_rules(parent::rules($edit_id));
             if ($this->form_validation->run() == TRUE) {
                 $this->id = $edit_id;' . PHP_EOL;
 
@@ -34,9 +34,11 @@ function generate_model($className, $table, $parentClass, $table_attributes = []
                     user_action(\'' . $title . ' details saved.\', \'PK :\' . $this->id);                  
                     $this->response[\'message\'] = \'' . $title . ' saved successfully\';
                 } else {
+                    $this->response[\'is_error\'] = 1;
                     $this->response[\'message\'] = $this->error();
                 }
             } else {
+                $this->response[\'is_error\'] = 1;
                 $this->response[\'message\'] = validation_errors();
             }
             return $this->response;

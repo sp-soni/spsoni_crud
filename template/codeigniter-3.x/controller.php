@@ -2,7 +2,8 @@
 
 function generate_controller($className, $model, $table, $title, $form_attributes)
 {
-    $template = '<?php
+	$module_url = strtolower(MODULE) . '/' . $table;
+	$template = '<?php
 if (!defined(\'BASEPATH\')) exit(\'No direct script access allowed\');
 
 class ' . $className . 'Controller extends MY_Controller
@@ -10,7 +11,7 @@ class ' . $className . 'Controller extends MY_Controller
 	function __construct()
 	{
 		parent::__construct();
-		parent::setModule(\'' . $table . '\');
+		parent::setModule(\'' . $module_url . '\');
 		$this->load->model(\'' . $model . '\', \'oMainModel\');
 	}
 
@@ -50,5 +51,5 @@ class ' . $className . 'Controller extends MY_Controller
 	}
 }
     ';
-    return $template;
+	return $template;
 }

@@ -21,7 +21,7 @@ function generate_base_model($className, $columns, $table, $table_attributes)
 ";
 
     $methods = PHP_EOL . '
-    public function rules()
+    public function rules($pk)
 	{
 		$rules = [' . PHP_EOL;
 

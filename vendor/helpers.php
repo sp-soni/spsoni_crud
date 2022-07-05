@@ -241,6 +241,7 @@ function table_attributes($conn, $table, $platform)
             $temp->label = ucwords(str_replace('_', ' ', $row['COLUMN_NAME']));
             $temp->type = $row['DATA_TYPE'];
             $temp->key = $row['COLUMN_KEY'];
+            $temp->comment = $row['COLUMN_COMMENT'];  // used for custom validation like type=email
             $temp->rules = get_validation_rules($row, $platform, $table);
             //$columns[] = $row;
             $columns[] = $temp;
@@ -252,19 +253,68 @@ function table_attributes($conn, $table, $platform)
 
 function get_validation_rules($row, $platform, $table_name)
 {
-    $rules = [];
+    $common_rules = [];
+    $laravel8_rules = [];
+    $codeignitor3_rules = [];
+
+    // required
     if ($row['IS_NULLABLE'] == 'NO') {
-        $rules[] = 'required';
+        $common_rules[] = 'required';
     }
-    if ($row['CHARACTER_MAXIMUM_LENGTH'] > 0) {
-        if ($platform == 'laravel-8.x') {
-            $rules[] = 'max:' . $row['CHARACTER_MAXIMUM_LENGTH'];
-            if ($row['COLUMN_KEY'] == "UNI") {
-                $rules[] = 'unique:' . $table_name;
-            }
-        } else if ($platform == 'codeigniter-3.x') {
-            $rules[] = 'max_length[' . $row['CHARACTER_MAXIMUM_LENGTH'] . ']';
-        }
+
+    // platform specific rules
+    if ($platform == 'laravel-8.x') {
+        $laravel8_rules = laravel8_validation_rules($row, $table_name);
+    } else if ($platform == 'codeigniter-3.x') {
+        $codeignitor3_rules = codeignitor3_validation_rules($row, $table_name);
     }
+
+    $rules = array_merge($common_rules, $laravel8_rules, $codeignitor3_rules);
     return implode('|', $rules);
+}
+
+
+function laravel8_validation_rules($row, $table_name)
+{
+    //trim|xss_clean
+    if ($row['COLUMN_KEY'] == "UNI") {
+        $rules[] = 'unique:' . $table_name;
+    }
+
+    //email
+    $emailType = ['email', 'email_address', 'email_id'];
+    if (in_array($row['COLUMN_COMMENT'], $emailType)) {
+        $rules[] = 'email';
+    }
+
+    //--max length
+    if ($row['CHARACTER_MAXIMUM_LENGTH'] > 0 && $row['CHARACTER_MAXIMUM_LENGTH'] < 400) {
+        $rules[] = 'max:' . $row['CHARACTER_MAXIMUM_LENGTH'];
+    }
+
+    return $rules;
+}
+
+function codeignitor3_validation_rules($row, $table_name)
+{
+    //trim|xss_clean
+    $rules[] = 'trim';
+    $rules[] = 'xss_clean';
+
+    //email & phone
+    $emailType = ['email', 'email_address', 'email_id'];
+    $phoneType = ['mobile', 'mobile_number', 'phone', 'contact'];
+
+    if (in_array($row['COLUMN_COMMENT'], $emailType)) {
+        $rules[] = 'valid_unique_email[' . $table_name . ',' . $row['COLUMN_NAME'] . ',id,\'.$pk.\']';
+    } else if (in_array($row['COLUMN_COMMENT'], $phoneType)) {
+        $rules[] = 'valid_unique_mobile[' . $table_name . ',' . $row['COLUMN_NAME'] . ',id,\'.$pk.\']';
+    }
+
+    //--max length
+    if ($row['CHARACTER_MAXIMUM_LENGTH'] > 0 && $row['CHARACTER_MAXIMUM_LENGTH'] < 400) {
+        $rules[] = 'max_length[' . $row['CHARACTER_MAXIMUM_LENGTH'] . ']';
+    }
+
+    return $rules;
 }
