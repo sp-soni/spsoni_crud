@@ -17,13 +17,13 @@ $controller_parent_class = '';
 $aTable = [];
 $aModule = [];
 $error = [];
-$choice = ['all'];
+$choice = [];
 if (!empty($_POST)) {
 
     $project_id = $_POST['project_id'];
     $module_id = $_POST['module_id'];
     $table_name = $_POST['table_name'];
-    $choice = $_POST['choice'];
+
 
     if (empty($project_id)) {
         $error[] = 'Project is requried';
@@ -32,6 +32,8 @@ if (!empty($_POST)) {
     if (empty($module_id)) {
         $error[] = 'Module is requried';
     }
+
+
 
     if (empty($error)) {
         $sql = 'select 
@@ -84,6 +86,17 @@ if (!empty($_POST)) {
         if (!file_exists($view_path)) {
             $error[] = 'View path not found > ' . $view_path;
         }
+
+        if (empty($_POST['choice'])) {
+            $error[] = 'Choice is requried';
+        } else {
+            $choice = $_POST['choice'];
+        }
+
+        if (empty($table_name)) {
+            $error[] = 'Database Table is requried';
+        }
+
         if (empty($error)) {
             define('CONTROLLERS_DIR', $controller_path . '/');
             define('MODELS_DIR', $model_path . '/');
@@ -110,7 +123,7 @@ if (!empty($_POST)) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Project <span class="required">(*)</span></td>
+                        <td width="15%">Project <span class="required">(*)</span></td>
                         <td>
                             <select class="form-control" name="project_id" id="project_id" onchange="load_tables_modules(this.value,'table_name','module_id')">
                                 <option value="">--Select--</option>
@@ -159,13 +172,17 @@ if (!empty($_POST)) {
                     <tr>
                         <td>Choice <span class="required">(*)</span></td>
                         <td>
-                            <ul type="none">
-                                <li><input type="checkbox" name="choice[]" value="all" <?php set_choice('all'); ?>>All</li>
+                            <ul type="none" class="list-group list-group-flush">
+                                <li><input id="checkAll" type="checkbox" name="choice[]" value="all" <?php set_choice('all'); ?>>All</li>
+
+                            </ul>
+                            <ul type="none" class="list-group list-group-flush" id="list-wrapper">
                                 <li><input type="checkbox" name="choice[]" value="controller" <?php set_choice('controller'); ?>>Controller</li>
                                 <li><input type="checkbox" name="choice[]" value="base_model" <?php set_choice('base_model'); ?>>Base Model</li>
                                 <li><input type="checkbox" name="choice[]" value="model" <?php set_choice('model'); ?>>Model</li>
                                 <li><input type="checkbox" name="choice[]" value="view" <?php set_choice('view'); ?>>Views</li>
                             </ul>
+
                         </td>
                     </tr>
                 </tbody>
@@ -252,11 +269,59 @@ if (!empty($_POST)) {
 function set_choice($key)
 {
     global $choice;
-    if (in_array($key, $choice)) {
+    if (!empty($choice) && is_array($choice) && in_array($key, $choice)) {
         echo  " checked";
     }
 }
 ?>
+<script>
+    $(function() {
+        // ID selector on Master Checkbox
+        var masterCheck = $("#checkAll");
+        // ID selector on Items Container
+        var listCheckItems = $("#list-wrapper :checkbox");
+
+        // Click Event on Master Check
+        masterCheck.on("click", function() {
+            var isMasterChecked = $(this).is(":checked");
+            listCheckItems.prop("checked", isMasterChecked);
+            getSelectedItems();
+        });
+
+        // Change Event on each item checkbox
+        listCheckItems.on("change", function() {
+            // Total Checkboxes in list
+            var totalItems = listCheckItems.length;
+            // Total Checked Checkboxes in list
+            var checkedItems = listCheckItems.filter(":checked").length;
+
+            //If all are checked
+            if (totalItems == checkedItems) {
+                masterCheck.prop("indeterminate", false);
+                masterCheck.prop("checked", true);
+            }
+            // Not all but only some are checked
+            else if (checkedItems > 0 && checkedItems < totalItems) {
+                masterCheck.prop("indeterminate", true);
+            }
+            //If none is checked
+            else {
+                masterCheck.prop("indeterminate", false);
+                masterCheck.prop("checked", false);
+            }
+            getSelectedItems();
+        });
+
+        function getSelectedItems() {
+            var getCheckedValues = [];
+            getCheckedValues = [];
+            listCheckItems.filter(":checked").each(function() {
+                getCheckedValues.push($(this).val());
+            });
+            $("#selected-values").html(JSON.stringify(getCheckedValues));
+        }
+    });
+</script>
 <?php
 require_once dirname(__FILE__, 2) . '/layout/footer.php';
 ?>
