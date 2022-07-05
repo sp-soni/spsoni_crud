@@ -13,6 +13,10 @@ function get_tables()
     mysqli_select_db($conn, $aProjectDetails->db_name) or die($aProjectDetails->db_name . ' not connecting');
 
     $data = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+
+    $excludeTables = ['module', 'module_group', 'users', 'user', 'user_action'];
+
+    $data = array_diff($data, $excludeTables);
     send_response($data);
 }
 
