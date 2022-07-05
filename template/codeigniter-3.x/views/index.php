@@ -1,6 +1,6 @@
 <?php
 
-function generate_index($form_attributes)
+function generate_index($form_attributes, $module_url)
 {
     //--Preparing Search Fields
     $thead = '<tr>';

@@ -53,6 +53,17 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
         ];
         return view(\'' . $module_name . '::' . $module_url . '.add\', $data);
     }
+
+    public function delete($id)
+    {
+        $model  = ' . $model . '::find($id);
+        if(!empty($model->id)){
+            if($model->delete()){
+                return redirect("/' . $module_name . '/' . $module_url . '")->withSuccess(\'' . $title . ' deleted successfully\');
+            }          
+            
+        }
+    }
 }';
     return $template;
 }

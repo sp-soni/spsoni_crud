@@ -1,6 +1,6 @@
 <?php
 
-function generate_index($form_attributes)
+function generate_index($form_attributes, $module_url)
 {
     //--Preparing Search Fields
     $thead = '<tr>';
@@ -93,7 +93,8 @@ function generate_index($form_attributes)
     }
 
     $tbody .= '<td class="action">' . PHP_EOL;
-    $tbody .= '<a href="{{ url($module_url . \'/add/\' . $item->id) }}" class="btn btn-sm btn-primary">Edit</a>' . PHP_EOL;
+    //$tbody .= '<a href="{{ url($module_url . \'/add/\' . $item->id) }}" class="btn btn-sm btn-primary">Edit</a>' . PHP_EOL;
+    $tbody .= '{{ html_button(["btn"=>"edit_delete","id"=>"$item->id","url"=>"' . $module_url . '"]) }}' . PHP_EOL;
     $tbody .= '</td>
     </tr>
     @endforeach

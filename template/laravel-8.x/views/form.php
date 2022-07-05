@@ -1,5 +1,5 @@
 <?php
-function generate_form($form_attributes)
+function generate_form($form_attributes, $module_url)
 {
     //debug($form_attributes, 0);
     $form_fields = '';
@@ -56,8 +56,8 @@ function generate_form($form_attributes)
     <form method="post">
         ' . $form_fields . '
         <div class="mb-3 row">
-            <div class="offset-sm-2 col-sm-6">
-                <button type="submit" class="btn btn-success">Save</button>
+            <div class="offset-sm-2 col-sm-6">               
+                {{ html_button(["url"=>"' . $module_url . '"]) }}
             </div>
         </div>
     </form>

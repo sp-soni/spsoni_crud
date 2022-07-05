@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
 
-    if ($table == 'users') {
+    if ($table == 'user') {
         $template .= 'use Illuminate\Foundation\Auth\User as Authenticatable;' . PHP_EOL;
         $template .= PHP_EOL . 'abstract class ' . $className . ' extends Authenticatable' . PHP_EOL;
     } else {
@@ -72,6 +72,11 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
         return $data;
     }' . PHP_EOL;
 
+    $template .= '
+    public function delete_record($id){
+        //Delete Actions
+    }
+    ';
     $template .= PHP_EOL . '}';
     return $template;
 }

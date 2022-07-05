@@ -114,6 +114,8 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
     include_once  $template_path . 'index.php';
     include_once  $template_path . 'form.php';
 
+    $module_url = strtolower(MODULE) . '/' . $table;
+
     $form_attributes = table_attributes($conn, $table, PLATFORM);
 
     //--index.php
@@ -123,7 +125,7 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
     }
     $index_path = $dir_path . $file_name;
     $files[0] = $index_path;
-    $txt = generate_index($form_attributes);
+    $txt = generate_index($form_attributes, $module_url);
 
     if ($action == "generate") {
         create_backup($dir_path, $file_name);
@@ -139,7 +141,7 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
     }
     $form_path = $dir_path . $file_name;
     $files[1] = $form_path;
-    $txt = generate_form($form_attributes);
+    $txt = generate_form($form_attributes, $module_url);
 
     if ($action == "generate") {
         create_backup($dir_path, $file_name);
