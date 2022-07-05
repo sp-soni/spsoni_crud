@@ -36,12 +36,15 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
     {
         $model  = ' . $model . '::find($id);
         if ($request->method() == "POST") {
+            $action = \'' . $title . ' updated\';
             if (empty($model->id)) {
                 $model  = new ' . $model . '();
+                $action = \'' . $title . ' created\';
             }
             $request->validate($model->rules());
             ' . $form_fileds . '
             if ($model->save()) {
+                save_user_action($action, "PK :" . $model->id);
                 return redirect("/' . $module_name . '/' . $module_url . '")->withSuccess(\'' . $title . ' saved successfully\');
             }
         }
@@ -59,6 +62,7 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
         $model  = ' . $model . '::find($id);
         if(!empty($model->id)){
             if($model->delete()){
+                save_user_action(\'' . $title . ' deleted\', "PK :" . $model->id);
                 return redirect("/' . $module_name . '/' . $module_url . '")->withSuccess(\'' . $title . ' deleted successfully\');
             }          
             

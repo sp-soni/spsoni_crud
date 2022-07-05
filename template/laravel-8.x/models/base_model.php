@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
 
-    if ($table == 'user') {
+    if ($table == 'users') {
         $template .= 'use Illuminate\Foundation\Auth\User as Authenticatable;' . PHP_EOL;
         $template .= PHP_EOL . 'abstract class ' . $className . ' extends Authenticatable' . PHP_EOL;
     } else {
