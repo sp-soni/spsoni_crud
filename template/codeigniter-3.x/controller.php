@@ -1,55 +1,54 @@
 <?php
 
-function generate_controller($className, $model, $table, $title)
+function generate_controller($className, $model, $table, $title, $form_attributes)
 {
-    //custructor 
-    $constructor = "\tfunction __construct()" . PHP_EOL;
-    $constructor .= "\t{" . PHP_EOL;
-    $constructor .= "\t\tparent::__construct();" . PHP_EOL;
-    $constructor .= "\t\t" . "parent::setModule(4);" . PHP_EOL;
-    $constructor .= "\t\t" . '$this->load->model(\'' . $model . '\', \'oMainModel\');' . PHP_EOL;
-    $constructor .= "\t}
-";
+    $template = '<?php
+if (!defined(\'BASEPATH\')) exit(\'No direct script access allowed\');
 
-    $methods = '
-public function index()
-{' . PHP_EOL;
-    $methods .= "\t" . '$data[\'title\'] = \'' . $title . ' List\';' . PHP_EOL;
-    $methods .= "\t" . '$data[\'breadcrumb\'] = array(\'\' => $data[\'title\']);' . PHP_EOL;
-    $methods .= "\t" . 'load_admin_view(\'' . $table . '/index\', $data);' . PHP_EOL;
-    $methods .= "\t" . 'hide_message();' . PHP_EOL;
-    $methods .= '
-}' . PHP_EOL;
+class ' . $className . 'Controller extends MY_Controller
+{
+	function __construct()
+	{
+		parent::__construct();
+		parent::setModule(\'' . $table . '\');
+		$this->load->model(\'' . $model . '\', \'oMainModel\');
+	}
 
-    $methods .= '
-public function add($edit_id=0)
-{' . PHP_EOL;
-    $methods .= "\t" . '$data[\'title\'] = \'' . $title . ' Manage\';' . PHP_EOL;
-    $methods .= "\t" . '$data[\'breadcrumb\'] = array(\'\' => $data[\'title\']);' . PHP_EOL;
-    $methods .= "\t" . 'load_admin_view(\'' . $table . '/form\', $data);' . PHP_EOL;
-    $methods .= "\t" . 'hide_message();' . PHP_EOL;
-    $methods .= '
-}' . PHP_EOL;
+	public function index()
+	{
+		$data[\'aGrid\'] = $this->oMainModel->list();
+		$data[\'title\'] = \'' . $title . ' List\';
+		$data[\'breadcrumb\'] = array(\'\' => $data[\'title\']);
+		load_admin_view(\'' . $table . '/index\', $data);
+		hide_message();
+	}
 
-    $methods .= '
-public function delete($delete=0)
-{' . PHP_EOL;
+	public function add($edit_id = 0)
+	{
+		if (isset($_POST[\'submitform\'])) {
+			$response = $this->oMainModel->add();
+			if ($response[\'is_error\'] == 0) {
+				set_message($response[\'message\']);
+				redirect(config_item(\'module\')->module_url);
+			} else {
+				set_message($response[\'message\'], \'e\');
+			}
+		}
+		$aContentInfo = get_row(\'' . $table . '\', array("id" => $edit_id));
+		$data[\'aContentInfo\'] = $aContentInfo;		
+		$data[\'title\'] = \'' . $title . ' Manage\';
+		$data[\'breadcrumb\'] = array(config_item(\'module\')->module_url => \'' . $title . ' List\', "" => $data[\'title\']);
+		load_admin_view(\'' . $table . '/form\', $data);
+		hide_message();
+	}
 
-    $methods .= '
-}' . PHP_EOL;
-
-    //Template Prepearation
-    $template = "
-<?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
-
-class $className extends MY_Controller
-{" . PHP_EOL;
-
-    $template .= $constructor . $methods;
-
-    $template .= "
+	function delete($delete_id = 0)
+	{
+		$this->oMainModel->delete($delete_id);
+		set_message("' . $title . ' deleted succesffully");
+		redirect(config_item(\'module\')->module_url);
+	}
 }
-";
+    ';
     return $template;
 }

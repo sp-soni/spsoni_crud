@@ -1,6 +1,6 @@
 <?php
 
-function generate_model($className, $parentClass)
+function generate_model($className, $table, $parentClass, $table_attributes = [])
 {
 
     $template = '<?php

@@ -17,11 +17,13 @@ $controller_parent_class = '';
 $aTable = [];
 $aModule = [];
 $error = [];
+$choice = [];
 if (!empty($_POST)) {
 
     $project_id = $_POST['project_id'];
     $module_id = $_POST['module_id'];
     $table_name = $_POST['table_name'];
+    $choice = $_POST['choice'];
 
     if (empty($project_id)) {
         $error[] = 'Project is requried';
@@ -117,7 +119,7 @@ if (!empty($_POST)) {
                                 <?php
                                 foreach ($aProject as $row) {
                                 ?>
-                                    <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $project_id) ?>><?php echo $row['project_name']; ?></option>
+                                    <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $project_id) ?>><?php echo $row['project_name']; ?> - <?php echo $row['platform']; ?></option>
 
                                 <?php
                                 }
@@ -156,6 +158,18 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>Options</td>
+                        <td>
+                            <ul type="none">
+                                <li><input type="checkbox" name="choice[]" value="all">All</li>
+                                <li><input type="checkbox" name="choice[]" value="controller" <?php set_choice('controller'); ?>>Controller</li>
+                                <li><input type="checkbox" name="choice[]" value="base_model" <?php set_choice('base_model'); ?>>Base Model</li>
+                                <li><input type="checkbox" name="choice[]" value="model" <?php set_choice('model'); ?>>Model</li>
+                                <li><input type="checkbox" name="choice[]" value="view" <?php set_choice('view'); ?>>Views</li>
+                            </ul>
+                        </td>
+                    </tr>
                 </tbody>
                 <tfoot>
                     <tr>
@@ -174,10 +188,10 @@ if (!empty($_POST)) {
                 if (empty($error)) {
                     if (!empty($_POST['submit'])) {
                         // generate code
-                        $files = action_generate_crud($conn, $table_name, 'generate');
+                        $files = action_generate_crud($conn, $table_name, 'generate', $_POST['choice']);
                     } else {
                         // preview code
-                        $files = action_generate_crud($conn, $table_name, 'preview');
+                        $files = action_generate_crud($conn, $table_name, 'preview', $_POST['choice']);
                     }
             ?>
                     <table class="table table-bordered">
@@ -194,6 +208,7 @@ if (!empty($_POST)) {
                         <tbody>
                             <?php
                             $i = 1;
+                            // debug($files, 0);
                             foreach ($files as $key => $file) {
                             ?>
                                 <tr>
@@ -235,6 +250,15 @@ if (!empty($_POST)) {
     </form>
 
 </div>
+<?php
+function set_choice($key)
+{
+    global $choice;
+    if (in_array($key, $choice)) {
+        echo  " checked";
+    }
+}
+?>
 <?php
 require_once dirname(__FILE__, 2) . '/layout/footer.php';
 ?>

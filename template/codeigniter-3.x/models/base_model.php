@@ -68,26 +68,39 @@ public function delete()
     return $this->db->delete(tbl_prefix() . $this->tbl_name, $aWhere);
 }
 
-public function findByPK()
-{
-	return get_row($this->tbl_name, ["id" => $this->id]);
-}
+public function findByPK($select = \'*\')
+	{
+		$aWhere = [\'id\' => $this->id];
+		$this->db->select($select);
+		$this->db->from(tbl_prefix() . $this->tbl_name);
+		$this->db->where($aWhere);
+		$res = $this->db->get()->row();
+		return $res;
+	}
 
-public function all($aWhere = [], $select = \' * \')
-{
-    return get_rows($this->tbl_name, $aWhere, $select);
-}
+	public function all($aWhere = [], $select = \'*\')
+	{
+		$this->db->select($select);
+		$this->db->from(tbl_prefix() . $this->tbl_name);
+		$this->db->where($aWhere);
+		$this->db->order_by(\'id\', \'desc\');
+		$res = $this->db->get()->result();
+		return $res;
+	}
 
-public function one($aWhere = [], $select = \' * \')
-{
-    $aWhere[\'company_id\'] = $this->company_id;
-    return get_row($this->tbl_name, $aWhere, $select);
-}
+	public function one($aWhere = [], $select = \'*\')
+	{
+		$this->db->select($select);
+		$this->db->from(tbl_prefix() . $this->tbl_name);
+		$this->db->where($aWhere);
+		$res = $this->db->get()->row();
+		return $res;
+	}
 
-public function error()
-{
-    return "Demo Error";
-}
+	public function error()
+	{
+		return $this->error_logs;
+	}
 ';
 
 

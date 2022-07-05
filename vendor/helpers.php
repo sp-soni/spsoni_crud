@@ -99,7 +99,6 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
 
     include_once  $template_path . 'index.php';
     include_once  $template_path . 'form.php';
-    $files = [];
 
     $form_attributes = table_attributes($conn, $table, PLATFORM);
 
@@ -109,7 +108,7 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
         $file_name = 'index.blade.php';
     }
     $index_path = $file_path . $file_name;
-    $files[] = $index_path;
+    $files[0] = $index_path;
     $txt = generate_index($form_attributes);
 
     if ($action == "generate") {
@@ -124,7 +123,7 @@ function create_view_file($conn, $file_path, $template_path, $table, $action)
         $file_name = 'add.blade.php';
     }
     $form_path = $file_path . $file_name;
-    $files[] = $form_path;
+    $files[1] = $form_path;
     $txt = generate_form($form_attributes);
 
     if ($action == "generate") {
@@ -141,16 +140,14 @@ function create_model_file($file_path, $template_path, $table, $action)
 
     include_once  $template_path;
 
-    $parent_class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
-    if (PLATFORM == "laravel-8.x") {
-        $class_name = $parent_class_name;
-    } else if (PLATFORM == "codeigniter-3.x") {
-        $class_name = $parent_class_name . '_model';
-    }
+
+    $class_name = str_replace(' ', '', ucwords(str_replace('_', ' ', $table)));
+
     $file_name = $class_name . '.php';
     $file_path .= $file_name;
 
-    $txt = generate_model($class_name, BASE_MODEL_SUFFIX . $parent_class_name);
+    $table_attributes = table_attributes($_SESSION['conn'], $table, PLATFORM);
+    $txt = generate_model($class_name, $table, $class_name . BASE_MODEL_SUFFIX, $table_attributes);
 
     if ($action == "generate") {
         $file = fopen($file_path, "w");

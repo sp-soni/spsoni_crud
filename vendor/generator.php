@@ -1,13 +1,29 @@
 <?php
 
-function action_generate_crud($conn, $tables, $action = "preview")
+function action_generate_crud($conn, $tables, $action = "preview", $choice)
 {
 
     $files = [];
-    $files['controllers'] = action_generate_controllers($conn, $tables, $action);
-    $files['models'][0] = action_generate_base_models($conn, $tables, $action);
-    $files['models'][1] = action_generate_models($conn, $tables, $action);
-    $files['views'] = action_generate_views($conn, $tables, $action);
+    if (in_array('all', $choice)) {
+        $files['controller'] = action_generate_controllers($conn, $tables, $action);
+        $files['Base Model'] = action_generate_base_models($conn, $tables, $action);
+        $files['model'] = action_generate_models($conn, $tables, $action);
+        $files['view'] = action_generate_views($conn, $tables, $action);
+    } else {
+        if (in_array('controller', $choice)) {
+            $files['controller'] = action_generate_controllers($conn, $tables, $action);
+        }
+        if (in_array('base_model', $choice)) {
+            $files['Base Model'] = action_generate_base_models($conn, $tables, $action);
+        }
+        if (in_array('model', $choice)) {
+            $files['model'] = action_generate_models($conn, $tables, $action);
+        }
+        if (in_array('view', $choice)) {
+            $files['view'] = action_generate_views($conn, $tables, $action);
+        }
+    }
+
     return $files;
 }
 

@@ -48,13 +48,23 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     public function search($request)
     {' . PHP_EOL;
 
+    $count = 1;
     foreach ($table_attributes as $column) {
         $template .= '$this->' . $column->column_name . ' = $request->get(\'' . $column->column_name . '\');' . PHP_EOL;
+        if ($count == 5) {
+            break;
+        }
+        $count++;
     }
 
     $template .= '$aWhere = [' . PHP_EOL;
+    $count = 1;
     foreach ($table_attributes as $column) {
         $template .= '[\'' . $column->column_name . '\', \'LIKE\', \'%\'.$this->' . $column->column_name . '.\'%\'],' . PHP_EOL;
+        if ($count == 5) {
+            break;
+        }
+        $count++;
     }
     $template .= '];' . PHP_EOL;
 
