@@ -232,6 +232,7 @@ function table_attributes($conn, $table, $platform)
     WHERE 
         TABLE_SCHEMA = Database()
     AND TABLE_NAME = '" . $table . "' ORDER BY COLUMN_NAME ASC";
+    //debug($sql);
     $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
         if (!in_array($row['COLUMN_NAME'], $exclude_fields)) {
@@ -243,11 +244,12 @@ function table_attributes($conn, $table, $platform)
             $temp->key = $row['COLUMN_KEY'];
             $temp->comment = $row['COLUMN_COMMENT'];  // used for custom validation like type=email
             $temp->rules = get_validation_rules($row, $platform, $table);
-            //$columns[] = $row;
+            // $columns[] = $row;
             $columns[] = $temp;
         }
     }
     $result->free_result();
+    //debug($columns);
     return $columns;
 }
 
@@ -276,7 +278,7 @@ function get_validation_rules($row, $platform, $table_name)
 
 function laravel8_validation_rules($row, $table_name)
 {
-    //trim|xss_clean
+    //Unique
     if ($row['COLUMN_KEY'] == "UNI") {
         $rules[] = 'unique:' . $table_name;
     }
@@ -301,7 +303,7 @@ function codeignitor3_validation_rules($row, $table_name)
     $rules[] = 'trim';
     $rules[] = 'xss_clean';
 
-    //email & phone
+    //email & phone & IP
     $emailType = ['email', 'email_address', 'email_id'];
     $phoneType = ['mobile', 'mobile_number', 'phone', 'contact'];
 
@@ -309,11 +311,30 @@ function codeignitor3_validation_rules($row, $table_name)
         $rules[] = 'valid_unique_email[' . $table_name . ',' . $row['COLUMN_NAME'] . ',id,\'.$pk.\']';
     } else if (in_array($row['COLUMN_COMMENT'], $phoneType)) {
         $rules[] = 'valid_unique_mobile[' . $table_name . ',' . $row['COLUMN_NAME'] . ',id,\'.$pk.\']';
+    } else if (strtolower($row['COLUMN_COMMENT']) == 'ip') {
+        $rules[] = 'valid_ip';
     }
 
     //--max length
     if ($row['CHARACTER_MAXIMUM_LENGTH'] > 0 && $row['CHARACTER_MAXIMUM_LENGTH'] < 400) {
         $rules[] = 'max_length[' . $row['CHARACTER_MAXIMUM_LENGTH'] . ']';
+    }
+
+    //--decimal/integer
+    if ($row['DATA_TYPE'] == 'decimal') {
+        $rules[] = 'decimal';
+    } else if ($row['DATA_TYPE'] == 'int') {
+        $rules[] = 'integer';
+    }
+
+    //valid_ip
+    if ($row['COLUMN_COMMENT'] == 'ip') {
+        $rules[] = 'valid_ip';
+    }
+
+    //Unique
+    if ($row['COLUMN_KEY'] == "UNI") {
+        $rules[] = 'is_unique[' . $table_name . '.' . $row['COLUMN_NAME'] . ']';
     }
 
     return $rules;
