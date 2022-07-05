@@ -79,13 +79,18 @@ function create_controller_file($conn, $file_path, $template_path, $table, $acti
     $model_class_name = $class_name;
 
     $file_name = $controller_class_name . '.php';
+    $file_name_bkp = $controller_class_name . '_bkp.php';
     $file_path .= $file_name;
+    $file_path_bkp .= $file_name_bkp;
 
     $form_attributes = table_attributes($conn, $table, PLATFORM);
 
     if ($action == "generate") {
         $title = ucwords(str_replace('_', ' ', $table));
         $txt = generate_controller($class_name, $model_class_name, $table, $title, $form_attributes);
+        if (file_exists($file_path)) { // keep backup
+            rename($file_path, $file_path_bkp);
+        }
         $file = fopen($file_path, "w");
         fwrite($file, $txt);
         fclose($file);

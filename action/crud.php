@@ -10,14 +10,14 @@ $table_name = '';
 $route_path = '';
 $controller_path = '';
 $model_path = '';
-$views_path = '';
+$view_path = '';
 $module = '';
 $controller_parent_class = '';
 
 $aTable = [];
 $aModule = [];
 $error = [];
-$choice = [];
+$choice = ['all'];
 if (!empty($_POST)) {
 
     $project_id = $_POST['project_id'];
@@ -59,44 +59,42 @@ if (!empty($_POST)) {
 
         $sql = 'select id,module from project_module where project_id=' . $project_id;
         $aModule = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
-    }
 
-    if (empty($table_name)) {
-        $error[] = 'Database Table is requried';
-    }
+        if (empty($table_name)) {
+            $error[] = 'Database Table is requried';
+        }
 
-    if (empty($module)) {
-        $error[] = '$module name is empty for the selected project & module, Check table "project_module" in database.';
-    }
+        if (empty($module)) {
+            $error[] = '$module name is empty for the selected project & module, Check table "project_module" in database.';
+        }
 
-    if (empty($controller_parent_class)) {
-        $error[] = '$controller_parent_class is empty for the selected project & module, Check table "project_module" in database.';
-    }
+        if (empty($controller_parent_class)) {
+            $error[] = '$controller_parent_class is empty for the selected project & module, Check table "project_module" in database.';
+        }
 
-    //--path
-    if (!file_exists($controller_path)) {
-        $error[] = 'Controller path not found > ' . $controller_path;
-    }
+        //--path
+        if (!file_exists($controller_path)) {
+            $error[] = 'Controller path not found > ' . $controller_path;
+        }
 
-    if (!file_exists($model_path)) {
-        $error[] = 'Model path not found > ' . $model_path;
-    }
+        if (!file_exists($model_path)) {
+            $error[] = 'Model path not found > ' . $model_path;
+        }
 
-    if (!file_exists($view_path)) {
-        $error[] = 'View path not found > ' . $view_path;
+        if (!file_exists($view_path)) {
+            $error[] = 'View path not found > ' . $view_path;
+        }
+        if (empty($error)) {
+            define('CONTROLLERS_DIR', $controller_path . '/');
+            define('MODELS_DIR', $model_path . '/');
+            define('VIEWS_DIR', $view_path . '/');
+            define('ROUTE_DIR', $route_path . '/');
+            define('BASE_MODEL_SUFFIX', $base_model_suffix);
+            define('MODULE', $module);
+            define('CONTROLLER_PARENT_CLASS', $controller_parent_class);
+        }
     }
-
     $_SESSION['error'] = $error;
-
-    if (empty($error)) {
-        define('CONTROLLERS_DIR', $controller_path . '/');
-        define('MODELS_DIR', $model_path . '/');
-        define('VIEWS_DIR', $view_path . '/');
-        define('ROUTE_DIR', $route_path . '/');
-        define('BASE_MODEL_SUFFIX', $base_model_suffix);
-        define('MODULE', $module);
-        define('CONTROLLER_PARENT_CLASS', $controller_parent_class);
-    }
 }
 ?>
 <div class="row">
@@ -128,7 +126,7 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
-                        <td>Project Module</td>
+                        <td>Project Module <span class="required">(*)</span></td>
                         <td>
                             <select class="form-control" name="module_id" id="module_id">
                                 <option value="">-Select-</option>
@@ -143,7 +141,7 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
-                        <td>Table</td>
+                        <td>Table <span class="required">(*)</span></td>
                         <td>
                             <select class="form-control" name="table_name" id="table_name">
                                 <option value="">-Select-</option>
@@ -159,10 +157,10 @@ if (!empty($_POST)) {
                     </tr>
 
                     <tr>
-                        <td>Options</td>
+                        <td>Choice <span class="required">(*)</span></td>
                         <td>
                             <ul type="none">
-                                <li><input type="checkbox" name="choice[]" value="all">All</li>
+                                <li><input type="checkbox" name="choice[]" value="all" <?php set_choice('all'); ?>>All</li>
                                 <li><input type="checkbox" name="choice[]" value="controller" <?php set_choice('controller'); ?>>Controller</li>
                                 <li><input type="checkbox" name="choice[]" value="base_model" <?php set_choice('base_model'); ?>>Base Model</li>
                                 <li><input type="checkbox" name="choice[]" value="model" <?php set_choice('model'); ?>>Model</li>
