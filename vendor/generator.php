@@ -133,9 +133,6 @@ function action_migrate($conn, $aTable)
 
         // Drop Column
 
-        $sql = "CALL drop_column_if_exists('" . $table . "', 'sequence_no')";
-        $migration_queries[] = $sql;
-
         $sql = "CALL drop_column_if_exists('" . $table . "', 'edited_by')";
         $migration_queries[] = $sql;
 
@@ -151,8 +148,7 @@ function action_migrate($conn, $aTable)
         $sql = "CALL drop_column_if_exists('" . $table . "', 'edited_details')";
         $migration_queries[] = $sql;
 
-        $sql = "CALL drop_column_if_exists('" . $table . "', 'company_id')";
-        $migration_queries[] = $sql;
+
 
         // Add Column
         $sql = "CALL add_column_if_not_exists('" . $table . "', 'created_by', 'TINYINT(1) NOT NULL DEFAULT 0')";
@@ -169,14 +165,14 @@ function action_migrate($conn, $aTable)
         $migration_queries[] = $sql;
 
         //---adding company id for multiple company
-        // $except = [
-        //     'module', 'module_group', 'site_settings', 'user', 'message_templates',
-        //     'user_designation', 'user_compny', 'user_permission', 'setting_company'
-        // ];
-        // if (!in_array($table, $except)) {
-        //     $sql = "CALL add_column_if_not_exists('" . $table . "', 'company_id', 'INT DEFAULT 1')";
-        //     $migration_queries[] = $sql;
-        // }
+        $except = [
+            'module', 'module_group', 'site_settings', 'user', 'message_templates',
+            'user_designation', 'user_compny', 'user_permission', 'setting_company'
+        ];
+        if (!in_array($table, $except)) {
+            $sql = "CALL add_column_if_not_exists('" . $table . "', 'company_id', 'INT DEFAULT 1')";
+            $migration_queries[] = $sql;
+        }
     }
     return $migration_queries;
 }

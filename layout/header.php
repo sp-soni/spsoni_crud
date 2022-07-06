@@ -27,14 +27,15 @@ require_once ROOT_PATH . '/vendor/helpers.php';
 
 <body>
     <div class="container-fluid">
-        <div class="row" style="margin-bottom: 10px;">
-            <div class="col-md-2">
-                <div class="btn-group-vertical">
-                    <h4>Code Generator</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group">
                     <a href="<?php echo BASE_URL; ?>action/crud.php" class="btn btn-primary">CRUD</a>
                     <a href="<?php echo BASE_URL; ?>action/routes.php" class="btn btn-warning">Routes</a>
                     <a href="<?php echo BASE_URL; ?>action/migrations.php" class="btn btn-danger">MIGRATE</a>
                     <a href="<?php echo BASE_URL; ?>action/" class="btn btn-success">Project Settings</a>
                 </div>
             </div>
-            <div class="col-md-10" style="padding-top:20px;">
+        </div>
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-12" style="padding-top:20px;">

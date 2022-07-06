@@ -3,31 +3,99 @@ require_once dirname(__FILE__, 2) . '/layout/header.php';
 ?>
 <?php
 $platform = '';
-$db_name = '';
-$route_prefix = '';
+$project_id = '';
+$module_id = '';
+$base_model_suffix = '';
+$table_name = '';
+$route_path = '';
+$controller_path = '';
+$model_path = '';
+$view_path = '';
+$module = '';
+$controller_parent_class = '';
+
+$aTable = [];
+$aModule = [];
+$error = [];
+$choice = [];
 if (!empty($_POST)) {
 
-    $platform = $_POST['platform'];
-    $db_name = $_POST['db_name'];
-    $route_prefix = $_POST['route_prefix'];
+    $project_id = $_POST['project_id'];
+    $module_id = $_POST['module_id'];
 
-    $error = [];
-    if (empty($_POST['platform'])) {
-        $error[] = 'Platform is required';
+    if (empty($project_id)) {
+        $error[] = 'Project is requried';
     }
-    if (empty($_POST['db_name'])) {
-        $error[] = 'Database is required';
-    }
-    $_SESSION['error'] = $error;
 
-    define('ROUTE_PREFIX', $route_prefix);
+    if (empty($module_id)) {
+        $error[] = 'Module is requried';
+    }
+
     if (empty($error)) {
-        //---needed variables
+        $sql = 'select 
+         t1.*,t2.module,t2.base_model_suffix,t2.controller_path,t2.model_path,
+         t2.view_path,t2.route_path,t2.controller_parent_class 
+         from project as t1 left join project_module as t2 on t1.id=t2.project_id
+         where t1.id=' . $project_id . ' and t2.id=' . $module_id;
+        $aProjectDetails = $conn_app->query($sql)->fetch_object();
+
+        $db_name = $aProjectDetails->db_name;
+        $platform = $aProjectDetails->platform;
+        $base_model_suffix = $aProjectDetails->base_model_suffix;
+        $controller_path = $aProjectDetails->controller_path;
+        $model_path = $aProjectDetails->model_path;
+        $view_path = $aProjectDetails->view_path;
+        $route_path = $aProjectDetails->route_path;
+        $module = $aProjectDetails->module;
+        $controller_parent_class = $aProjectDetails->controller_parent_class;
+
         define('PLATFORM', $platform);
         define('DATABASE', $db_name);
+
         mysqli_select_db($conn, DATABASE);
         $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
+
+        $sql = 'select id,module from project_module where project_id=' . $project_id;
+        $aModule = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+
+        if (empty($table_name)) {
+            $error[] = 'Database Table is requried';
+        }
+
+        if (empty($module)) {
+            $error[] = '$module name is empty for the selected project & module, Check table "project_module" in database.';
+        }
+
+        if (empty($controller_parent_class)) {
+            $error[] = '$controller_parent_class is empty for the selected project & module, Check table "project_module" in database.';
+        }
+
+        //--path
+        if (!file_exists($controller_path)) {
+            $error[] = 'Controller path not found > ' . $controller_path;
+        }
+
+        if (!file_exists($model_path)) {
+            $error[] = 'Model path not found > ' . $model_path;
+        }
+
+        if (!file_exists($view_path)) {
+            $error[] = 'View path not found > ' . $view_path;
+        }
+
+
+
+        if (empty($error)) {
+            define('CONTROLLERS_DIR', $controller_path . '/');
+            define('MODELS_DIR', $model_path . '/');
+            define('VIEWS_DIR', $view_path . '/');
+            define('ROUTE_DIR', $route_path . '/');
+            define('BASE_MODEL_SUFFIX', $base_model_suffix);
+            define('MODULE', $module);
+            define('CONTROLLER_PARENT_CLASS', $controller_parent_class);
+        }
     }
+    $_SESSION['error'] = $error;
 }
 ?>
 <div class="row">
@@ -43,14 +111,14 @@ if (!empty($_POST)) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="30%"><span class="required">Platform (*)</span></td>
-                        <td width="70%">
-                            <select class="form-control" name="platform">
+                        <td width="15%">Project <span class="required">(*)</span></td>
+                        <td>
+                            <select class="form-control" name="project_id" id="project_id" onchange="load_tables_modules(this.value,'table_name','module_id')">
                                 <option value="">--Select--</option>
                                 <?php
-                                $aPlatform = platform_list();
-                                foreach ($aPlatform as $row) { ?>
-                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $platform) ?>><?php echo $row; ?></option>
+                                foreach ($aProject as $row) {
+                                ?>
+                                    <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $project_id) ?>><?php echo $row['project_name']; ?> - <?php echo $row['platform']; ?></option>
 
                                 <?php
                                 }
@@ -59,24 +127,18 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
-                        <td><span class="required">Database (*)</span></td>
+                        <td>Project Module <span class="required">(*)</span></td>
                         <td>
-                            <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
-                                <option value="">--Select--</option>
+                            <select class="form-control" name="module_id" id="module_id">
+                                <option value="">-Select-</option>
                                 <?php
-                                foreach ($aDatabase as $row) { ?>
-                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $db_name) ?>><?php echo $row; ?></option>
+                                foreach ($aModule as $row) { ?>
+                                    <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $module_id) ?>><?php echo $row['module']; ?></option>
 
                                 <?php
                                 }
                                 ?>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Route Prefix</td>
-                        <td>
-                            <input type="text" class="form-control" name="route_prefix" id="route_prefix" value="<?php echo $route_prefix; ?>">
                         </td>
                     </tr>
                 </tbody>

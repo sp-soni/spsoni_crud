@@ -2,20 +2,17 @@
 require_once dirname(__FILE__, 2) . '/layout/header.php';
 ?>
 <?php
-$project_id = '';
+$db_name = '';
 if (!empty($_POST)) {
-    $project_id = $_POST['project_id'];
+    $db_name = $_POST['db_name'];
     $error = [];
-    if (empty($_POST['project_id'])) {
-        $error[] = 'Project is required';
+    if (empty($_POST['db_name'])) {
+        $error[] = 'Database is required';
     }
     $_SESSION['error'] = $error;
 
     if (empty($error)) {
-        $sql = 'select db_name from project where id=' . $project_id;
-        $aProjectDetails = $conn_app->query($sql)->fetch_object();
-        //---needed variables
-        define('DATABASE', $aProjectDetails->db_name);
+        define('DATABASE', $db_name);
         mysqli_select_db($conn, DATABASE);
         $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
     }
@@ -34,14 +31,13 @@ if (!empty($_POST)) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="15%">Project <span class="required">(*)</span></td>
+                        <td><span class="required">Database (*)</span></td>
                         <td>
-                            <select class="form-control" name="project_id" id="project_id" onchange="load_tables_modules(this.value,'table_name','module_id')">
+                            <select class="form-control" name="db_name" id="db_name">
                                 <option value="">--Select--</option>
                                 <?php
-                                foreach ($aProject as $row) {
-                                ?>
-                                    <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $project_id) ?>><?php echo $row['project_name']; ?> - <?php echo $row['platform']; ?></option>
+                                foreach ($aDatabase as $row) { ?>
+                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $db_name) ?>><?php echo $row; ?></option>
 
                                 <?php
                                 }

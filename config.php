@@ -37,3 +37,6 @@ $conn = mysqli_connect(HOST, USER, PASSWORD) or die('project mysqli not connecte
 $_SESSION['conn'] = $conn;
 
 $aProject = $conn_app->query('select * from project')->fetch_all(MYSQLI_ASSOC);
+
+
+$aDatabase = array_column($conn_app->query('SHOW DATABASES')->fetch_all(), 0);
