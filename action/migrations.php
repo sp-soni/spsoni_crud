@@ -2,26 +2,20 @@
 require_once dirname(__FILE__, 2) . '/layout/header.php';
 ?>
 <?php
-$platform = '';
-$db_name = '';
+$project_id = '';
 if (!empty($_POST)) {
-
-    $platform = $_POST['platform'];
-    $db_name = $_POST['db_name'];
-
+    $project_id = $_POST['project_id'];
     $error = [];
-    if (empty($_POST['platform'])) {
-        $error[] = 'Platform is required';
-    }
-    if (empty($_POST['db_name'])) {
-        $error[] = 'Database is required';
+    if (empty($_POST['project_id'])) {
+        $error[] = 'Project is required';
     }
     $_SESSION['error'] = $error;
 
     if (empty($error)) {
+        $sql = 'select db_name from project where id=' . $project_id;
+        $aProjectDetails = $conn_app->query($sql)->fetch_object();
         //---needed variables
-        define('PLATFORM', $platform);
-        define('DATABASE', $db_name);
+        define('DATABASE', $aProjectDetails->db_name);
         mysqli_select_db($conn, DATABASE);
         $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
     }
@@ -40,29 +34,14 @@ if (!empty($_POST)) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="30%"><span class="required">Platform (*)</span></td>
-                        <td width="70%">
-                            <select class="form-control" name="platform">
-                                <option value="">--Select--</option>
-                                <?php
-                                $aPlatform = platform_list();
-                                foreach ($aPlatform as $row) { ?>
-                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $platform) ?>><?php echo $row; ?></option>
-
-                                <?php
-                                }
-                                ?>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><span class="required">Database (*)</span></td>
+                        <td width="15%">Project <span class="required">(*)</span></td>
                         <td>
-                            <select class="form-control" name="db_name" id="db_name" onchange="get_tables(this.value,'table_name')">
+                            <select class="form-control" name="project_id" id="project_id" onchange="load_tables_modules(this.value,'table_name','module_id')">
                                 <option value="">--Select--</option>
                                 <?php
-                                foreach ($aDatabase as $row) { ?>
-                                    <option value="<?php echo $row; ?>" <?php selected_select($row, $db_name) ?>><?php echo $row; ?></option>
+                                foreach ($aProject as $row) {
+                                ?>
+                                    <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $project_id) ?>><?php echo $row['project_name']; ?> - <?php echo $row['platform']; ?></option>
 
                                 <?php
                                 }
