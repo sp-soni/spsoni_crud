@@ -40,3 +40,7 @@ $aProject = $conn_app->query('select * from project')->fetch_all(MYSQLI_ASSOC);
 
 
 $aDatabase = array_column($conn_app->query('SHOW DATABASES')->fetch_all(), 0);
+
+//$excludeTables = ['users', 'user', 'user_action'];
+
+$excludeTables = [];

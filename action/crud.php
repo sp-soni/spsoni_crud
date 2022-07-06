@@ -58,7 +58,6 @@ if (!empty($_POST)) {
 
         mysqli_select_db($conn, DATABASE);
         $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
-        $excludeTables = ['module', 'module_group', 'users', 'user', 'user_action'];
 
         $aTable = array_diff($aTable, $excludeTables);
 

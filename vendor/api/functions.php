@@ -5,7 +5,7 @@ include_once dirname(__FILE__, 3) . '/vendor/generator.php';
 
 function get_tables()
 {
-    global $conn, $conn_app;
+    global $conn, $conn_app, $excludeTables;
 
     $project_id = $_POST['project_id'];
     $sql = 'select * from project where id=' . $project_id;
@@ -13,8 +13,6 @@ function get_tables()
     mysqli_select_db($conn, $aProjectDetails->db_name) or die($aProjectDetails->db_name . ' not connecting');
 
     $data = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
-
-    $excludeTables = ['module', 'module_group', 'users', 'user', 'user_action'];
 
     $data = array_diff($data, $excludeTables);
     send_response($data);
