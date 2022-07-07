@@ -97,13 +97,16 @@ function create_controller_file($conn, $dir_path, $template_path, $table, $actio
 
 function create_backup($dir_path, $file_name)
 {
+    $path_parts = pathinfo($file_name);
+    //debug($path_parts);
     $source = $dir_path . $file_name;
     if (file_exists($source)) { // keep backup
         $backup_dir = $dir_path . '_bkp';
         if (!file_exists($backup_dir)) {
             mkdir($backup_dir);
         }
-        $destination = $backup_dir . DIRECTORY_SEPARATOR . $file_name;
+        $bkp_filename = $path_parts['filename'] . '_' . date('d-M-Y-h-i-s-a') . '.' . $path_parts['extension'];
+        $destination = $backup_dir . DIRECTORY_SEPARATOR . $bkp_filename;
         copy($source, $destination);
     }
 }

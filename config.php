@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 session_start();
+date_default_timezone_set("Asia/Calcutta");
 
 function debug($arg, $is_die = 1)
 {
