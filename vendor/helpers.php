@@ -234,7 +234,7 @@ function table_attributes($conn, $table, $platform)
     FROM INFORMATION_SCHEMA.COLUMNS 
     WHERE 
         TABLE_SCHEMA = Database()
-    AND TABLE_NAME = '" . $table . "' ORDER BY COLUMN_NAME ASC";
+    AND TABLE_NAME = '" . $table . "'";
     //debug($sql);
     $result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
     while ($row = $result->fetch_array(MYSQLI_ASSOC)) {

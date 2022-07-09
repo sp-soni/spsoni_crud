@@ -37,13 +37,13 @@ function generate_form($form_attributes, $moude_url)
             $form_fields .= '<textarea id="' . $name . '" name="' . $name . '"  ' . $validate . '  rows="3" class="form-control"><?php echo $' . $name . ' ?></textarea>' . PHP_EOL;
         } else if ($attribute->type == 'enum') { // select
             $enum_list = explode(",", str_replace(array("enum(", ")", "'"), "", $attribute->column_type));
-            $form_fields .= '<select class="form-control" id="' . $id . '" name="' . $name . '">' . PHP_EOL;
+            $form_fields .= '<select class="form-control select2" id="' . $id . '" name="' . $name . '">' . PHP_EOL;
             foreach ($enum_list as $option_value) {
                 $form_fields .= '<option value="' . $option_value . '"  <?php selected_select(\'' . $option_value . '\', $' . $name . '); ?>>' . ucwords($option_value) . '</option>' . PHP_EOL;
             }
             $form_fields .= '</select>' . PHP_EOL;
         } else if ($attribute->type == 'date') {  // date
-            $form_fields .= '<input type="date" class="form-control" id="' . $id . '" name="' . $name . '" value="<?php echo $' . $name . ' ?>">' . PHP_EOL;
+            $form_fields .= '<input type="text" class="form-control datepicker" id="' . $id . '" name="' . $name . '" value="<?php echo $' . $name . ' ?>">' . PHP_EOL;
         } else if ($attribute->type == 'datetime') {  // datetime-local
             $form_fields .= '<input type="datetime-local" class="form-control" id="' . $id . '" name="' . $name . '" value="<?php echo $' . $name . ' ?>">' . PHP_EOL;
         } else if (in_array($attribute->column_name, ['pass', 'password', 'pass_word', 'pass_hash'])) {  // password

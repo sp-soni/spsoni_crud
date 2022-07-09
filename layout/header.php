@@ -9,7 +9,7 @@ require_once ROOT_PATH . '/vendor/helpers.php';
 <html lang="en">
 
 <head>
-    <title>SpiTech Code Generator</title>
+    <title>SCG Tool</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="<?php echo BASE_URL; ?>assets/css/bootstrap.min.css" rel="stylesheet">
@@ -29,6 +29,7 @@ require_once ROOT_PATH . '/vendor/helpers.php';
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
+                <h3>SpiTech Code Generator Tool</h3>
                 <div class="btn-group">
                     <a href="<?php echo BASE_URL; ?>action/crud.php" class="btn btn-primary">CRUD</a>
                     <a href="<?php echo BASE_URL; ?>action/routes.php" class="btn btn-warning">Routes</a>
