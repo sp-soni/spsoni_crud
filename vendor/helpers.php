@@ -281,6 +281,7 @@ function get_validation_rules($row, $platform, $table_name)
 
 function laravel8_validation_rules($row, $table_name)
 {
+    $rules = [];
     //Unique
     if ($row['COLUMN_KEY'] == "UNI") {
         $rules[] = 'unique:' . $table_name;
