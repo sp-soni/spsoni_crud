@@ -105,7 +105,7 @@ function create_backup($dir_path, $file_name)
         if (!file_exists($backup_dir)) {
             mkdir($backup_dir);
         }
-        $bkp_filename = $path_parts['filename'] . '_' . date('d-M-Y-h-i-s-a') . '.' . $path_parts['extension'];
+        $bkp_filename = $path_parts['filename'] . '_' . date('d-M-Y-h-i-s-a') . '.bkp.php';
         $destination = $backup_dir . DIRECTORY_SEPARATOR . $bkp_filename;
         copy($source, $destination);
     }
