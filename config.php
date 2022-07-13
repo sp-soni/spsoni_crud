@@ -16,7 +16,8 @@ function debug($arg, $is_die = 1)
     }
 }
 
-define('BASE_URL', 'http://localhost:8383/spsoni/products/spitech_crud/');
+
+define('BASE_URL', 'http://localhost/practice/products/spitech_crud/');
 define('API_BASE_URL', BASE_URL . 'vendor/api/index.php');
 
 
