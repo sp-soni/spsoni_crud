@@ -11,6 +11,7 @@ $route_path = '';
 $controller_path = '';
 $model_path = '';
 $view_path = '';
+$root_path = '';
 $module = '';
 $controller_parent_class = '';
 
@@ -33,8 +34,6 @@ if (!empty($_POST)) {
         $error[] = 'Module is requried';
     }
 
-
-
     if (empty($error)) {
         $sql = 'select 
          t1.*,t2.module,t2.base_model_suffix,t2.controller_path,t2.model_path,
@@ -46,11 +45,14 @@ if (!empty($_POST)) {
         $db_name = $aProjectDetails->db_name;
         $platform = $aProjectDetails->platform;
         $base_model_suffix = $aProjectDetails->base_model_suffix;
-        $controller_path = $aProjectDetails->controller_path;
-        $model_path = $aProjectDetails->model_path;
-        $view_path = $aProjectDetails->view_path;
-        $route_path = $aProjectDetails->route_path;
+        $root_path = $aProjectDetails->root_path;
+
+        $controller_path = $root_path.DIRECTORY_SEPARATOR.$aProjectDetails->controller_path;
+        $model_path = $root_path.DIRECTORY_SEPARATOR.$aProjectDetails->model_path;
+        $view_path = $root_path.DIRECTORY_SEPARATOR.$aProjectDetails->view_path;
+        $route_path = $root_path.DIRECTORY_SEPARATOR.$aProjectDetails->route_path;
         $module = $aProjectDetails->module;
+        
         $controller_parent_class = $aProjectDetails->controller_parent_class;
 
         define('PLATFORM', $platform);
