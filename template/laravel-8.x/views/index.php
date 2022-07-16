@@ -1,4 +1,13 @@
 <?php
+function get_css_class($type)
+{
+    $class = '';
+    $aCssClasses=['date','datetime','number','int','integer'];
+    if (in_array($type,$aCssClasses)) {
+        $class = 'class="'.$type.'"';
+    }
+    return $class;
+}
 
 function generate_index($form_attributes, $module_url)
 {
@@ -59,18 +68,19 @@ function generate_index($form_attributes, $module_url)
     //thead
     $thead = '<thead>
                 <tr>
-                    <th class="sn">#</th>' . PHP_EOL;
+                    <th width="5%" class="sn">#</th>' . PHP_EOL;
     $count = 1;
     foreach ($form_attributes as $attribute) {
         $label = $attribute->label;
-        $thead .= '<th>' . $label . '</th>' . PHP_EOL;
+        $css_class = get_css_class($attribute->type);
+        $thead .= '<th width="10%" '.$css_class.'>' . $label . '</th>' . PHP_EOL;
         if ($count == 5) {
             break;
         }
         $count++;
     }
 
-    $thead .= '<th class="action">Action</th>
+    $thead .= '<th width="10%" class="action">Action</th>
                 </tr>
             </thead>' . PHP_EOL;
 
