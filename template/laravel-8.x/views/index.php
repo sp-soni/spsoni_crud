@@ -96,7 +96,7 @@ function generate_index($form_attributes, $module_url)
         $name = $attribute->column_name;
         $css_class = get_css_class($attribute->type);
         $tbody .= ' <td '.$css_class.'>{{ $item->' . $name . ' }}</td>';
-        if ($count == 5) {
+        if ($count == INDEX_FIELD_COUNT) {
             break;
         }
         $count++;
