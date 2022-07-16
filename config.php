@@ -24,6 +24,7 @@ define('API_BASE_URL', BASE_URL . 'vendor/api/index.php');
 define('ROOT_PATH', dirname(__FILE__, 1));
 define('OUTPUT_PATH', ROOT_PATH . '/output/');
 define('TEMPLATE_PATH', ROOT_PATH . '/template/');
+define('INDEX_FIELD_COUNT',4);
 
 define('HOST', 'localhost');
 define('USER', 'root');

@@ -17,7 +17,7 @@ function generate_index($form_attributes, $module_url)
     foreach ($form_attributes as $attribute) {
         $label = $attribute->label;
         $thead .= '<td>' . $label . '</td>' . PHP_EOL;
-        if ($count == 5) {
+        if ($count == INDEX_FIELD_COUNT) {
             break;
         }
         $count++;
@@ -41,7 +41,7 @@ function generate_index($form_attributes, $module_url)
         @endphp
         <input type="text" name="' . $name . '" class="form-control" value="{{ $' . $name . ' }}">
     </td>' . PHP_EOL;
-        if ($count == 5) {
+        if ($count == INDEX_FIELD_COUNT) {
             break;
         }
         $count++;
@@ -71,10 +71,9 @@ function generate_index($form_attributes, $module_url)
                     <th width="5%" class="sn">#</th>' . PHP_EOL;
     $count = 1;
     foreach ($form_attributes as $attribute) {
-        $label = $attribute->label;
-        $css_class = get_css_class($attribute->type);
-        $thead .= '<th width="10%" '.$css_class.'>' . $label . '</th>' . PHP_EOL;
-        if ($count == 5) {
+        $label = $attribute->label;       
+        $thead .= '<th width="10%">' . $label . '</th>' . PHP_EOL;
+        if ($count == INDEX_FIELD_COUNT) {
             break;
         }
         $count++;
@@ -95,7 +94,8 @@ function generate_index($form_attributes, $module_url)
     $count = 1;
     foreach ($form_attributes as $attribute) {
         $name = $attribute->column_name;
-        $tbody .= ' <td>{{ $item->' . $name . ' }}</td>';
+        $css_class = get_css_class($attribute->type);
+        $tbody .= ' <td '.$css_class.'>{{ $item->' . $name . ' }}</td>';
         if ($count == 5) {
             break;
         }

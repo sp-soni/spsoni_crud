@@ -1,4 +1,13 @@
 <?php
+function get_css_class($type)
+{
+    $class = '';
+    $aCssClasses=['date','datetime','number','int','integer'];
+    if (in_array($type,$aCssClasses)) {
+        $class = 'class="'.$type.'"';
+    }
+    return $class;
+}
 
 function generate_index($form_attributes, $module_url)
 {
@@ -8,7 +17,7 @@ function generate_index($form_attributes, $module_url)
     foreach ($form_attributes as $attribute) {
         $label = $attribute->label;
         $thead .= '<td>' . $label . '</td>' . PHP_EOL;
-        if ($count == 5) {
+        if ($count == INDEX_FIELD_COUNT) {
             break;
         }
         $count++;
@@ -31,7 +40,7 @@ function generate_index($form_attributes, $module_url)
         ?>
         <input type="text" name="' . $name . '" class="form-control" value="<?php echo  $' . $name . ';?>">
     </td>' . PHP_EOL;
-        if ($count == 5) {
+        if ($count == INDEX_FIELD_COUNT) {
             break;
         }
         $count++;
@@ -95,7 +104,8 @@ function generate_index($form_attributes, $module_url)
     $count = 1;
     foreach ($form_attributes as $attribute) {
         $name = $attribute->column_name;
-        $template .= '<td><?php echo $row->' . $name . '; ?></td>' . PHP_EOL;
+        $css_class = get_css_class($attribute->type);
+        $template .= '<td  '.$css_class.'><?php echo $row->' . $name . '; ?></td>' . PHP_EOL;
         if ($count == 5) {
             break;
         }
