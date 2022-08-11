@@ -31,10 +31,10 @@ require_once ROOT_PATH . '/vendor/helpers.php';
             <div class="col-md-12">
                 <h3>SpiTech Code Generator Tool</h3>
                 <div class="btn-group">
-                    <a href="<?php echo BASE_URL; ?>action/crud.php" class="btn btn-primary">CRUD</a>
+                    <a href="<?php echo BASE_URL; ?>action/" class="btn btn-primary">CRUD</a>
                     <a href="<?php echo BASE_URL; ?>action/routes.php" class="btn btn-warning">Routes</a>
                     <a href="<?php echo BASE_URL; ?>action/migrations.php" class="btn btn-danger">MIGRATE</a>
-                    <a href="<?php echo BASE_URL; ?>action/" class="btn btn-success">Project Settings</a>
+                    <a href="<?php echo BASE_URL; ?>action/projects.php" class="btn btn-success">Project Settings</a>
                 </div>
             </div>
         </div>
