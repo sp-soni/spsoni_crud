@@ -17,7 +17,7 @@ function debug($arg, $is_die = 1)
 }
 
 
-define('BASE_URL', 'http://localhost/www/products/spitech_crud/');
+define('BASE_URL', 'http://localhost/html/products/spitech_crud/');
 define('API_BASE_URL', BASE_URL . 'vendor/api/index.php');
 
 
