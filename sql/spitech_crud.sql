@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 30, 2022 at 08:55 AM
+-- Generation Time: Aug 30, 2022 at 11:43 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -87,8 +87,8 @@ INSERT INTO `project` (`id`, `project_name`, `db_name`, `platform`, `root_path`)
 (1, 'Product-Ecom', 'u103431999_ecom_test', 'laravel-8.x', 'C:\\xampp\\htdocs\\www\\products\\product_ecom'),
 (2, 'Product-Billing-CI', 'product_billing_ci', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\www\\products\\product_billing_ci'),
 (3, 'Product-Broker-CI', 'u172594077_demobroker_ci', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\www\\products\\product_broker_ci'),
-(4, 'Product-HRMS', 'u172594077_demohrms', 'laravel-8.x', 'C:\\xampp\\htdocs\\practice\\products\\product_hrms'),
-(5, 'SPS-Accounting', 'u103431999_spsoni_account', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\practice\\products\\sps');
+(4, 'Product-HRMS', 'u172594077_demohrms', 'laravel-8.x', 'C:\\xampp\\htdocs\\www\\products\\product_hrms'),
+(5, 'SPS-Accounting', 'u103431999_spsoni_account', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\www\\products\\sps');
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,8 @@ INSERT INTO `project_module` (`id`, `module`, `project_id`, `controller_parent_c
 (2, 'Vendor', 1, 'App\\CustomComponents\\VendorAbstractController', 'Base', 'D:\\wamp64\\www\\spsoni\\products\\product_ecom\\Modules\\Vendor\\Http\\Controllers', 'D:\\wamp64\\www\\spsoni\\products\\product_ecom\\app\\Models', 'D:\\wamp64\\www\\spsoni\\products\\product_ecom\\Modules\\Vendor\\Resources\\views', ''),
 (3, 'Admin', 2, 'NA', 'Base', 'C:\\xampp\\htdocs\\practice\\products\\product_billing_ci\\app\\modules\\admin\\controllers', 'C:\\xampp\\htdocs\\practice\\products\\product_billing_ci\\app\\models', 'C:\\xampp\\htdocs\\practice\\products\\product_billing_ci\\app\\modules\\admin\\views', ''),
 (4, 'Admin', 3, 'NA', 'Base', 'D:\\wamp64\\www\\spsoni\\products\\product_broker_ci\\app\\modules\\admin\\controllers', 'D:\\wamp64\\www\\spsoni\\products\\product_broker_ci\\app\\models', 'D:\\wamp64\\www\\spsoni\\products\\product_broker_ci\\app\\modules\\admin\\views', ''),
-(5, 'Admin', 4, 'App\\CustomComponents\\AdminAbstractController', 'Base', 'Modules\\Admin\\Http\\Controllers', 'app\\Models', 'Modules\\Admin\\Resources\\views', '');
+(5, 'Admin', 4, 'App\\CustomComponents\\AdminAbstractController', 'Base', 'Modules\\Admin\\Http\\Controllers', 'app\\Models', 'Modules\\Admin\\Resources\\views', ''),
+(6, 'Admin', 5, 'NA', 'Base', 'app\\modules\\admin\\controllers', 'app\\models', 'app\\modules\\admin\\views', '');
 
 --
 -- Indexes for dumped tables
@@ -149,7 +150,7 @@ ALTER TABLE `project`
 -- AUTO_INCREMENT for table `project_module`
 --
 ALTER TABLE `project_module`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
