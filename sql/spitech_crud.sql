@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2022 at 10:17 AM
+-- Generation Time: Aug 30, 2022 at 08:55 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 7.4.29
 
@@ -20,6 +20,50 @@ SET time_zone = "+00:00";
 --
 -- Database: `spitech_crud`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_column_if_not_exists` (IN `table_name_IN` VARCHAR(100), IN `field_name_IN` VARCHAR(100), IN `field_definition_IN` VARCHAR(100))   BEGIN
+
+    SET @isFieldThere = column_exists(table_name_IN, field_name_IN);
+    IF (@isFieldThere = 0) THEN
+
+        SET @ddl = CONCAT('ALTER TABLE ', table_name_IN);
+        SET @ddl = CONCAT(@ddl, ' ', 'ADD COLUMN') ;
+        SET @ddl = CONCAT(@ddl, ' ', field_name_IN);
+        SET @ddl = CONCAT(@ddl, ' ', field_definition_IN);
+
+        PREPARE stmt FROM @ddl;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;
+
+    END IF;
+
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `drop_column_if_exists` (`tname` VARCHAR(64), `cname` VARCHAR(64))   BEGIN
+    IF column_exists(tname, cname)
+    THEN
+      SET @drop_column_if_exists = CONCAT('ALTER TABLE `', tname, '` DROP COLUMN `', cname, '`');
+      PREPARE drop_query FROM @drop_column_if_exists;
+      EXECUTE drop_query;
+    END IF;
+  END$$
+
+--
+-- Functions
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `column_exists` (`table_name_IN` VARCHAR(100), `field_name_IN` VARCHAR(100)) RETURNS INT(11)  RETURN (
+    SELECT COUNT(COLUMN_NAME) 
+    FROM INFORMATION_SCHEMA.columns 
+    WHERE TABLE_SCHEMA = DATABASE() 
+    AND TABLE_NAME = table_name_IN 
+    AND COLUMN_NAME = field_name_IN
+)$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -40,10 +84,11 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`id`, `project_name`, `db_name`, `platform`, `root_path`) VALUES
-(1, 'Product-Ecom', 'u103431999_ecom_test', 'laravel-8.x', ''),
-(2, 'Product-Billing-CI', 'product_billing_ci', 'codeigniter-3.x', ''),
-(3, 'Product-Broker-CI', 'u172594077_demobroker_ci', 'codeigniter-3.x', ''),
-(4, 'Product-HRMS', 'u172594077_demohrms', 'laravel-8.x', 'C:\\xampp\\htdocs\\practice\\products\\product_hrms');
+(1, 'Product-Ecom', 'u103431999_ecom_test', 'laravel-8.x', 'C:\\xampp\\htdocs\\www\\products\\product_ecom'),
+(2, 'Product-Billing-CI', 'product_billing_ci', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\www\\products\\product_billing_ci'),
+(3, 'Product-Broker-CI', 'u172594077_demobroker_ci', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\www\\products\\product_broker_ci'),
+(4, 'Product-HRMS', 'u172594077_demohrms', 'laravel-8.x', 'C:\\xampp\\htdocs\\practice\\products\\product_hrms'),
+(5, 'SPS-Accounting', 'u103431999_spsoni_account', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\practice\\products\\sps');
 
 -- --------------------------------------------------------
 
@@ -98,7 +143,7 @@ ALTER TABLE `project_module`
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `project_module`
