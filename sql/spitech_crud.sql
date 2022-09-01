@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Aug 31, 2022 at 07:22 AM
+-- Generation Time: Sep 01, 2022 at 01:26 PM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -89,11 +89,11 @@ CREATE TABLE IF NOT EXISTS `project` (
 --
 
 INSERT INTO `project` (`id`, `project_name`, `db_name`, `platform`, `root_path`) VALUES
-(1, 'Product-Ecom', 'u103431999_ecom_test', 'laravel-8.x', 'C:\\xampp\\htdocs\\www\\products\\product_ecom'),
-(2, 'Product-Billing-CI', 'product_billing_ci', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\www\\products\\product_billing_ci'),
-(3, 'Product-Broker-CI', 'u172594077_demobroker_ci', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\www\\products\\product_broker_ci'),
-(4, 'Product-HRMS', 'u172594077_demohrms', 'laravel-8.x', 'C:\\xampp\\htdocs\\www\\products\\product_hrms'),
-(5, 'SPS-Accounting', 'u103431999_spsoni_account', 'codeigniter-3.x', 'C:\\xampp\\htdocs\\www\\products\\sps'),
+(1, 'Product-Ecom', 'u103431999_ecom_test', 'laravel-8.x', 'C:\\wamp64\\www\\html\\products\\product_ecom'),
+(2, 'Product-Billing-CI', 'product_billing_ci', 'codeigniter-3.x', 'C:\\wamp64\\www\\html\\products\\product_billing_ci'),
+(3, 'Product-Broker-CI', 'u172594077_demobroker_ci', 'codeigniter-3.x', 'C:\\wamp64\\www\\html\\products\\product_broker_ci'),
+(4, 'Product-HRMS', 'u172594077_demohrms', 'laravel-8.x', 'C:\\wamp64\\www\\html\\products\\product_hrms'),
+(5, 'SPS-Accounting', 'u103431999_spsoni_account', 'codeigniter-3.x', 'C:\\wamp64\\www\\html\\products\\sps'),
 (6, 'CityWalaDriver', 'u103431999_citywaladriver', 'codeigniter-3.x', 'C:\\wamp64\\www\\html\\citywaladriver.com');
 
 -- --------------------------------------------------------
