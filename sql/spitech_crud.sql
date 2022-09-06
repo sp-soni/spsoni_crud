@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Sep 01, 2022 at 01:26 PM
+-- Generation Time: Sep 06, 2022 at 01:12 PM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -93,7 +93,7 @@ INSERT INTO `project` (`id`, `project_name`, `db_name`, `platform`, `root_path`)
 (2, 'Product-Billing-CI', 'product_billing_ci', 'codeigniter-3.x', 'C:\\wamp64\\www\\html\\products\\product_billing_ci'),
 (3, 'Product-Broker-CI', 'u172594077_demobroker_ci', 'codeigniter-3.x', 'C:\\wamp64\\www\\html\\products\\product_broker_ci'),
 (4, 'Product-HRMS', 'u172594077_demohrms', 'laravel-8.x', 'C:\\wamp64\\www\\html\\products\\product_hrms'),
-(5, 'SPS-Accounting', 'u103431999_spsoni_account', 'codeigniter-3.x', 'C:\\wamp64\\www\\html\\products\\sps'),
+(5, 'SPS-Accounting', 'u103431999_sps', 'codeigniter-3.x', 'C:\\wamp64\\www\\html\\products\\sps'),
 (6, 'CityWalaDriver', 'u103431999_citywaladriver', 'codeigniter-3.x', 'C:\\wamp64\\www\\html\\citywaladriver.com');
 
 -- --------------------------------------------------------
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `project_module` (
 --
 
 INSERT INTO `project_module` (`id`, `module`, `project_id`, `controller_parent_class`, `base_model_suffix`, `controller_path`, `model_path`, `view_path`, `route_path`) VALUES
-(1, 'Admin', 1, 'App\\CustomComponents\\AdminAbstractController', 'Base', 'D:\\wamp64\\www\\spsoni\\products\\product_ecom\\Modules\\Admin\\Http\\Controllers', 'D:\\wamp64\\www\\spsoni\\products\\product_ecom\\app\\Models', 'D:\\wamp64\\www\\spsoni\\products\\product_ecom\\Modules\\Admin\\Resources\\views', ''),
+(1, 'Admin', 1, 'App\\CustomComponents\\AdminAbstractController', 'Base', 'Modules\\Admin\\Http\\Controllers', 'app\\Models', 'Modules\\Admin\\Resources\\views', ''),
 (2, 'Vendor', 1, 'App\\CustomComponents\\VendorAbstractController', 'Base', 'D:\\wamp64\\www\\spsoni\\products\\product_ecom\\Modules\\Vendor\\Http\\Controllers', 'D:\\wamp64\\www\\spsoni\\products\\product_ecom\\app\\Models', 'D:\\wamp64\\www\\spsoni\\products\\product_ecom\\Modules\\Vendor\\Resources\\views', ''),
 (3, 'Admin', 2, 'NA', 'Base', 'C:\\xampp\\htdocs\\practice\\products\\product_billing_ci\\app\\modules\\admin\\controllers', 'C:\\xampp\\htdocs\\practice\\products\\product_billing_ci\\app\\models', 'C:\\xampp\\htdocs\\practice\\products\\product_billing_ci\\app\\modules\\admin\\views', ''),
 (4, 'Admin', 3, 'NA', 'Base', 'D:\\wamp64\\www\\spsoni\\products\\product_broker_ci\\app\\modules\\admin\\controllers', 'D:\\wamp64\\www\\spsoni\\products\\product_broker_ci\\app\\models', 'D:\\wamp64\\www\\spsoni\\products\\product_broker_ci\\app\\modules\\admin\\views', ''),
