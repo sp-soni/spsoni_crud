@@ -70,13 +70,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
 
     $template .= '$data = self::where($aWhere)->orderBy(\'id\', \'desc\')->get();
         return $data;
-    }' . PHP_EOL;
-
-    $template .= '
-    public function delete_record($id){
-        //Delete Actions
-    }
-    ';
+    }' . PHP_EOL;    
     $template .= PHP_EOL . '}';
     return $template;
 }

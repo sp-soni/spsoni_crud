@@ -21,10 +21,8 @@ function generate_form($form_attributes, $module_url)
             <label for="' . $name . '" class="col-sm-2 col-form-label">' . $label . $required . '</label>
             <div class="col-sm-6">
                 @php
-                $' . $name . ' = \'\';
-                if (!empty($_POST[\'' . $name . '\'])) {
-                $' . $name . ' = $_POST[\'' . $name . '\'];
-                } elseif (!empty($model->' . $name . ')) {
+                $' . $name . ' = old(\''. $name .'\');
+                if (!empty($model->' . $name . ')) {
                 $' . $name . ' = $model->' . $name . ';
                 }
                 @endphp' . PHP_EOL;

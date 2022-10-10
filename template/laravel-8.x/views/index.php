@@ -120,11 +120,7 @@ function generate_index($form_attributes, $module_url)
     @section(\'content\')
 
         <div class="content">
-            @if (Session::get(\'success\'))
-                <div class="alert alert-success" role="alert">
-                    {{ Session::get(\'success\') }}
-                </div>
-            @endif
+        {{ showMessage() }}
             ' . $search_fields . PHP_EOL . $grid_fields . '       
     </div>
 

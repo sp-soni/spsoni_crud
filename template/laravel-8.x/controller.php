@@ -13,7 +13,7 @@ function generate_controller($className, $model, $table, $title, $form_attribute
     }
 
     $template = '<?php
-namespace Modules\\' . ucwords($module_name) . '\Http\Controllers;
+namespace App\\Http\\Controllers\\' . ucwords($module_name).';
 
 use ' . $parent_class . ';
 use App\Models\\' . $model . ';' . PHP_EOL;
