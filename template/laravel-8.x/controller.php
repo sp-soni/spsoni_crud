@@ -29,7 +29,7 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
         $data[\'aGrid\'] = $model->search($request);
         $data[\'module_url\'] = url(\'' . $module_name . '/' . $module_url . '/\');
         $data[\'breadcrumb\'] = ["" => "' . $title . ' List"];
-        return view(\'' . $module_name . '::' . $module_url . '.index\', $data);
+        return view(\'' . $module_name . '.' . $module_url . '.index\', $data);
     }
 
     public function add(Request $request, $id)
@@ -54,7 +54,7 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
             "' . $module_name . '/' . $module_url . '" => "' . $title . ' List",
             "" => "Add/Edit"
         ];
-        return view(\'' . $module_name . '::' . $module_url . '.add\', $data);
+        return view(\'' . $module_name . '.' . $module_url . '.add\', $data);
     }
 
     public function delete($id)
