@@ -116,7 +116,7 @@ function generate_index($form_attributes, $module_url)
     $grid_fields .= $tbody . PHP_EOL;
     $grid_fields .= '</table>';
 
-    $template = '@extends(\'admin::layouts.admin_layout\')
+    $template = '@extends(\'layouts.admin_layout\')
     @section(\'content\')
 
         <div class="content">
