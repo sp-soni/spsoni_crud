@@ -1,6 +1,6 @@
 <?php
 
-function action_generate_crud($conn, $tables, $action = "preview", $choice)
+function action_generate_crud($conn, $tables, $action, $choice)
 {
 
     $files = [];
