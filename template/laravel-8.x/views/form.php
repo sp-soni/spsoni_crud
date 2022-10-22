@@ -59,7 +59,7 @@ function generate_form($form_attributes, $module_url)
 
 <div class="conatiner">
 <?php showMessage($errors); ?>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         ' . $form_fields . '
         <div class="mb-3 row">
             <div class="offset-sm-2 col-sm-6">               
