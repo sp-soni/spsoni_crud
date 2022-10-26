@@ -45,7 +45,8 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
             ' . $form_fileds . '
             if ($model->save()) {
                 save_user_action($action, "PK :" . $model->id);
-                return redirect("/' . $module_name . '/' . $module_url . '")->withSuccess(\'' . $title . ' saved successfully\');
+                setMessage(\'' . $title . ' saved successfully\');
+                return redirect("/' . $module_name . '/' . $module_url . '");
             }
         }
         $data[\'model\'] = $model;
@@ -63,7 +64,8 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
         if(!empty($model->id)){
             if($model->delete()){
                 save_user_action(\'' . $title . ' deleted\', "PK :" . $model->id);
-                return redirect("/' . $module_name . '/' . $module_url . '")->withSuccess(\'' . $title . ' deleted successfully\');
+                setMessage(\'' . $title . ' deleted successfully\');
+                return redirect("/' . $module_name . '/' . $module_url . '");
             }          
             
         }

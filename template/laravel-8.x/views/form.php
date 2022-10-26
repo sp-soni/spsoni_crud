@@ -58,7 +58,7 @@ function generate_form($form_attributes, $module_url)
 @section(\'content\')
 
 <div class="conatiner">
-<?php showMessage($errors); ?>
+{{ showMessage($errors)}}
     <form method="post" enctype="multipart/form-data">
         ' . $form_fields . '
         <div class="mb-3 row">
