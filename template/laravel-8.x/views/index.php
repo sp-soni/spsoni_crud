@@ -34,10 +34,7 @@ function generate_index($form_attributes, $module_url)
         $label = $attribute->label;
         $tbody .= '<td>
         @php
-            $' . $name . '=\'\';
-            if (!empty($_GET[\'' . $name . '\'])) {
-                $' . $name . ' = $_GET[\'' . $name . '\'];
-            }
+            $' . $name . ' = !empty($_GET[\'' . $name . '\']) ? $_GET[\'' . $name . '\'] : \'\';            
         @endphp
         <input type="text" name="' . $name . '" class="form-control" value="{{ $' . $name . ' }}">
     </td>' . PHP_EOL;
