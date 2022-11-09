@@ -17,7 +17,7 @@ function debug($arg, $is_die = 1)
 }
 
 
-define('BASE_URL', 'http://localhost/html/inhouse/spitech_crud/');
+define('BASE_URL', 'http://localhost/html/spsoni_crud/');
 define('API_BASE_URL', BASE_URL . 'vendor/api/index.php');
 
 
@@ -31,7 +31,7 @@ define('USER', 'root');
 define('PASSWORD', '');
 
 //--app
-define('APP_DB', 'spitech_crud');
+define('APP_DB', 'spsoni_crud');
 $conn_app = mysqli_connect(HOST, USER, PASSWORD, APP_DB) or die('app mysqli not connected');
 $_SESSION['conn_app'] = $conn_app;
 
