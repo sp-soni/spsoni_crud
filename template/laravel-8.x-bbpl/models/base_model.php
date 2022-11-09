@@ -5,7 +5,7 @@ function generate_base_model($className, $columns, $table, $table_attributes)
 
     //Template Prepearation
     $template = '<?php
-namespace App\Models\_base;' . PHP_EOL;
+namespace App\Models\''.BASE_FOLDER_NAME.';' . PHP_EOL;
 
     $template .= 'use App\CustomComponents\BaseAbstractModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

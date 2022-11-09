@@ -9,7 +9,7 @@ function generate_model($className, $table, $parentClass, $table_attributes = []
     if (!defined(\'BASEPATH\'))
         exit(\'No direct script access allowed\');
     
-    require APPPATH . \'/models/_base/' . $parentClass . '.php\';
+    require APPPATH . \'/models/'.BASE_FOLDER_NAME.'/' . $parentClass . '.php\';
     
     class ' . $className . ' extends ' . $parentClass . '
     {

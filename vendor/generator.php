@@ -113,7 +113,7 @@ function action_generate_base_models($conn, $tables, $action = "preview")
         mkdir($path);
     }
 
-    $path .= '_base/';
+    $path .= BASE_FOLDER_NAME.'/';
     if (!file_exists($path)) {
         mkdir($path);
     }
