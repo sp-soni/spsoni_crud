@@ -123,9 +123,10 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
 
     //--index.php
     $file_name = 'index.php';
-    if (PLATFORM == "laravel-8.x") {
+    if (in_array(PLATFORM,['laravel-8.x','laravel-8.x-bbpl']) ) {
         $file_name = 'index.blade.php';
     }
+    
     $index_path = $dir_path . $file_name;
     $files[0] = $index_path;
     $txt = generate_index($form_attributes, $module_url);
@@ -139,9 +140,10 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
 
     //--form.php
     $file_name = 'form.php';
-    if (PLATFORM == "laravel-8.x") {
+    if (in_array(PLATFORM,['laravel-8.x','laravel-8.x-bbpl']) ) {
         $file_name = 'add.blade.php';
     }
+
     $form_path = $dir_path . $file_name;
     $files[1] = $form_path;
     $txt = generate_form($form_attributes, $module_url);
