@@ -54,11 +54,11 @@ function generate_form($form_attributes, $module_url)
         </div>' . PHP_EOL;
     }
 
-    $template = '@extends(\'layouts.admin_layout\')
+    $template = '@extends(\'layouts.backend\')
 @section(\'content\')
 
 <div class="conatiner">
-{{ showMessage($errors)}}
+{{ show_message($errors)}}
     <form method="post" enctype="multipart/form-data">
         ' . $form_fields . '
         <div class="mb-3 row">

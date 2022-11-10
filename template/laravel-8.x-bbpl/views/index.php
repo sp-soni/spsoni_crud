@@ -116,7 +116,7 @@ function generate_index($form_attributes, $module_url)
     @section(\'content\')
 
         <div class="content">
-        {{ showMessage() }}
+        {{ show_essage($errors) }}
             ' . $search_fields . PHP_EOL . $grid_fields . '       
     </div>
 
