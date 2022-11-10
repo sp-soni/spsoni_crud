@@ -10,6 +10,7 @@ function generate_model($className, $table, $parentClass, $table_attributes = []
     
     class ' . $className . ' extends ' . $parentClass . '
     {
+        
     }
     ';
 

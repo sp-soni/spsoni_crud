@@ -5,9 +5,9 @@ function generate_base_model($className, $columns, $table, $table_attributes)
 
     //Template Prepearation
     $template = '<?php
-namespace App\Models\''.BASE_FOLDER_NAME.';' . PHP_EOL;
+namespace App\Models\\'.BASE_FOLDER_NAME.';' . PHP_EOL;
 
-    $template .= 'use App\CustomComponents\BaseAbstractModel;
+    $template .= 'use App\Models\\'.BASE_FOLDER_NAME.'\AbstractModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
@@ -16,7 +16,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
         $template .= 'use Illuminate\Foundation\Auth\User as Authenticatable;' . PHP_EOL;
         $template .= PHP_EOL . 'abstract class ' . $className . ' extends Authenticatable' . PHP_EOL;
     } else {
-        $template .= PHP_EOL . 'abstract class ' . $className . ' extends BaseAbstractModel' . PHP_EOL;
+        $template .= PHP_EOL . 'abstract class ' . $className . ' extends AbstractModel' . PHP_EOL;
     }
 
     $template .= '{
@@ -57,10 +57,10 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
         $count++;
     }
 
-    $template .= '$aWhere = []' . PHP_EOL;
+    $template .= '$aWhere = [];' . PHP_EOL;
     $count = 1;
     foreach ($table_attributes as $column) {
-        $template .= 'if(!empty('.$column->column_name.')){'. PHP_EOL;
+        $template .= 'if(!empty($'.$column->column_name.')){'. PHP_EOL;
         $template .= '$aWhere[]=[\'' . $column->column_name . '\', \'LIKE\', \'%\'.$this->' . $column->column_name . '.\'%\'];' . PHP_EOL;
         $template .= '}';
         if ($count == 3) {
@@ -70,7 +70,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     }
     $template .=PHP_EOL;
 
-    $template .= '$data = self::where($aWhere)->orderBy(\'id\', \'desc\')->paginate(config_item(\'app.page_limit\'));
+    $template .= '$data = self::where($aWhere)->orderBy(\'id\', \'desc\')->paginate(config_item(\'app.page_size\'));
         return $data;
     }' . PHP_EOL;    
     $template .= PHP_EOL . '}';
