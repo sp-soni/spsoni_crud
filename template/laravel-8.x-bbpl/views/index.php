@@ -2,9 +2,9 @@
 function get_css_class($type)
 {
     $class = '';
-    $aCssClasses=['date','datetime','number','int','integer'];
-    if (in_array($type,$aCssClasses)) {
-        $class = 'class="'.$type.'"';
+    $aCssClasses = ['date', 'datetime', 'number', 'int', 'integer'];
+    if (in_array($type, $aCssClasses)) {
+        $class = 'class="' . $type . '"';
     }
     return $class;
 }
@@ -68,7 +68,7 @@ function generate_index($form_attributes, $module_url)
                     <th width="5%" class="sn">#</th>' . PHP_EOL;
     $count = 1;
     foreach ($form_attributes as $attribute) {
-        $label = $attribute->label;       
+        $label = $attribute->label;
         $thead .= '<th width="10%">' . $label . '</th>' . PHP_EOL;
         if ($count == INDEX_FIELD_COUNT) {
             break;
@@ -92,14 +92,14 @@ function generate_index($form_attributes, $module_url)
     foreach ($form_attributes as $attribute) {
         $name = $attribute->column_name;
         $css_class = get_css_class($attribute->type);
-        $tbody .= ' <td '.$css_class.'>{{ $item->' . $name . ' }}</td>';
+        $tbody .= ' <td ' . $css_class . '>{{ $item->' . $name . ' }}</td>';
         if ($count == INDEX_FIELD_COUNT) {
             break;
         }
         $count++;
     }
 
-    $tbody .= '<td class="action">' . PHP_EOL;    
+    $tbody .= '<td class="action">' . PHP_EOL;
     $tbody .= '{{ html_button(["btn"=>"edit_delete","id"=>$item->id,"url"=>"' . $module_url . '"]) }}' . PHP_EOL;
     $tbody .= '</td>
     </tr>
@@ -112,12 +112,22 @@ function generate_index($form_attributes, $module_url)
     $grid_fields .= $tbody . PHP_EOL;
     $grid_fields .= '</table>';
 
-    $template = '@extends(\'layouts.admin_layout\')
+    $template = '@extends(\'layouts.backend\')
     @section(\'content\')
-
-        <div class="content">
-        {{ show_essage($errors) }}
+    <div class="content-wrapper">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">{{$title}}</h3>
+          </div>
+        <div class="card-body table-responsive p-0">
+        {{ show_message($errors) }}
             ' . $search_fields . PHP_EOL . $grid_fields . '       
+            </div>
+            </div>
+          </div>
+        </div>
     </div>
 
 @endsection';
