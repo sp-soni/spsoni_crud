@@ -57,7 +57,7 @@ function generate_form($form_attributes, $module_url)
     $template = '@extends(\'layouts.backend\')
 @section(\'content\')
 
-<div class="content-wrapper">
+
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -83,7 +83,7 @@ function generate_form($form_attributes, $module_url)
     </div>
     </div>
     </section>
-</div>
+
 
 @endsection';
 

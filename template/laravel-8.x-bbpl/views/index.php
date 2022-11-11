@@ -114,7 +114,7 @@ function generate_index($form_attributes, $module_url)
 
     $template = '@extends(\'layouts.backend\')
     @section(\'content\')
-    <div class="content-wrapper">
+    <section class="content">
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -128,7 +128,7 @@ function generate_index($form_attributes, $module_url)
             </div>
           </div>
         </div>
-    </div>
+    </section>
 
 @endsection';
 
