@@ -28,8 +28,7 @@ require_once ROOT_PATH . '/vendor/helpers.php';
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">
-                <h3>SpiTech Code Generator Tool</h3>
+            <div class="col-md-12">              
                 <div class="btn-group">
                     <a href="<?php echo BASE_URL; ?>action/" class="btn btn-primary">CRUD</a>
                     <a href="<?php echo BASE_URL; ?>action/routes.php" class="btn btn-warning">Routes</a>

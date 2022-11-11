@@ -123,13 +123,17 @@ if (!empty($_POST)) {
             <table class="table table-bordered">
                 <thead>
                     <tr class="bg-parimary">
-                        <th colspan="2">CRUD Generator</th>
+                        <th colspan="3">CRUD Generator</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="15%">Project <span class="required">(*)</span></td>
-                        <td>
+                        <td>Project <span class="required">(*)</span></td>
+                        <td>Project Module<span class="required">(*)</span></td>
+                        <td>Table <span class="required">(*)</span></td>
+                    </tr>
+                    <tr>                       
+                        <td width="35%">
                             <select class="form-control" name="project_id" id="project_id" onchange="load_tables_modules(this.value,'table_name','module_id')">
                                 <option value="">--Select--</option>
                                 <?php
@@ -141,11 +145,8 @@ if (!empty($_POST)) {
                                 }
                                 ?>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Project Module <span class="required">(*)</span></td>
-                        <td>
+                        </td>  
+                        <td width="35%">
                             <select class="form-control" name="module_id" id="module_id">
                                 <option value="">-Select-</option>
                                 <?php
@@ -156,10 +157,7 @@ if (!empty($_POST)) {
                                 }
                                 ?>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Table <span class="required">(*)</span></td>
+                        </td>                    
                         <td>
                             <select class="form-control" name="table_name" id="table_name">
                                 <option value="">-Select-</option>
@@ -171,15 +169,13 @@ if (!empty($_POST)) {
                                 }
                                 ?>
                             </select>
-                        </td>
+                        </td>  
                     </tr>
-
-                    <tr>
-                        <td>Choice <span class="required">(*)</span></td>
-                        <td>
+                    <tr>                
+                        <td>File Choice <span class="required">(*)</span></td>
+                        <td colspan="2">
                             <ul type="none" class="list-group list-group-flush">
                                 <li><input id="checkAll" type="checkbox" name="choice[]" value="all" <?php set_choice('all'); ?>>All</li>
-
                             </ul>
                             <ul type="none" class="list-group list-group-flush" id="list-wrapper">
                                 <li><input type="checkbox" name="choice[]" value="controller" <?php set_choice('controller'); ?>>Controller</li>
@@ -193,7 +189,7 @@ if (!empty($_POST)) {
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="2">
+                        <td colspan="3">
                             <input type="submit" name="preview" value="Preview" class="btn btn-warning">
                         </td>
                     </tr>
