@@ -21,7 +21,7 @@ function generate_form($form_attributes, $module_url)
             <label for="' . $name . '" class="col-sm-2 col-form-label">' . $label . $required . '</label>
             <div class="col-sm-6">
                 @php
-                $' . $name . ' = old(\''. $name .'\');
+                $' . $name . ' = old(\'' . $name . '\');
                 if (!empty($model->' . $name . ')) {
                 $' . $name . ' = $model->' . $name . ';
                 }
@@ -57,16 +57,32 @@ function generate_form($form_attributes, $module_url)
     $template = '@extends(\'layouts.backend\')
 @section(\'content\')
 
-<div class="conatiner">
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
 {{ show_message($errors)}}
+<div class="col-md-12">
     <form method="post" enctype="multipart/form-data">
+    @csrf
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">{{$title}}</h3>
+                            </div>
+                            <div class="card-body">
         ' . $form_fields . '
-        <div class="mb-3 row">
+        </div>
+        <div class="card-footer">
             <div class="offset-sm-2 col-sm-6">               
                 {{ html_button(["url"=>"' . $module_url . '"]) }}
             </div>
         </div>
+        </div>
     </form>
+    </div>
+    </div>
+    </div>
+    </section>
 </div>
 
 @endsection';

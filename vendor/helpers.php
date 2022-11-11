@@ -141,7 +141,7 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
     //--form.php
     $file_name = 'form.php';
     if (in_array(PLATFORM,['laravel-8.x','laravel-8.x-bbpl']) ) {
-        $file_name = 'add.blade.php';
+        $file_name = 'form.blade.php';
     }
 
     $form_path = $dir_path . $file_name;
