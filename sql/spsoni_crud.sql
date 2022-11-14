@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.19, for Win64 (x86_64)
 --
--- Host: localhost    Database: spitech_crud
+-- Host: localhost    Database: spsoni_crud
 -- ------------------------------------------------------
--- Server version	5.7.36
+-- Server version	8.0.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -23,24 +23,14 @@ DROP TABLE IF EXISTS `project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `project` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `project_name` varchar(100) NOT NULL,
   `db_name` varchar(100) NOT NULL,
-  `platform` enum('codeigniter-3.x','laravel-8.x') NOT NULL DEFAULT 'laravel-8.x',
+  `platform` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `root_path` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `project`
---
-
-LOCK TABLES `project` WRITE;
-/*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'Product-Ecom','u103431999_ecommv','laravel-8.x','C:\\wamp64\\www\\html\\products\\product_ecom'),(2,'Product-Billing-CI','product_billing_ci','codeigniter-3.x','C:\\wamp64\\www\\html\\products\\product_billing_ci'),(3,'Product-Broker-CI','u172594077_demobroker_ci','codeigniter-3.x','C:\\wamp64\\www\\html\\products\\product_broker_ci'),(4,'Product-HRMS','u172594077_demohrms','laravel-8.x','C:\\wamp64\\www\\html\\products\\product_hrms'),(5,'SPS-Accounting','u103431999_sps','codeigniter-3.x','C:\\wamp64\\www\\html\\products\\sps'),(6,'CityWalaDriver','u103431999_citywaladriver','codeigniter-3.x','C:\\wamp64\\www\\html\\citywaladriver.com');
-/*!40000 ALTER TABLE `project` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `project_module`
@@ -50,9 +40,9 @@ DROP TABLE IF EXISTS `project_module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `project_module` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `module` varchar(50) NOT NULL,
-  `project_id` int(11) NOT NULL,
+  `project_id` int NOT NULL,
   `controller_parent_class` varchar(250) NOT NULL,
   `base_model_suffix` varchar(50) NOT NULL,
   `controller_path` text NOT NULL,
@@ -60,21 +50,11 @@ CREATE TABLE `project_module` (
   `view_path` text NOT NULL,
   `route_path` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `project_module`
---
-
-LOCK TABLES `project_module` WRITE;
-/*!40000 ALTER TABLE `project_module` DISABLE KEYS */;
-INSERT INTO `project_module` VALUES (1,'Admin',1,'App\\CustomComponents\\AdminAbstractController','Base','App\\Http\\Controllers\\Admin','app\\Models','resources\\views\\admin',''),(2,'Vendor',1,'App\\CustomComponents\\VendorAbstractController','Base','App\\Http\\Controllers\\Vendor','app\\Models','resources\\views\\vendor',''),(3,'Admin',2,'NA','Base','C:\\xampp\\htdocs\\practice\\products\\product_billing_ci\\app\\modules\\admin\\controllers','C:\\xampp\\htdocs\\practice\\products\\product_billing_ci\\app\\models','C:\\xampp\\htdocs\\practice\\products\\product_billing_ci\\app\\modules\\admin\\views',''),(4,'Admin',3,'NA','Base','D:\\wamp64\\www\\spsoni\\products\\product_broker_ci\\app\\modules\\admin\\controllers','D:\\wamp64\\www\\spsoni\\products\\product_broker_ci\\app\\models','D:\\wamp64\\www\\spsoni\\products\\product_broker_ci\\app\\modules\\admin\\views',''),(5,'Admin',4,'App\\CustomComponents\\AdminAbstractController','Base','Modules\\Admin\\Http\\Controllers','app\\Models','Modules\\Admin\\Resources\\views',''),(6,'Admin',5,'NA','Base','app\\modules\\admin\\controllers','app\\models','app\\modules\\admin\\views',''),(7,'Admin',6,'NA','Base','app\\modules\\admin\\controllers','app\\models','app\\modules\\admin\\views','');
-/*!40000 ALTER TABLE `project_module` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Dumping routines for database 'spitech_crud'
+-- Dumping routines for database 'spsoni_crud'
 --
 /*!50003 DROP FUNCTION IF EXISTS `column_exists` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -86,7 +66,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `column_exists`(`table_name_IN` VARCHAR(100), `field_name_IN` VARCHAR(100)) RETURNS int(11)
+CREATE DEFINER=`root`@`localhost` FUNCTION `column_exists`(`table_name_IN` VARCHAR(100), `field_name_IN` VARCHAR(100)) RETURNS int
 RETURN (
 
     SELECT COUNT(COLUMN_NAME) 
@@ -195,4 +175,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-10 10:44:45
+-- Dump completed on 2022-11-14 17:11:24
