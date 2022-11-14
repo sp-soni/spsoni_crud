@@ -4,7 +4,8 @@ function platform_list()
 {
     return [
         'codeigniter-3.x',
-        'laravel-8.x'
+        'laravel-8.x',
+        'laravel-8.x-bbpl'
     ];
 }
 
