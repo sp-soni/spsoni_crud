@@ -70,15 +70,15 @@ if (!empty($_POST)) {
             <table class="table table-bordered">
                 <thead>
                     <tr class="bg-parimary">
-                        <th colspan="2">Project Manage</th>
+                        <th colspan="2">Project Management</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="15%"><span class="required">Platform (*)</span></td>
-                        <td width="20%">Database Name <span class="required">(*)</span></td>
-                        <td width="20%">Project Name <span class="required">(*)</span></td>
-                        <td width="*">Root Directory Path<span class="required">(*)</span></td>
+                        <th width="15%">Platform <span class="required">(*)</span></th>
+                        <th width="20%">Database Name <span class="required">(*)</span></th>
+                        <th width="20%">Project Name <span class="required">(*)</span></th>
+                        <th width="*">Root Directory Path<span class="required">(*)</span></th>
                     </tr>
 
                     <tr>

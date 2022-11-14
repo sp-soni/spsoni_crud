@@ -130,17 +130,12 @@ if (!empty($_POST)) {
     <?php show_message(); ?>
     <form method="post">
         <div class="col-md-12">
-            <table class="table table-bordered">
-                <thead>
-                    <tr class="bg-parimary">
-                        <th colspan="3">CRUD Generator</th>
-                    </tr>
-                </thead>
+            <table class="table table-bordered">               
                 <tbody>
                     <tr>
-                        <td>Project <span class="required">(*)</span></td>
-                        <td>Project Module<span class="required">(*)</span></td>
-                        <td>Table <span class="required">(*)</span></td>
+                        <th>Project <span class="required">(*)</span></th>
+                        <th>Project Module<span class="required">(*)</span></th>
+                        <th>Table <span class="required">(*)</span></th>
                     </tr>
                     <tr>
                         <td width="35%">
