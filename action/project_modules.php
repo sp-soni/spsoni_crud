@@ -1,14 +1,14 @@
 <?php
 require_once dirname(__FILE__, 2) . '/layout/header.php';
 
-$id = 0;
+$module_id = 0;
 $project_name = '';
 $platform = '';
 $db_name = '';
 $root_path = '';
 
-if (!empty($_GET['project_id'])) {
-    $sql = 'select * from project where id=' . $_GET['project_id'];
+if (!empty($_GET['module_id'])) {
+    $sql = 'select * from project_module where id=' . $_GET['module_id'];
     $res = mysqli_query($conn_app, $sql);
     $EDIT_ROW = mysqli_fetch_assoc($res);
     if (!empty($EDIT_ROW['id'])) {
@@ -19,6 +19,15 @@ if (!empty($_GET['project_id'])) {
         $root_path =  $EDIT_ROW['root_path'];
     }
 }
+
+$aProjectModules = [];
+if (!empty($_GET['project_id'])) {
+    $sql = 'select * from project_modules where project_id=' . $_GET['project_id'];
+    $aProjectModules = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+
+// $sql = 'select * from project';
+// $aProject = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
 
 if (!empty($_POST)) {
 
@@ -54,7 +63,7 @@ if (!empty($_POST)) {
         } else { // update
             $sql = "UPDATE project set `project_name`='" . $project_name . "', `db_name`='" . $db_name . "', 
             `platform`='" . $platform . "', `root_path`='" . mysqli_real_escape_string($conn_app, $root_path) . "' 
-             where id=".$id;
+             where id=" . $id;
         }
         mysqli_query($conn_app, $sql) or die($conn_app->error);
         $_SESSION['success'][] = 'Project saved successfully';
@@ -137,7 +146,7 @@ if (!empty($_POST)) {
                 <thead>
                     <tr>
                         <th>SN</td>
-                        <th>Project Name</th>
+                        <th>Module Name</th>
                         <th>DB Name</th>
                         <th>Platform</th>
                         <th>Action</th>
@@ -145,22 +154,17 @@ if (!empty($_POST)) {
                 </thead>
                 <tbody>
                     <?php
-                    $sql = 'select 
-                    t1.*,t2.module,t2.base_model_suffix,t2.controller_path,t2.model_path,
-                    t2.view_path,t2.route_path,t2.controller_parent_class 
-                    from project as t1 left join project_module as t2 on t1.id=t2.project_id';
-                    $aProject = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
-                    if (!empty($aProject) && is_array($aProject)) {
+                    if (!empty($aProjectModules) && is_array($aProjectModules)) {
                         $sn = 1;
-                        foreach ($aProject as $row) {
+                        foreach ($aProjectModules as $row) {
                             $row = (object)$row;
                             $url = BASE_URL . 'action/projects.php?project_id=' . $row->id;
                     ?>
                             <tr>
                                 <td><?php echo $sn++; ?></td>
-                                <td><?php echo $row->project_name; ?></td>
-                                <td><?php echo $row->db_name; ?></td>
-                                <td><?php echo $row->platform; ?></td>
+                                <td><?php echo $row->module; ?></td>
+                                <td><?php echo $row->controller_parent; ?></td>
+                                <td><?php echo $row->controller_parent; ?></td>
                                 <td><a href="<?php echo $url; ?>">Edit</a></td>
                             </tr>
                     <?php
