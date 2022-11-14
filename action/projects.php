@@ -54,7 +54,7 @@ if (!empty($_POST)) {
         } else { // update
             $sql = "UPDATE project set `project_name`='" . $project_name . "', `db_name`='" . $db_name . "', 
             `platform`='" . $platform . "', `root_path`='" . mysqli_real_escape_string($conn_app, $root_path) . "' 
-             where id=".$id;
+             where id=" . $id;
         }
         mysqli_query($conn_app, $sql) or die($conn_app->error);
         $_SESSION['success'][] = 'Project saved successfully';
@@ -76,6 +76,11 @@ if (!empty($_POST)) {
                 <tbody>
                     <tr>
                         <td width="30%"><span class="required">Platform (*)</span></td>
+                        <td>Database Name <span class="required">(*)</span></td>
+
+                    </tr>
+
+                    <tr>
                         <td width="70%">
                             <select class="form-control" name="platform">
                                 <option value="">--Select--</option>
@@ -89,15 +94,6 @@ if (!empty($_POST)) {
                                 ?>
                             </select>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>Project Name <span class="required">(*)</span></td>
-                        <td>
-                            <input type="text" class="form-control" name="project_name" id="project_name" value="<?php echo $project_name; ?>">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Database Name <span class="required">(*)</span></td>
                         <td>
                             <select class="form-control" name="db_name" id="db_name">
                                 <option value="">--Select--</option>
@@ -111,9 +107,15 @@ if (!empty($_POST)) {
                             </select>
                         </td>
                     </tr>
-
                     <tr>
+                        <td>Project Name <span class="required">(*)</span></td>
                         <td>Root Directory Path<span class="required">(*)</span></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" name="project_name" id="project_name" value="<?php echo $project_name; ?>">
+                        </td>
                         <td>
                             <input type="text" class="form-control" name="root_path" id="root_path" value="<?php echo $root_path; ?>">
                         </td>
@@ -141,6 +143,7 @@ if (!empty($_POST)) {
                         <th width="15%">DB Name</th>
                         <th width="15%">Platform</th>
                         <th width="*">Root Path</th>
+                        <th>Modules</th>
                         <th width="10%">Action</th>
                     </tr>
                 </thead>
@@ -161,6 +164,17 @@ if (!empty($_POST)) {
                                 <td><?php echo $row->db_name; ?></td>
                                 <td><?php echo $row->platform; ?></td>
                                 <td><?php echo $row->root_path; ?></td>
+                                <td>
+                                    <?php
+                                    $sql = 'select * from project_module where project_id=' . $row->id;
+                                    $aModules = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+                                    foreach ($aModules as $row1) {
+                                        $row1 = (object)$row1;
+                                        $module_url_edit = $module_url . '&module_id=' . $row1->id;
+                                    ?>
+                                        <a href="<?php echo $module_url_edit; ?>" class="btn btn-sm btn-warning"><?php echo $row1->module; ?></a>
+                                    <?php } ?>
+                                </td>
                                 <td>
                                     <a href="<?php echo $url; ?>" class="btn btn-sm btn-primary">Edit</a>
                                     <a href="<?php echo $module_url; ?>" class="btn btn-sm btn-success">Modules</a>
