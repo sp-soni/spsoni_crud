@@ -66,7 +66,7 @@ if (!empty($_POST)) {
 <div class="row">
     <?php show_message(); ?>
     <form method="post">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <table class="table table-bordered">
                 <thead>
                     <tr class="bg-parimary">
@@ -75,13 +75,14 @@ if (!empty($_POST)) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="30%"><span class="required">Platform (*)</span></td>
-                        <td>Database Name <span class="required">(*)</span></td>
-
+                        <td width="15%"><span class="required">Platform (*)</span></td>
+                        <td width="20%">Database Name <span class="required">(*)</span></td>
+                        <td width="20%">Project Name <span class="required">(*)</span></td>
+                        <td width="*">Root Directory Path<span class="required">(*)</span></td>
                     </tr>
 
                     <tr>
-                        <td width="70%">
+                        <td>
                             <select class="form-control" name="platform">
                                 <option value="">--Select--</option>
                                 <?php
@@ -106,13 +107,7 @@ if (!empty($_POST)) {
                                 ?>
                             </select>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>Project Name <span class="required">(*)</span></td>
-                        <td>Root Directory Path<span class="required">(*)</span></td>
-
-                    </tr>
-                    <tr>
+                   
                         <td>
                             <input type="text" class="form-control" name="project_name" id="project_name" value="<?php echo $project_name; ?>">
                         </td>
@@ -123,10 +118,7 @@ if (!empty($_POST)) {
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td>
-
-                        </td>
-                        <td>
+                        <td colspan="4" class="text-right">
                             <input type="submit" name="preview" value="Save" class="btn btn-success">
                         </td>
                     </tr>
