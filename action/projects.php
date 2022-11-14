@@ -137,31 +137,34 @@ if (!empty($_POST)) {
                 <thead>
                     <tr>
                         <th>SN</td>
-                        <th>Project Name</th>
-                        <th>DB Name</th>
-                        <th>Platform</th>
-                        <th>Action</th>
+                        <th width="15%">Project Name</th>
+                        <th width="15%">DB Name</th>
+                        <th width="15%">Platform</th>
+                        <th width="*">Root Path</th>
+                        <th width="10%">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    $sql = 'select 
-                    t1.*,t2.module,t2.base_model_suffix,t2.controller_path,t2.model_path,
-                    t2.view_path,t2.route_path,t2.controller_parent_class 
-                    from project as t1 left join project_module as t2 on t1.id=t2.project_id';
+                    $sql = 'select * from project order by id desc';
                     $aProject = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
                     if (!empty($aProject) && is_array($aProject)) {
                         $sn = 1;
                         foreach ($aProject as $row) {
                             $row = (object)$row;
                             $url = BASE_URL . 'action/projects.php?project_id=' . $row->id;
+                            $module_url = BASE_URL . 'action/project_modules.php?project_id=' . $row->id;
                     ?>
                             <tr>
                                 <td><?php echo $sn++; ?></td>
                                 <td><?php echo $row->project_name; ?></td>
                                 <td><?php echo $row->db_name; ?></td>
                                 <td><?php echo $row->platform; ?></td>
-                                <td><a href="<?php echo $url; ?>">Edit</a></td>
+                                <td><?php echo $row->root_path; ?></td>
+                                <td>
+                                    <a href="<?php echo $url; ?>" class="btn btn-sm btn-primary">Edit</a>
+                                    <a href="<?php echo $module_url; ?>" class="btn btn-sm btn-success">Modules</a>
+                                </td>
                             </tr>
                     <?php
                         }

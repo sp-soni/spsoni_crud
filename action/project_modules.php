@@ -7,6 +7,29 @@ $controller_path = '';
 $model_path = '';
 $view_path = '';
 $project_id = '';
+$module='';
+
+$aProjectModules = [];
+$GLOBALS['project_root_path']='';
+
+
+$sql = 'select * from project ';
+$aProjectList = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+
+// Load project details and module list
+if (!empty($_GET['project_id'])) {
+
+    $project_id = $_GET['project_id'];
+    $sql = 'select * from project_module where project_id=' . $_GET['project_id'];
+    $aProjectModules = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+
+    $sql = 'select * from project where id=' . $project_id;
+    $aProject = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+    if (!empty($aProject[0])) {
+        $GLOBALS['project_root_path'] = $aProject[0]['root_path'];
+    }
+}
+
 
 if (!empty($_GET['module_id'])) {
     $sql = 'select * from project_module where id=' . $_GET['module_id'];
@@ -14,6 +37,7 @@ if (!empty($_GET['module_id'])) {
     $EDIT_ROW = mysqli_fetch_assoc($res);
     if (!empty($EDIT_ROW['id'])) {
         $module_id = $EDIT_ROW['id'];
+        $module = $EDIT_ROW['module'];
         $project_id = $EDIT_ROW['project_id'];
         $controller_path = $EDIT_ROW['controller_path'];
         $model_path =  $EDIT_ROW['model_path'];
@@ -22,24 +46,27 @@ if (!empty($_GET['module_id'])) {
     }
 }
 
-$aProjectModules = [];
-if (!empty($_GET['project_id'])) {
-    $sql = 'select * from project_module where project_id=' . $_GET['project_id'];
-    $aProjectModules = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
-}
 
-$sql = 'select * from project';
-$aProject = $conn_app->query($sql)->fetch_all(MYSQLI_ASSOC);
+function is_file_exist($dir_path)
+{
+    $path = $GLOBALS['project_root_path'] . DIRECTORY_SEPARATOR . $dir_path;
+    return file_exists($path);
+}
 
 if (!empty($_POST)) {
 
     $project_id = $_POST['project_id'];
+    $module = $_POST['module'];
     $controller_path = $_POST['controller_path'];
     $controller_parent_class = $_POST['controller_parent_class'];
     $model_path = $_POST['model_path'];
     $view_path = $_POST['view_path'];
 
     $error = [];
+
+    if (empty($_POST['module'])) {
+        $error[] = 'Module Name is required';
+    }
 
     if (empty($_POST['controller_parent_class'])) {
         $error[] = 'Controller Parent Class is required';
@@ -54,24 +81,27 @@ if (!empty($_POST)) {
         $error[] = 'Views Path is required';
     }
 
-    if (!empty($_POST['controller_path']) && !file_exists($_POST['controller_path'])) {
+    if (!empty($_POST['controller_path']) && !is_file_exist($_POST['controller_path'])) {
         $error[] = 'Controller path not found > ' . $_POST['controller_path'];
     }
-    if (!empty($_POST['model_path']) && !file_exists($_POST['model_path'])) {
+    if (!empty($_POST['model_path']) && !is_file_exist($_POST['model_path'])) {
         $error[] = 'Model path not found > ' . $_POST['model_path'];
     }
-    if (!empty($_POST['view_path']) && !file_exists($_POST['view_path'])) {
+    if (!empty($_POST['view_path']) && !is_file_exist($_POST['view_path'])) {
         $error[] = 'View path not found > ' . $_POST['view_path'];
     }
 
     $_SESSION['error'] = $error;
     if (empty($error)) {
         if ($module_id == 0) { // insert
-            $sql = "INSERT INTO project_module (`controller_parent_class`, `controller_path`, `model_path`, `view_path`)
-        VALUES ('" . $controller_parent_class . "','" . mysqli_real_escape_string($conn_app, $controller_path) . "',
+            $sql = "INSERT INTO project_module (`project_id`,`module`,`controller_parent_class`, `controller_path`, `model_path`, `view_path`)
+        VALUES ('" . $project_id . "','" . $module . "','" . $controller_parent_class . "','" . mysqli_real_escape_string($conn_app, $controller_path) . "',
         '" . mysqli_real_escape_string($conn_app, $model_path) . "','" . mysqli_real_escape_string($conn_app, $view_path) . "')";
         } else { // update
-            $sql = "UPDATE project_module set `controller_parent_class`='" . $controller_parent_class . "', 
+            $sql = "UPDATE project_module set 
+            `project_id`='" . $project_id . "', 
+            `module`='" . $module . "', 
+            `controller_parent_class`='" . $controller_parent_class . "', 
             `controller_path`='" . mysqli_real_escape_string($conn_app, $controller_path) . "',
             `model_path`='" . mysqli_real_escape_string($conn_app, $model_path) . "',
             `view_path`='" . mysqli_real_escape_string($conn_app, $view_path) . "'
@@ -79,7 +109,7 @@ if (!empty($_POST)) {
         }
         mysqli_query($conn_app, $sql) or die($conn_app->error);
         $_SESSION['success'][] = 'Project module saved successfully';
-        header('Location:' . BASE_URL . 'action/project_modules.php');
+        header('Location:' . BASE_URL . 'action/project_modules.php?project_id='.$project_id);
     }
 }
 
@@ -101,13 +131,19 @@ if (!empty($_POST)) {
                             <select class="form-control" name="project_id" id="project_id">
                                 <option value="">--Select--</option>
                                 <?php
-                                foreach ($aProject as $row) { ?>
+                                foreach ($aProjectList as $row) { ?>
                                     <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $project_id) ?>><?php echo $row['project_name']; ?></option>
 
                                 <?php
                                 }
                                 ?>
                             </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Module Name <span class="required">(*)</span></td>
+                        <td>
+                            <input type="text" class="form-control" name="module" id="module" value="<?php echo $module; ?>">
                         </td>
                     </tr>
                     <tr>
@@ -119,18 +155,21 @@ if (!empty($_POST)) {
                     <tr>
                         <td>Controller Path <span class="required">(*)</span></td>
                         <td>
+                            <?php echo $project_root_path; ?>
                             <input type="text" class="form-control" name="controller_path" id="controller_path" value="<?php echo $controller_path; ?>">
                         </td>
                     </tr>
                     <tr>
                         <td>Model Path <span class="required">(*)</span></td>
                         <td>
+                            <?php echo $project_root_path; ?>
                             <input type="text" class="form-control" name="model_path" id="model_path" value="<?php echo $model_path; ?>">
                         </td>
                     </tr>
                     <tr>
                         <td>View Path<span class="required">(*)</span></td>
                         <td>
+                            <?php echo $project_root_path; ?>
                             <input type="text" class="form-control" name="view_path" id="view_path" value="<?php echo $view_path; ?>">
                         </td>
                     </tr>
