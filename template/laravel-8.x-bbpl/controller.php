@@ -57,7 +57,7 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
             "' . $module_name . '/' . $module_url . '" => "' . $title . ' List",
             "" => "Add/Edit"
         ];
-        return view(\'' . $module_name . '.' . $module_url . '.add\', $data);
+        return view(\'' . $module_name . '.' . $module_url . '.form\', $data);
     }
 
     public function delete($id)

@@ -7,10 +7,10 @@ $controller_path = '';
 $model_path = '';
 $view_path = '';
 $project_id = '';
-$module='';
+$module = '';
 
 $aProjectModules = [];
-$GLOBALS['project_root_path']='';
+$GLOBALS['project_root_path'] = '';
 
 
 $sql = 'select * from project ';
@@ -109,7 +109,7 @@ if (!empty($_POST)) {
         }
         mysqli_query($conn_app, $sql) or die($conn_app->error);
         $_SESSION['success'][] = 'Project module saved successfully';
-        header('Location:' . BASE_URL . 'action/project_modules.php?project_id='.$project_id);
+        header('Location:' . BASE_URL . 'action/project_modules.php?project_id=' . $project_id);
     }
 }
 
@@ -141,22 +141,9 @@ if (!empty($_POST)) {
                         </td>
                     </tr>
                     <tr>
-                        <td>Module Name <span class="required">(*)</span></td>
-                        <td>
-                            <input type="text" class="form-control" name="module" id="module" value="<?php echo $module; ?>">
-                        </td>
-                    </tr>
-                    <tr>
                         <td>Controller Parent Class <span class="required">(*)</span></td>
                         <td>
                             <input type="text" class="form-control" name="controller_parent_class" id="controller_parent_class" value="<?php echo $controller_parent_class; ?>">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Controller Path <span class="required">(*)</span></td>
-                        <td>
-                            <?php echo $project_root_path; ?>
-                            <input type="text" class="form-control" name="controller_path" id="controller_path" value="<?php echo $controller_path; ?>">
                         </td>
                     </tr>
                     <tr>
@@ -164,6 +151,19 @@ if (!empty($_POST)) {
                         <td>
                             <?php echo $project_root_path; ?>
                             <input type="text" class="form-control" name="model_path" id="model_path" value="<?php echo $model_path; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Module Name <span class="required">(*)</span></td>
+                        <td>
+                            <input type="text" class="form-control" name="module" id="module" value="<?php echo $module; ?>">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Controller Path <span class="required">(*)</span></td>
+                        <td>
+                            <?php echo $project_root_path; ?>
+                            <input type="text" class="form-control" name="controller_path" id="controller_path" value="<?php echo $controller_path; ?>">
                         </td>
                     </tr>
                     <tr>

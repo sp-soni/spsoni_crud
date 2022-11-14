@@ -47,12 +47,22 @@ if (!empty($_POST)) {
         $base_model_suffix = $aProjectDetails->base_model_suffix;
         $root_path = $aProjectDetails->root_path;
 
-        $controller_path = $root_path.DIRECTORY_SEPARATOR.$aProjectDetails->controller_path;
-        $model_path = $root_path.DIRECTORY_SEPARATOR.$aProjectDetails->model_path;
-        $view_path = $root_path.DIRECTORY_SEPARATOR.$aProjectDetails->view_path;
-        $route_path = $root_path.DIRECTORY_SEPARATOR.$aProjectDetails->route_path;
         $module = $aProjectDetails->module;
-        
+
+        $controller_path = $root_path . DIRECTORY_SEPARATOR . $aProjectDetails->controller_path;
+        $view_path = $root_path . DIRECTORY_SEPARATOR . $aProjectDetails->view_path;
+
+
+        if (!empty($module)) {
+            $controller_path .= DIRECTORY_SEPARATOR . $module;
+            $view_path .= DIRECTORY_SEPARATOR . strtolower($module);
+        }
+
+        $model_path = $root_path . DIRECTORY_SEPARATOR . $aProjectDetails->model_path;
+
+        $route_path = $root_path . DIRECTORY_SEPARATOR . $aProjectDetails->route_path;
+
+
         $controller_parent_class = $aProjectDetails->controller_parent_class;
 
         define('PLATFORM', $platform);
@@ -132,7 +142,7 @@ if (!empty($_POST)) {
                         <td>Project Module<span class="required">(*)</span></td>
                         <td>Table <span class="required">(*)</span></td>
                     </tr>
-                    <tr>                       
+                    <tr>
                         <td width="35%">
                             <select class="form-control" name="project_id" id="project_id" onchange="load_tables_modules(this.value,'table_name','module_id')">
                                 <option value="">--Select--</option>
@@ -145,7 +155,7 @@ if (!empty($_POST)) {
                                 }
                                 ?>
                             </select>
-                        </td>  
+                        </td>
                         <td width="35%">
                             <select class="form-control" name="module_id" id="module_id">
                                 <option value="">-Select-</option>
@@ -157,7 +167,7 @@ if (!empty($_POST)) {
                                 }
                                 ?>
                             </select>
-                        </td>                    
+                        </td>
                         <td>
                             <select class="form-control" name="table_name" id="table_name">
                                 <option value="">-Select-</option>
@@ -169,9 +179,9 @@ if (!empty($_POST)) {
                                 }
                                 ?>
                             </select>
-                        </td>  
+                        </td>
                     </tr>
-                    <tr>                
+                    <tr>
                         <td>File Choice <span class="required">(*)</span></td>
                         <td colspan="2">
                             <ul type="none" class="list-group list-group-flush">
