@@ -101,7 +101,7 @@ if (!empty($_POST)) {
             $sql = "UPDATE project_module set 
             `project_id`='" . $project_id . "', 
             `module`='" . $module . "', 
-            `controller_parent_class`='" . $controller_parent_class . "', 
+            `controller_parent_class`='" . mysqli_real_escape_string($conn_app, $controller_parent_class) . "', 
             `controller_path`='" . mysqli_real_escape_string($conn_app, $controller_path) . "',
             `model_path`='" . mysqli_real_escape_string($conn_app, $model_path) . "',
             `view_path`='" . mysqli_real_escape_string($conn_app, $view_path) . "'
