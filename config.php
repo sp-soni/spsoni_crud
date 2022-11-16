@@ -17,18 +17,17 @@ function debug($arg, $is_die = 1)
 }
 
 
-define('BASE_URL', 'http://localhost/html/spsoni_crud/');
+define('BASE_URL', 'http://localhost:8080/practice/spsoni_crud/');
 define('API_BASE_URL', BASE_URL . 'vendor/api/index.php');
 
 
 define('ROOT_PATH', dirname(__FILE__, 1));
-define('OUTPUT_PATH', ROOT_PATH . '/output/');
 define('TEMPLATE_PATH', ROOT_PATH . '/template/');
 define('INDEX_FIELD_COUNT',4);
 define('BASE_FOLDER_NAME', 'Base');
 
 
-define('HOST', 'localhost');
+define('HOST', 'mysql:3306');
 define('USER', 'root');
 define('PASSWORD', '1234');
 define('APP_DB', 'spsoni_crud');
