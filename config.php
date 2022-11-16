@@ -30,10 +30,11 @@ define('BASE_FOLDER_NAME', 'Base');
 
 define('HOST', 'localhost');
 define('USER', 'root');
-define('PASSWORD', '');
+define('PASSWORD', '1234');
+define('APP_DB', 'spsoni_crud');
 
 //--app
-define('APP_DB', 'spsoni_crud');
+
 $conn_app = mysqli_connect(HOST, USER, PASSWORD, APP_DB) or die('app mysqli not connected');
 $_SESSION['conn_app'] = $conn_app;
 
