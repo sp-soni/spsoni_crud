@@ -50,7 +50,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
 
     $count = 1;
     foreach ($table_attributes as $column) {
-        $template .= '$this->' . $column->column_name . ' = $request->get(\'' . $column->column_name . '\');' . PHP_EOL;
+        $template .= '$' . $column->column_name . ' = $request->get(\'' . $column->column_name . '\');' . PHP_EOL;
         if ($count == 5) {
             break;
         }
@@ -61,7 +61,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     $count = 1;
     foreach ($table_attributes as $column) {
         $template .= 'if(!empty($'.$column->column_name.')){'. PHP_EOL;
-        $template .= '$aWhere[]=[\'' . $column->column_name . '\', \'LIKE\', \'%\'.$this->' . $column->column_name . '.\'%\'];' . PHP_EOL;
+        $template .= '$aWhere[]=[\'' . $column->column_name . '\', \'LIKE\', \'%\'.$' . $column->column_name . '.\'%\'];' . PHP_EOL;
         $template .= '}';
         if ($count == 3) {
             break;
