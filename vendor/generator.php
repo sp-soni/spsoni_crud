@@ -85,7 +85,7 @@ function action_generate_routes($conn, $aTable, $action = "preview")
     }
     //empty_directory($path);
 
-    if (PLATFORM == 'laravel-8.x') {
+    if (in_array(PLATFORM,['laravel-8.x'])) {
         $file_name = 'web.php';
     } else if (PLATFORM == 'codeigniter-3.x') {
         $file_name = 'routes.php';

@@ -5,7 +5,8 @@ function platform_list()
     return [
         'codeigniter-3.x',
         'laravel-8.x',
-        'laravel-8.x-bbpl'
+        'laravel-8.x-bbpl',
+        'laravel-9.x'
     ];
 }
 
@@ -124,7 +125,7 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
 
     //--index.php
     $file_name = 'index.php';
-    if (in_array(PLATFORM,['laravel-8.x','laravel-8.x-bbpl']) ) {
+    if (in_array(PLATFORM,['laravel-8.x','laravel-9.x','laravel-8.x-bbpl']) ) {
         $file_name = 'index.blade.php';
     }
     
@@ -141,7 +142,7 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
 
     //--form.php
     $file_name = 'form.php';
-    if (in_array(PLATFORM,['laravel-8.x','laravel-8.x-bbpl']) ) {
+    if (in_array(PLATFORM,['laravel-8.x','laravel-9.x','laravel-8.x-bbpl']) ) {
         $file_name = 'form.blade.php';
     }
 
@@ -271,7 +272,7 @@ function get_validation_rules($row, $platform, $table_name)
     }
 
     // platform specific rules
-    if ($platform == 'laravel-8.x') {
+    if (in_array($platform,['laravel-8.x','laravel-9.x','laravel-8.x-bbpl']) ) {
         $laravel8_rules = laravel8_validation_rules($row, $table_name);
     } else if ($platform == 'codeigniter-3.x') {
         $codeignitor3_rules = codeignitor3_validation_rules($row, $table_name);

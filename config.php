@@ -18,7 +18,7 @@ function debug($arg, $is_die = 1)
 }
 
 
-define('BASE_URL', 'http://localhost:8080/html/spsoni_crud/');
+define('BASE_URL', 'http://localhost/html/products/spsoni_crud/');
 define('API_BASE_URL', BASE_URL . 'vendor/api/index.php');
 
 
@@ -28,9 +28,9 @@ define('INDEX_FIELD_COUNT',4);
 define('BASE_FOLDER_NAME', 'Base');
 
 
-define('HOST', 'mysql:3306');
+define('HOST', 'localhost:3307');
 define('USER', 'root');
-define('PASSWORD', '1234');
+define('PASSWORD', '');
 define('APP_DB', 'spsoni_crud');
 
 //--app
