@@ -11,7 +11,7 @@
         </li>    
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="<?php echo BASE_URL; ?>action/projects.php">Projects</a>
-        </li>     
+        </li>           
         <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Project Settings

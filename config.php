@@ -1,7 +1,8 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(E_ALL & ~E_WARNING);
 session_start();
 date_default_timezone_set("Asia/Calcutta");
+
 
 function debug($arg, $is_die = 1)
 {
@@ -17,7 +18,7 @@ function debug($arg, $is_die = 1)
 }
 
 
-define('BASE_URL', 'http://localhost:8080/practice/spsoni_crud/');
+define('BASE_URL', 'http://localhost:8080/html/spsoni_crud/');
 define('API_BASE_URL', BASE_URL . 'vendor/api/index.php');
 
 

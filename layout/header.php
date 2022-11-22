@@ -28,11 +28,10 @@ require_once ROOT_PATH . '/vendor/helpers.php';
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12">              
-                <div class="btn-group">
-                    <?php include_once('menu.php');?>
-                </div>
+            <div class="col-md-6">
+                <?php include_once('menu.php'); ?>
             </div>
+            <div class="col-md-6">PWD : <?php echo $_SERVER['DOCUMENT_ROOT']; ?></div>
         </div>
         <div class="row" style="margin-bottom: 10px;">
             <div class="col-md-12" style="padding-top:20px;">
