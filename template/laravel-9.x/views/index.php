@@ -2,9 +2,9 @@
 function get_css_class($type)
 {
     $class = '';
-    $aCssClasses=['date','datetime','number','int','integer'];
-    if (in_array($type,$aCssClasses)) {
-        $class = 'class="'.$type.'"';
+    $aCssClasses = ['date', 'datetime', 'number', 'int', 'integer'];
+    if (in_array($type, $aCssClasses)) {
+        $class = 'class="' . $type . '"';
     }
     return $class;
 }
@@ -67,9 +67,14 @@ function generate_index($form_attributes, $module_url)
                 <tr>
                     <th width="5%" class="sn">#</th>' . PHP_EOL;
     $count = 1;
+    $total_count = count($form_attributes);
     foreach ($form_attributes as $attribute) {
-        $label = $attribute->label;       
-        $thead .= '<th width="10%">' . $label . '</th>' . PHP_EOL;
+        $label = $attribute->label;
+        if ($count < $total_count) {
+            $thead .= '<th width="10%">' . $label . '</th>' . PHP_EOL;
+        } else {
+            $thead .= '<th width="*">' . $label . '</th>' . PHP_EOL;
+        }
         if ($count == INDEX_FIELD_COUNT) {
             break;
         }
@@ -92,14 +97,14 @@ function generate_index($form_attributes, $module_url)
     foreach ($form_attributes as $attribute) {
         $name = $attribute->column_name;
         $css_class = get_css_class($attribute->type);
-        $tbody .= ' <td '.$css_class.'>{{ $item->' . $name . ' }}</td>';
+        $tbody .= ' <td ' . $css_class . '>{{ $item->' . $name . ' }}</td>';
         if ($count == INDEX_FIELD_COUNT) {
             break;
         }
         $count++;
     }
 
-    $tbody .= '<td class="action">' . PHP_EOL;    
+    $tbody .= '<td class="action">' . PHP_EOL;
     $tbody .= '{{ html_button(["btn"=>"edit","id"=>$item->id,"url"=>"' . $module_url . '"]) }}' . PHP_EOL;
     $tbody .= '</td>
     </tr>
