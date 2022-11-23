@@ -70,7 +70,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     }
     $template .=PHP_EOL;
 
-    $template .= '$data = self::where($aWhere)->orderBy(\'id\', \'desc\')->paginate(config_item(\'app.page_limit\'));
+    $template .= '$data = self::where($aWhere)->orderBy(\'id\', \'desc\')->paginate(config(\'global.page_limit\'));
         return $data;
     }' . PHP_EOL;    
     $template .= PHP_EOL . '}';
