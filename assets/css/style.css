@@ -18,3 +18,7 @@
     user-select: none;
     -webkit-user-select: none;
 }
+.hint{
+    font-style: italic;
+    color: red;
+}
