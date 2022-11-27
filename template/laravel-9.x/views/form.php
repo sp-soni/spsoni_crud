@@ -58,7 +58,7 @@ function generate_form($form_attributes, $module_url)
 @section(\'content\')
 
 <div class="conatiner">
-{{ showMessage($errors)}}
+{{ show_message($errors)}}
     <form method="post" enctype="multipart/form-data">
     @csrf
         ' . $form_fields . '

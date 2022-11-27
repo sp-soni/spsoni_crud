@@ -5,7 +5,7 @@ function generate_base_model($className, $columns, $table, $table_attributes)
 
     //Template Prepearation
     $template = '<?php
-namespace App\Models\\'.BASE_FOLDER_NAME.';' . PHP_EOL;
+namespace App\Models\\' . BASE_FOLDER_NAME . ';' . PHP_EOL;
 
     $template .= 'use App\Custom\Base\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,8 +19,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
         $template .= PHP_EOL . 'abstract class ' . $className . ' extends Model' . PHP_EOL;
     }
 
-    $template .= '{
-    use HasApiTokens, HasFactory, Notifiable;
+    $template .= '{    
     protected $table = \'' . $table . '\';' . PHP_EOL;
 
     $template .= 'protected $fillable = [' . PHP_EOL;
@@ -51,7 +50,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     $count = 1;
     foreach ($table_attributes as $column) {
         $template .= '$' . $column->column_name . ' = $request->get(\'' . $column->column_name . '\');' . PHP_EOL;
-        if ($count == 5) {
+        if ($count == 3) {
             break;
         }
         $count++;
@@ -60,19 +59,25 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     $template .= '$aWhere = [];' . PHP_EOL;
     $count = 1;
     foreach ($table_attributes as $column) {
-        $template .= 'if(!empty($'.$column->column_name.')){'. PHP_EOL;
-        $template .= '$aWhere[]=[\'' . $column->column_name . '\', \'LIKE\', \'%\'.$' . $column->column_name . '.\'%\'];' . PHP_EOL;
-        $template .= '}';
+        if ($count == 1) {
+            $template .= 'if(!empty($' . $column->column_name . ')){' . PHP_EOL;
+            $template .= '$aWhere[]=[\'' . $column->column_name . '\', \'LIKE\', \'%\'.$' . $column->column_name . '.\'%\'];' . PHP_EOL;
+            $template .= '}';
+        } else {
+            $template .= 'if(!empty($' . $column->column_name . ')){' . PHP_EOL;
+            $template .= '$aWhere[]=[\'' . $column->column_name . '\', \'=\', $' . $column->column_name . '];' . PHP_EOL;
+            $template .= '}';
+        }
         if ($count == 3) {
             break;
         }
         $count++;
     }
-    $template .=PHP_EOL;
+    $template .= PHP_EOL;
 
     $template .= '$data = self::where($aWhere)->orderBy(\'id\', \'desc\')->paginate(config(\'global.page_limit\'));
         return $data;
-    }' . PHP_EOL;    
+    }' . PHP_EOL;
     $template .= PHP_EOL . '}';
     return $template;
 }
