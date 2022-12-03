@@ -105,7 +105,7 @@ function generate_index($form_attributes, $module_url)
     }
 
     $tbody .= '<td class="action">' . PHP_EOL;
-    $tbody .= '{{ html_button(["btn"=>"edit","id"=>$item->id,"url"=>"' . $module_url . '"]) }}' . PHP_EOL;
+    $tbody .= '{{ form_button(["btn"=>"edit","id"=>$item->id,"url"=>"' . $module_url . '"]) }}' . PHP_EOL;
     $tbody .= '</td>
     </tr>
     @endforeach

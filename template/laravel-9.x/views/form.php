@@ -64,7 +64,7 @@ function generate_form($form_attributes, $module_url)
         ' . $form_fields . '
         <div class="mb-3 row">
             <div class="offset-sm-2 col-sm-6">               
-                {{ html_button(["url"=>"' . $module_url . '"]) }}
+                {{ form_button(["url"=>"' . $module_url . '"]) }}
             </div>
         </div>
     </form>
