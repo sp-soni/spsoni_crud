@@ -50,8 +50,9 @@ function generate_form($form_attributes, $module_url)
         } else { // text
             $form_fields .= '<input type="text" class="form-control" id="' . $id . '" name="' . $name . '" value="{{ $' . $name . ' }}">' . PHP_EOL;
         }
-        $form_fields .= '</div>
-        </div>' . PHP_EOL;
+        $form_fields .= '{{ form_error($errors, \''.$name.'\') }}'. PHP_EOL;
+        $form_fields .= '</div>'. PHP_EOL;
+        $form_fields .= '</div>' . PHP_EOL;
     }
 
     $template = '@extends(\'layouts.admin.layout\')
