@@ -88,7 +88,7 @@ function generate_index($form_attributes, $module_url)
     //tbody
     $tbody = '<tbody> 
     @php
-    $sn = 1;
+    $sn = get_sn();
     @endphp
     @foreach ($aGrid as $item)
     <tr>
@@ -115,7 +115,9 @@ function generate_index($form_attributes, $module_url)
     $grid_fields = '<table class="table table-bordered">' . PHP_EOL;
     $grid_fields .= $thead;
     $grid_fields .= $tbody . PHP_EOL;
-    $grid_fields .= '</table>';
+    $grid_fields .= '</table>' . PHP_EOL;
+
+    $grid_fields .='{!! $aGrid->links() !!}' . PHP_EOL;
 
     $template = '@extends(\'layouts.admin.layout\')
     @section(\'content\')
