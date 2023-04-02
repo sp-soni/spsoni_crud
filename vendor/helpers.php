@@ -6,7 +6,8 @@ function platform_list()
         'codeigniter-3.x',
         'laravel-8.x',
         'laravel-8.x-bbpl',
-        'laravel-9.x'
+        'laravel-9.x',
+        'laravel-10-nice-admin'
     ];
 }
 
