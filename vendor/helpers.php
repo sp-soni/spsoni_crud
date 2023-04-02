@@ -11,6 +11,17 @@ function platform_list()
     ];
 }
 
+function is_blade_template($platform)
+{
+    $laravel = [
+        'laravel-8.x',
+        'laravel-8.x-bbpl',
+        'laravel-9.x',
+        'laravel-10-nice-admin'
+    ];
+    return in_array($platform, $laravel);
+}
+
 function show_message()
 {
     $html = '';
@@ -126,10 +137,10 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
 
     //--index.php
     $file_name = 'index.php';
-    if (in_array(PLATFORM,['laravel-8.x','laravel-9.x','laravel-8.x-bbpl']) ) {
+    if (is_blade_template(PLATFORM)) {
         $file_name = 'index.blade.php';
     }
-    
+
     $index_path = $dir_path . $file_name;
     $files[0] = $index_path;
     $txt = generate_index($form_attributes, $module_url);
@@ -143,7 +154,7 @@ function create_view_file($conn, $dir_path, $template_path, $table, $action)
 
     //--form.php
     $file_name = 'form.php';
-    if (in_array(PLATFORM,['laravel-8.x','laravel-9.x','laravel-8.x-bbpl']) ) {
+    if (is_blade_template(PLATFORM)) {
         $file_name = 'form.blade.php';
     }
 
@@ -273,7 +284,7 @@ function get_validation_rules($row, $platform, $table_name)
     }
 
     // platform specific rules
-    if (in_array($platform,['laravel-8.x','laravel-9.x','laravel-8.x-bbpl']) ) {
+    if (is_blade_template(PLATFORM)) {
         $laravel8_rules = laravel8_validation_rules($row, $table_name);
     } else if ($platform == 'codeigniter-3.x') {
         $codeignitor3_rules = codeignitor3_validation_rules($row, $table_name);
