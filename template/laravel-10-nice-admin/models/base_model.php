@@ -29,7 +29,7 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     $template .= '];' . PHP_EOL . PHP_EOL;
 
     $template .= 'public static $selectable = [' . PHP_EOL;
-    $template .= '\'id,\'' . PHP_EOL;
+    $template .= '\'id\'' . ',' . PHP_EOL;
     foreach ($table_attributes as $column) {
         $template .= '\'' . $column->column_name . '\',' . PHP_EOL;
     }
