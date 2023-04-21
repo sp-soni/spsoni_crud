@@ -55,7 +55,7 @@ function generate_form($form_attributes, $module_url)
         $form_fields .= '</div>' . PHP_EOL;
     }
 
-    $template = '@extends(\'layouts.admin\')
+    $template = '@extends(\'layouts.'.strtolower(MODULE).'\')
 @section(\'content\')
 
 <div class="conatiner">

@@ -28,6 +28,13 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     }
     $template .= '];' . PHP_EOL . PHP_EOL;
 
+    $template .= 'public static $selectable = [' . PHP_EOL;
+    $template .= '\'id,\'' . PHP_EOL;
+    foreach ($table_attributes as $column) {
+        $template .= '\'' . $column->column_name . '\',' . PHP_EOL;
+    }
+    $template .= '];' . PHP_EOL . PHP_EOL;
+
     $template .= 'public function rules()
 	{
 		return [' . PHP_EOL;
@@ -42,6 +49,15 @@ use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
     $template .= '}' . PHP_EOL;
 
 
+    $template .= 'public static function getRow($aWhere = [])
+    {
+        return self::select(self::$selectable)->where($aWhere)->first();
+    }' . PHP_EOL;
+
+    $template .= 'public static function getResult($aWhere = [])
+    {
+        return self::select(self::$selectable)->where($aWhere)->get();
+    }' . PHP_EOL;
 
     $template .= '
     public function search($request)

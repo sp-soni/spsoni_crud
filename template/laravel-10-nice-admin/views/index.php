@@ -119,7 +119,7 @@ function generate_index($form_attributes, $module_url)
 
     $grid_fields .='{!! $aGrid->links() !!}' . PHP_EOL;
 
-    $template = '@extends(\'layouts.admin\')
+    $template = '@extends(\'layouts.'.strtolower(MODULE).'\')
     @section(\'content\')
 
         <div class="content">

@@ -43,7 +43,9 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
             }
             $request->validate($model->rules());
             ' . $form_fileds . '
-            if ($model->save()) {
+            if ($model->hasError()) {                
+                set_message($model->getError(),"error");
+            } else($model->save()) {
                 save_user_action($action, "PK :" . $model->id);
                 set_message(\'' . $title . ' saved successfully\');
                 return redirect("/' . $module_name . '/' . $module_url . '");
