@@ -67,7 +67,6 @@ if (!empty($_POST)) {
 
         define('PLATFORM', $platform);
         define('DATABASE', $db_name);
-        define('MODULE', $module);
 
         mysqli_select_db($conn, DATABASE);
         $aTable = array_column($conn->query('SHOW TABLES')->fetch_all(), 0);
