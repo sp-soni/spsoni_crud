@@ -18,7 +18,7 @@ function debug($arg, $is_die = 1)
 }
 
 
-define('BASE_URL', 'http://localhost/html/inhouse/spsoni_crud/');
+define('BASE_URL', 'http://localhost/html/spsoni_crud/');
 define('API_BASE_URL', BASE_URL . 'vendor/api/index.php');
 
 
