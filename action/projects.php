@@ -140,12 +140,11 @@ SELECT `project_name`,`db_name`, `platform`, `root_path` FROM project WHERE id =
                 <thead>
                     <tr>
                         <th>SN</td>
-                        <th width="15%">Project Name</th>
-                        <th width="15%">DB Name</th>
+                        <th width="25%">Project Name (DB Name)</th>                     
                         <th width="15%">Platform</th>
-                        <th width="*">Root Path</th>
+                        <th width="25%">Root Path</th>
                         <th>Modules</th>
-                        <th width="10%">Action</th>
+                        <th width="*">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -162,8 +161,7 @@ SELECT `project_name`,`db_name`, `platform`, `root_path` FROM project WHERE id =
                     ?>
                             <tr>
                                 <td><?php echo $sn++; ?></td>
-                                <td><?php echo $row->project_name; ?></td>
-                                <td><?php echo $row->db_name; ?></td>
+                                <td><?php echo $row->project_name; ?> (<?php echo $row->db_name; ?>)</td>
                                 <td><?php echo $row->platform; ?></td>
                                 <td><?php echo $row->root_path; ?></td>
                                 <td>
