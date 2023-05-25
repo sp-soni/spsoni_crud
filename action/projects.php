@@ -62,6 +62,15 @@ if (!empty($_POST)) {
     }
 }
 
+//Duplocate Project
+if (!empty($_GET['duplicate'])) {
+    //project
+    $sql = 'INSERT INTO project (`project_name`, `db_name`, `platform`, `root_path`)
+SELECT `project_name`,`db_name`, `platform`, `root_path` FROM project WHERE id = ' . $_GET['project_id'];
+    mysqli_query($conn_app, $sql) or die($conn_app->error);
+    $_SESSION['success'][] = 'Duplicate project created successfully';
+    header('Location:' . BASE_URL . 'action/projects.php');
+}
 ?>
 <div class="row">
     <?php show_message(); ?>
@@ -107,7 +116,7 @@ if (!empty($_POST)) {
                                 ?>
                             </select>
                         </td>
-                   
+
                         <td>
                             <input type="text" class="form-control" name="project_name" id="project_name" value="<?php echo $project_name; ?>">
                         </td>
@@ -149,6 +158,7 @@ if (!empty($_POST)) {
                             $row = (object)$row;
                             $url = BASE_URL . 'action/projects.php?project_id=' . $row->id;
                             $module_url = BASE_URL . 'action/project_modules.php?project_id=' . $row->id;
+                            $duplicate_url = BASE_URL . 'action/projects.php?duplicate=1&project_id=' . $row->id;
                     ?>
                             <tr>
                                 <td><?php echo $sn++; ?></td>
@@ -169,6 +179,7 @@ if (!empty($_POST)) {
                                 </td>
                                 <td>
                                     <a href="<?php echo $url; ?>" class="btn btn-sm btn-primary">Edit</a>
+                                    <a href="<?php echo $duplicate_url; ?>" class="btn btn-sm btn-primary">Duplicate</a>
                                     <a href="<?php echo $module_url; ?>" class="btn btn-sm btn-success">Modules</a>
                                 </td>
                             </tr>
@@ -183,6 +194,7 @@ if (!empty($_POST)) {
     </form>
 
 </div>
+
 <?php
 require_once dirname(__FILE__, 2) . '/layout/footer.php';
 ?>
