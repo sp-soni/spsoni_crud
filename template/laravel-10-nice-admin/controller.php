@@ -27,6 +27,7 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
     {
         $model  = new ' . $model . '();
         $data[\'aGrid\'] = $model->search($request);
+        $data[\'module\'] = get_module();
         $data[\'module_url\'] = url(\'' . $module_name . '/' . $module_url . '/\');
         $data[\'breadcrumb\'] = ["" => "' . $title . ' List"];
         return view(\'' . $module_name . '.' . $module_url . '.index\', $data);
@@ -53,6 +54,7 @@ class ' . $className . 'Controller extends ' . basename($parent_class) . '
             }
         }
         $data[\'model\'] = $model;
+        $data[\'module\'] = get_module();
         $data[\'module_url\'] = url(\'' . $module_name . '/' . $module_url . '/add\');
         $data[\'breadcrumb\'] = [
             "' . $module_name . '/' . $module_url . '" => "' . $title . ' List",
