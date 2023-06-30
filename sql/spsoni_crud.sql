@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 25, 2023 at 04:22 AM
+-- Generation Time: Jun 30, 2023 at 10:41 AM
 -- Server version: 8.0.31
--- PHP Version: 8.2.0
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,9 +42,8 @@ CREATE TABLE IF NOT EXISTS `project` (
 --
 
 INSERT INTO `project` (`id`, `project_name`, `db_name`, `platform`, `root_path`) VALUES
-(1, 'BBPL-PP-NEW', 'bbpl_payments', 'laravel-8.x-bbpl', '/var/www/html/pp_new'),
-(2, 'MeraJobs', 'merajobs_new', 'laravel-10-nice-admin', 'D:\\wamp64\\www\\html\\merajobs.in'),
-(3, 'MeraJobs', 'merajobs_new', 'laravel-10-nice-admin', 'D:\\wamp64\\www\\html\\merajobs.in');
+(2, 'MeraJobs', 'merajobs_new', 'laravel-10-nice-admin', 'D:\\wamp64\\www\\html\\inhouse\\merajobs.in'),
+(3, 'Pronero Billing', 'merajobs_new', 'laravel-10-nice-admin', 'D:\\wamp64\\www\\html\\inhouse\\billing.pronero.in');
 
 -- --------------------------------------------------------
 
@@ -72,7 +71,6 @@ CREATE TABLE IF NOT EXISTS `project_module` (
 --
 
 INSERT INTO `project_module` (`id`, `module`, `project_id`, `controller_parent_class`, `base_model_suffix`, `controller_path`, `model_path`, `view_path`, `route_path`) VALUES
-(1, 'Admin', 1, 'AppBaseController', 'Base', 'app/Http/Controllers', 'app/models', 'resources/views', NULL),
 (2, 'Admin', 2, 'App\\Custom\\Base\\AdminController', 'Base', 'app/Http/Controllers', 'app/models', 'resources/views', NULL),
 (3, 'Admin', 3, 'App\\Custom\\Base\\AdminController', 'Base', 'app/Http/Controllers', 'app/models', 'resources/views', NULL);
 COMMIT;
