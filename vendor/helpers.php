@@ -7,7 +7,8 @@ function platform_list()
         'laravel-8.x',
         'laravel-8.x-bbpl',
         'laravel-9.x',
-        'laravel-10-nice-admin'
+        'laravel-10-nice-admin',
+        'devaato'
     ];
 }
 
@@ -17,7 +18,8 @@ function is_blade_template($platform)
         'laravel-8.x',
         'laravel-8.x-bbpl',
         'laravel-9.x',
-        'laravel-10-nice-admin'
+        'laravel-10-nice-admin',
+        'devaato'
     ];
     return in_array($platform, $laravel);
 }
