@@ -3,20 +3,22 @@
 function generate_base_model($className, $columns, $table, $table_attributes)
 {
 
+    $parent_class = CONTROLLER_PARENT_CLASS;  // App\Components\AppModel
     //Template Prepearation
     $template = '<?php
 namespace App\Models\\' . BASE_FOLDER_NAME . ';' . PHP_EOL;
 
-    $template .= 'use App\Custom\Base\BaseModel;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
-
+    $template .= 'use ' . $parent_class . ';' . PHP_EOL;
+    
     if ($table == 'users') {
+        $template .= 'use Illuminate\Database\Eloquent\Factories\HasFactory;' . PHP_EOL;
+        $template .= 'use Illuminate\Notifications\Notifiable;' . PHP_EOL;
+        $template .= 'use Laravel\Sanctum\HasApiTokens;' . PHP_EOL;
+
         $template .= 'use Illuminate\Foundation\Auth\User as Authenticatable;' . PHP_EOL;
         $template .= PHP_EOL . 'abstract class ' . $className . ' extends Authenticatable' . PHP_EOL;
     } else {
-        $template .= PHP_EOL . 'abstract class ' . $className . ' extends BaseModel' . PHP_EOL;
+        $template .= PHP_EOL . 'abstract class ' . $className . ' extends '. basename($parent_class) .PHP_EOL;
     }
 
     $template .= '{    

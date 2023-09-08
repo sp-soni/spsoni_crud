@@ -14,6 +14,7 @@ $view_path = '';
 $root_path = '';
 $module = '';
 $controller_parent_class = '';
+$model_parent_class = '';
 
 $aTable = [];
 $aModule = [];
@@ -37,7 +38,7 @@ if (!empty($_POST)) {
     if (empty($error)) {
         $sql = 'select 
          t1.*,t2.module,t2.base_model_suffix,t2.controller_path,t2.model_path,
-         t2.view_path,t2.route_path,t2.controller_parent_class 
+         t2.view_path,t2.route_path,t2.controller_parent_class, t2.model_parent_class  
          from project as t1 left join project_module as t2 on t1.id=t2.project_id
          where t1.id=' . $project_id . ' and t2.id=' . $module_id;
         $aProjectDetails = $conn_app->query($sql)->fetch_object();
@@ -64,6 +65,7 @@ if (!empty($_POST)) {
 
 
         $controller_parent_class = $aProjectDetails->controller_parent_class;
+        $model_parent_class= $aProjectDetails->model_parent_class;
 
         define('PLATFORM', $platform);
         define('DATABASE', $db_name);
@@ -87,6 +89,10 @@ if (!empty($_POST)) {
 
         if (empty($controller_parent_class)) {
             $error[] = '$controller_parent_class is empty for the selected project & module, Check table "project_module" in database.';
+        }
+
+        if (empty($model_parent_class)) {
+            $error[] = '$model_parent_class is empty for the selected project & module, Check table "project_module" in database.';
         }
 
         //--path
@@ -120,6 +126,7 @@ if (!empty($_POST)) {
             define('BASE_MODEL_SUFFIX', $base_model_suffix);
             define('MODULE', $module);
             define('CONTROLLER_PARENT_CLASS', $controller_parent_class);
+            define('MODEL_PARENT_CLASS', $model_parent_class);
         }
     }
     $_SESSION['error'] = $error;

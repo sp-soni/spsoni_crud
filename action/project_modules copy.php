@@ -125,67 +125,61 @@ if (!empty($_POST)) {
     <?php show_message(); ?>
     <form method="post">
         <div class="col-md-12">
-            <div>
-                Root DIR : <?php echo $project_root_path; ?>
-            </div>
-            <table class="table table-bordered">
-                <tr>
-                    <td width="15%">Project <span class="required"> (*)</span></td>
-                    <td width="35%">
-                        <select class="form-control" name="project_id" id="project_id">
-                            <option value="">--Select--</option>
-                            <?php
-                            foreach ($aProjectList as $row) { ?>
-                                <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $project_id) ?>><?php echo $row['project_name']; ?></option>
-
-                            <?php
-                            }
-                            ?>
-                        </select>
-                    </td>
-                    <td width="15%">Module Name <span class="required">(*)</span></td>
-                    <td width="35%">
-                        <input type="text" class="form-control" name="module" id="module" value="<?php echo $module; ?>">
-                    </td>
-                </tr>
-            </table>
             <table class="table table-bordered">
                 <thead>
                     <tr class="bg-parimary">
-                        <th colspan="2">Controller</th>
-                        <th colspan="2">Model</th>
-                        <th colspan="2">View</th>
+                        <th colspan="2">Project Manage</th>
+                        <th>Root DIR</th>
+                        <th><?php echo $project_root_path; ?></th>
                     </tr>
-
+                </thead>
                 <tbody>
                     <tr>
-                        <td>Parent Namespace</td>
-                        <td>
-                            <input type="text" class="form-control" name="controller_parent_class" id="controller_parent_class" value="<?php echo $controller_parent_class; ?>">
+                        <td width="15%">Project <span class="required"> (*)</span></td>
+                        <td width="35%">
+                            <select class="form-control" name="project_id" id="project_id">
+                                <option value="">--Select--</option>
+                                <?php
+                                foreach ($aProjectList as $row) { ?>
+                                    <option value="<?php echo $row['id']; ?>" <?php selected_select($row['id'], $project_id) ?>><?php echo $row['project_name']; ?></option>
+
+                                <?php
+                                }
+                                ?>
+                            </select>
                         </td>
-                        <td>Parent Namespace</td>
+                        <td>Controller Path <span class="required">(*)</span></td>
                         <td>
-                            <input type="text" class="form-control" name="model_parent_class" id="model_parent_class" value="<?php echo $model_parent_class; ?>">
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Path <span class="required">(*)</span></td>
-                        <td>
+
                             <input type="text" class="form-control" name="controller_path" id="controller_path" value="<?php echo $controller_path; ?>">
                         </td>
-                        <td>Path <span class="required">(*)</span></td>
+
+                    </tr>
+                    <tr>
+                        <td width="15%">Module Name <span class="required">(*)</span></td>
+                        <td width="35%">
+                            <input type="text" class="form-control" name="module" id="module" value="<?php echo $module; ?>">
+                        </td>
+                        <td>Model Path <span class="required">(*)</span></td>
                         <td>
                             <input type="text" class="form-control" name="model_path" id="model_path" value="<?php echo $model_path; ?>">
                         </td>
-                        <td>Path <span class="required">(*)</span></td>
+
+                    </tr>
+                    <tr>
+                    <td>Controller Parent Class<span class="required">(*)</span><br />
+                            <div class="hint">With proper namespace</div>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="controller_parent_class" id="controller_parent_class" value="<?php echo $controller_parent_class; ?>">
+                        </td>
+
+                       
+                        <td>View Path<span class="required">(*)</span></td>
                         <td>
                             <input type="text" class="form-control" name="view_path" id="view_path" value="<?php echo $view_path; ?>">
                         </td>
                     </tr>
-
-
                 </tbody>
                 <tfoot>
                     <tr>
@@ -203,9 +197,10 @@ if (!empty($_POST)) {
                     <tr>
                         <th>SN</td>
                         <th>Module Name</th>
-                        <th>Controller</th>
-                        <th>Model</th>
-                        <th>View</th>
+                        <th>Controller Parent Class</th>
+                        <th>Controller Path</th>
+                        <th>Model Path</th>
+                        <th>View Path</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -220,14 +215,9 @@ if (!empty($_POST)) {
                             <tr>
                                 <td><?php echo $sn++; ?></td>
                                 <td><?php echo $row->module; ?></td>
-                                <td>
-                                    <?php echo $row->controller_parent_class; ?><br />
-                                    <?php echo $row->controller_path; ?>
-                                </td>
-                                <td>
-                                    <?php echo $row->model_parent_class; ?><br />
-                                    <?php echo $row->model_path; ?>
-                                </td>
+                                <td><?php echo $row->controller_parent_class; ?></td>
+                                <td><?php echo $row->controller_path; ?></td>
+                                <td><?php echo $row->model_path; ?></td>
                                 <td><?php echo $row->view_path; ?></td>
                                 <td><a href="<?php echo $url; ?>" class="btn btn-sm btn-primary">Edit</a></td>
                             </tr>

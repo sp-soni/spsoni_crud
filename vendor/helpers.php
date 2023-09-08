@@ -199,7 +199,7 @@ function create_model_file($dir_path, $template_path, $table, $action)
 
 function create_base_model_file($dir_path, $template_path, $table, $action, $conn)
 {
-
+   
     include_once  $template_path;
 
     $class_name =  str_replace(' ', '', ucwords(str_replace('_', ' ', $table))) . BASE_MODEL_SUFFIX;

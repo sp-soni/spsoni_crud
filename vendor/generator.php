@@ -72,37 +72,37 @@ function action_generate_controllers($conn, $tables, $action = "preview")
 
 function action_generate_routes($conn, $aTable, $action = "preview")
 {
-    $files = [];
+    // $files = [];
 
-    $path = OUTPUT_PATH;
-    if (!file_exists($path)) {
-        mkdir($path);
-    }
+    // $path = OUTPUT_PATH;
+    // if (!file_exists($path)) {
+    //     mkdir($path);
+    // }
 
-    $path .= 'routes/';
-    if (!file_exists($path)) {
-        mkdir($path);
-    }
-    //empty_directory($path);
+    // $path .= 'routes/';
+    // if (!file_exists($path)) {
+    //     mkdir($path);
+    // }
+    // //empty_directory($path);
 
-    if (in_array(PLATFORM,['laravel-8.x'])) {
-        $file_name = 'web.php';
-    } else if (PLATFORM == 'codeigniter-3.x') {
-        $file_name = 'routes.php';
-    }
-    $file_path = $path . $file_name;
-    $template_path = TEMPLATE_PATH . PLATFORM . '/' . $file_name;
-    include $template_path;
+    // if (in_array(PLATFORM,['laravel-8.x'])) {
+    //     $file_name = 'web.php';
+    // } else if (PLATFORM == 'codeigniter-3.x') {
+    //     $file_name = 'routes.php';
+    // }
+    // $file_path = $path . $file_name;
+    // $template_path = TEMPLATE_PATH . PLATFORM . '/' . $file_name;
+    // include $template_path;
 
 
-    if ($action == "generate") {
-        $txt = generate_routes($aTable);
-        $file = fopen($file_path, "w");
-        fwrite($file, $txt);
-        fclose($file);
-    }
-    $files[] = $file_path;
-    return $files;
+    // if ($action == "generate") {
+    //     $txt = generate_routes($aTable);
+    //     $file = fopen($file_path, "w");
+    //     fwrite($file, $txt);
+    //     fclose($file);
+    // }
+    // $files[] = $file_path;
+    // return $files;
 }
 
 function action_generate_base_models($conn, $tables, $action = "preview")
@@ -120,6 +120,8 @@ function action_generate_base_models($conn, $tables, $action = "preview")
 
     $file_path = $path;
     $template_path = TEMPLATE_PATH . PLATFORM . '/models/base_model.php';
+
+    //debug($template_path);
 
     return create_base_model_file($file_path, $template_path, $tables, $action, $conn);
 }
