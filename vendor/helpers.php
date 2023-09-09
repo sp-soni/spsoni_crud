@@ -1,6 +1,6 @@
 <?php
 
-function platform_list()
+function templates()
 {
     return [
         'codeigniter-3.x',
@@ -8,7 +8,8 @@ function platform_list()
         'laravel-8.x-bbpl',
         'laravel-9.x',
         'laravel-10-nice-admin',
-        'devaato'
+        'devaato',
+        'pmsgo'
     ];
 }
 
@@ -19,7 +20,8 @@ function is_blade_template($platform)
         'laravel-8.x-bbpl',
         'laravel-9.x',
         'laravel-10-nice-admin',
-        'devaato'
+        'devaato',
+        'pmsgo'
     ];
     return in_array($platform, $laravel);
 }

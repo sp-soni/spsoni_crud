@@ -95,7 +95,7 @@ SELECT `project_name`,`db_name`, `platform`, `root_path` FROM project WHERE id =
                             <select class="form-control" name="platform">
                                 <option value="">--Select--</option>
                                 <?php
-                                $aPlatform = platform_list();
+                                $aPlatform = templates();
                                 foreach ($aPlatform as $row) { ?>
                                     <option value="<?php echo $row; ?>" <?php selected_select($row, $platform) ?>><?php echo $row; ?></option>
 
