@@ -30,7 +30,7 @@ define('BASE_FOLDER_NAME', 'Base');
 
 define('HOST', 'localhost');
 define('USER', 'root');
-define('PASSWORD', '');
+define('PASSWORD', '1234');
 define('APP_DB', 'spsoni_crud');
 
 //--app
