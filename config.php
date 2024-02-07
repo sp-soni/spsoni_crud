@@ -13,18 +13,18 @@ function debug($arg, $is_die = 1)
         echo $arg;
     }
     if ($is_die) {
-        echo exit;
+        exit;
     }
 }
 
 
-define('BASE_URL', 'http://localhost/html/inhouse/spsoni_crud/');
+define('BASE_URL', 'http://localhost/projects/inhouse/spsoni_crud/');
 define('API_BASE_URL', BASE_URL . 'vendor/api/index.php');
 
 
 define('ROOT_PATH', dirname(__FILE__, 1));
 define('TEMPLATE_PATH', ROOT_PATH . '/template/');
-define('INDEX_FIELD_COUNT',4);
+define('INDEX_FIELD_COUNT', 4);
 define('BASE_FOLDER_NAME', 'Base');
 
 
